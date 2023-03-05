@@ -9639,10 +9639,10 @@
   "resolved" "https://registry.npmjs.org/react-native-particle-auth/-/react-native-particle-auth-0.10.4.tgz"
   "version" "0.10.4"
 
-"react-native-particle-connect@^0.10.2":
-  "integrity" "sha512-UtqmhzXYJ5Gr/8zi86iVKB7KuBZFyHeZRiTvFE6e0NP8exBeCt0uT/DO/DnXiKHWHKy+vWTffxDkavsxXPxgbw=="
-  "resolved" "https://registry.npmjs.org/react-native-particle-connect/-/react-native-particle-connect-0.10.2.tgz"
-  "version" "0.10.2"
+"react-native-particle-connect@^0.10.3":
+  "integrity" "sha512-XEuzR54TRUy8WuBMP9YKYYvSmorxN+RlZiYtehp58HbszzBYT18qMUXBHA8g06MiK7K5Ml+w+kBak8ScojcKCw=="
+  "resolved" "https://registry.npmjs.org/react-native-particle-connect/-/react-native-particle-connect-0.10.3.tgz"
+  "version" "0.10.3"
 
 "react-native-qrcode-svg@^6.2.0":
   "integrity" "sha512-rb2PgUwT8QpQyReVYNvzRY84AHsMh81354Tnkfp6MfqRbcdJURhnBWLBOO11pLMS6eXiwlq4SkcQxy88hRq+Dw=="

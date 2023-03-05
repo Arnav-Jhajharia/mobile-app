@@ -77,12 +77,12 @@ signAndSendTransactionConnect = async (receiver, amount) => {
   );
   if (result.status) {
     const signature = result.data;
-    return true;
     console.log(signature);
+    return true;
   } else {
     const error = result.data;
-    return false;
     console.log(error);
+    return false;
   }
 };
 
@@ -93,7 +93,7 @@ onClickConnect = async ({navigation, walletype}) => {
     url: 'https://connect.particle.network',
   };
   const rpcUrl = {
-    evm_url: 'https://rpc.ankr.com/polygon_mumbai',
+    evm_url: 'https://rpc.particle.network/',
     solana_url: null,
   };
   particleConnect.init(
