@@ -61,7 +61,7 @@ function QRCode() {
   }, []);
   */
 
-  const qrUrl = String(info) + '-xade-' + String(address);
+  const qrUrl = String(address);
   console.log('Address: ', address);
   console.log('User Info: ', info);
   return (
@@ -69,7 +69,7 @@ function QRCode() {
       <View>
         <Text style={styles.header}>QR Code</Text>
         <View style={styles.userInfo}>
-          <Text style={styles.name}>{String(info)}</Text>
+          <Text style={styles.name}>{String(info).toLowerCase()}</Text>
           <TouchableHighlight
             onPress={() => {
               Clipboard.setString(String(address));
@@ -86,11 +86,6 @@ function QRCode() {
           </View>
         </View>
       </View>
-      {/*
-      <Text onPress={() => this.logout()} style={styles.logout}>
-        Logout
-      </Text>
-          */}
     </View>
   );
 }
@@ -103,7 +98,10 @@ QRScanner = ({navigation}) => {
     Linking.openURL(qrvalue);
   };
 
-  const onBarcodeScan = navigation => {};
+  const onBarcodeScan = qrvalue => {
+    setQrvalue(qrvalue);
+    setOpenScanner(false);
+  };
 
   const onOpenScanner = () => {
     if (Platform.OS === 'android') {
@@ -225,6 +223,9 @@ class QRPage extends Component {
                     Send To Email Address Or Mobile Instead
                   </Text>
                 </TouchableHighlight>
+                <Text onPress={() => this.logout()} style={styles.logout}>
+                  Logout
+                </Text>
               </View>
             </View>
           </ScrollView>

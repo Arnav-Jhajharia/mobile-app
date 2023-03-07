@@ -28,7 +28,7 @@ login = async () => {
   if (result.status) {
     const email = account.email ? account.email : account.phone;
     const name = account.name ? account.name : 'Not Set';
-    const address = account.wallets[0].public_address || account.wallets[0].public_address;
+    const address = account.wallets[0].publicAddress;
     global.loginAccount = new PNAccount(email, name, address);
     global.withAuth = true;
     const userInfo = result.data;
@@ -39,25 +39,40 @@ login = async () => {
       method: 'POST',
       body: `address:${address.toLowerCase()}||${uuid}`,
     });
-    const login_type = '';
-    const object = {
-      email: email,
-      name: email,
-      profileImage: '',
-      verifier: '',
-      verifierId: '',
-      typeOfLogin: '',
-      id: uuid,
-    };
-    console.log(object);
-    const json = JSON.stringify(object || {}, null, 2);
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
-    xhr.send(json);
-    console.log(json);
-  } else {
-    const error = result.data;
-    console.log('Error:', error);
+    if (email[0] != '+') {
+      const login_type = '';
+      const object = {
+        email: email,
+        name: email,
+        profileImage: '',
+        verifier: '',
+        verifierId: '',
+        typeOfLogin: '',
+        id: uuid,
+      };
+      console.log(object);
+      const json = JSON.stringify(object || {}, null, 2);
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
+      xhr.send(json);
+      console.log(json);
+    } else {
+      let secret = '';
+      let characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let charactersLength = characters.length;
+      for (let i = 0; i < 50; i++) {
+        secret += characters.charAt(
+          Math.floor(Math.random() * charactersLength),
+        );
+      }
+      console.log('Condition is not not working!');
+      let phone = email.replace('+', '');
+      let data = `{"phone":"${phone}","id":"${secret}"}`;
+      let s = new XMLHttpRequest();
+      s.open('POST', 'https://mongo.api.xade.finance/polygon');
+      s.send(data);
+    }
   }
 };
 
@@ -88,12 +103,12 @@ signAndSendTransaction = async (receiver, amount) => {
   const result = await particleAuth.signAndSendTransaction(transaction);
   if (result.status) {
     const signature = result.data;
-    return true;
     console.log(signature);
+    return true;
   } else {
     const error = result.data;
-    return false;
     console.log(error);
+    return false;
   }
 };
 

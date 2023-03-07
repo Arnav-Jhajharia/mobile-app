@@ -39,7 +39,7 @@ const Savings = ({navigation}) => {
                 fontSize: 45,
                 fontFamily: 'Benzin-Medium',
               }}>
-              12043
+              0
             </Text>
             <Text
               style={{
@@ -48,7 +48,7 @@ const Savings = ({navigation}) => {
                 fontFamily: 'Benzin-Medium',
                 marginBottom: 5,
               }}>
-              .52
+              .00
             </Text>
           </View>
           <Text
@@ -135,7 +135,7 @@ const Savings = ({navigation}) => {
                 style={{borderWidth: 1}}
               />
 
-              <Text style={styles.amountText}>$1,836.25</Text>
+              <Text style={styles.amountText}>$0.00</Text>
               <Text style={styles.amountText2}>Interest earned</Text>
             </LinearGradient>
           </TouchableOpacity>

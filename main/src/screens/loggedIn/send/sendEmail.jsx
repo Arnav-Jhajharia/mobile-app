@@ -88,7 +88,7 @@ const SendEmailComponent = ({navigation}) => {
     } else if (country == 2) {
       navigation.navigate('EnterAmount', {
         type: 'wallet',
-        walletAddress: data,
+        walletAddress: text,
       });
     } else console.log('How did we get here?');
   };

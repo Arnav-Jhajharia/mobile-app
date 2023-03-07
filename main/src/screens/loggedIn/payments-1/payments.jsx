@@ -16,35 +16,9 @@ import {Icon} from 'react-native-elements';
 import {useEffect} from 'react';
 import * as particleAuth from 'react-native-particle-auth';
 const Web3 = require('web3');
-import {signAndSendTransactionConnect} from '../../particle-connect';
-// import { POLYGON_API_KEY } from "@env";
-import {EventsCarousel} from './eventsCarousel';
+
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
-const images = [
-  {
-    name: 'DeriveX',
-    color: '#C7FFD6',
-    details: 'Trade 5000+ markets',
-    image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125002/Activity_uw71pf.png',
-  },
-  {
-    name: 'RemmiteX',
-    color: '#C7FFD6',
-    details: 'Global payments',
-    image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125075/Arrow_qgmwic.png',
-  },
-  {
-    name: 'SabeX',
-    color: '#C7FFD6',
-    details: 'Stable savings',
-    image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125032/Wallet_eriqpx.png',
-  },
-  // {},
-  // {}
-];
+
 const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0},
@@ -61,13 +35,15 @@ const PaymentsComponent = ({navigation}) => {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
       console.log('Global Account:', global.walletType);
-      // this.signAndSendTransactionConnect(
-      //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
-      //   '1000000000000000',
-      // );
+      /*
+      this.signAndSendTransactionConnect(
+        '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
+        '1000000000000000',
+      );
+      */
     }
 
-    // let authAddress = '0x1a2EAF515a6ca05bfab9bf3d9850ea29e5C7882E';
+    setAddress(authAddress.toString());
 
     fetch(
       `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
@@ -184,8 +160,7 @@ const PaymentsComponent = ({navigation}) => {
                 fontFamily: 'Benzin-Medium',
                 marginBottom: 5,
               }}>
-              {'.'}
-              {balance.split('.')[1] ? balance.split('.')[1] : '00'}
+              {balance.split('.')[1] ? balance.split('.')[1] : '.00'}
             </Text>
           </View>
           <Text
@@ -281,24 +256,7 @@ const PaymentsComponent = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.exploreContainer}>
-        <View style={styles.heading}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 20,
-              fontWeight: 'bold',
-              fontFamily: 'VelaSans-Bold',
-              // marginTop:'10%'
-            }}>
-            Explore Features
-          </Text>
-          {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
-        </View>
-        {/* <View style = {{width: '90%', height: '10%'}}> */}
-        <EventsCarousel images={images} />
-        {/* </View> */}
-      </View>
+
       <View style={styles.transactionContainer}>
         <View style={styles.heading}>
           <Text
@@ -334,7 +292,7 @@ const PaymentsComponent = ({navigation}) => {
                       }}>
                       <Text
                         style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {(json.truth ? json.from : json.to).slice(0, 10)}...
+                        {(json.truth ? json.to : json.from).slice(0, 10)}...
                       </Text>
                     </TouchableHighlight>
 

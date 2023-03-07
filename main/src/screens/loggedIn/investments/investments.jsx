@@ -19,11 +19,32 @@ class Investments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      price: 'N/A',
+      buyPrice: '',
       btnSelected: 'long',
-      status: false,
+      status: true,
       leverageValue: 1,
       latestBlock: {},
     };
+    this.updatePrice = this.updatePrice.bind(this);
+  }
+
+  updatePrice() {
+    let bitcoinPriceUrl =
+      'https://api.coindesk.com/v1/bpi/currentprice/BTC.json';
+    let newPrice = 'Unavailable.';
+
+    fetch(bitcoinPriceUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          price: responseJson.bpi.USD.rate,
+          buyPrice: responseJson.bpi.USD.rate,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   btcFirst = () => {
@@ -33,6 +54,10 @@ class Investments extends React.Component {
       this.setState({status: true});
     }
   };
+
+  componentDidMount() {
+    this.updatePrice();
+  }
 
   render(navigation) {
     return (
@@ -141,9 +166,13 @@ class Investments extends React.Component {
                   <View style={styles.subContents}>
                     <Text style={styles.subText}>Price</Text>
                     <TextInput
+                      //    onPress={this.updatePrice()}
                       style={styles.subPrice}
-                      placeholder="$23,000.454"
                       placeholderTextColor={'#C4C4C4'}
+                      value={this.state.buyPrice}
+                      onChangeText={newText =>
+                        this.setState({buyPrice: newText})
+                      }
                     />
                   </View>
                 </View>
@@ -168,7 +197,9 @@ class Investments extends React.Component {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={styles.subPrice}>32,222.32</Text>
+                        <Text style={styles.subPrice}>
+                          {this.state.buyPrice}
+                        </Text>
                         <Text
                           style={{
                             color: 'white',
@@ -185,7 +216,12 @@ class Investments extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                           }}>
-                          <Text style={styles.subPrice}>12,222.32</Text>
+                          <Text style={styles.subPrice}>
+                            {(
+                              Number(this.state.buyPrice.replaceAll(',', '')) /
+                              Number(this.state.price.replaceAll(',', ''))
+                            ).toFixed(3)}
+                          </Text>
                           <Text style={{color: '#ffd700', fontSize: 20}}>
                             BTC
                           </Text>
@@ -219,7 +255,12 @@ class Investments extends React.Component {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={styles.subPrice}>12,222.32</Text>
+                        <Text style={styles.subPrice}>
+                          {(
+                            Number(this.state.buyPrice.replaceAll(',', '')) /
+                            Number(this.state.price.replaceAll(',', ''))
+                          ).toFixed(3)}
+                        </Text>
                         <Text
                           style={{
                             color: '#ffd700',
@@ -236,7 +277,9 @@ class Investments extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                           }}>
-                          <Text style={styles.subPrice}>32,222.32</Text>
+                          <Text style={styles.subPrice}>
+                            {this.state.buyPrice}
+                          </Text>
                           <Text style={{color: 'white', fontSize: 20}}>
                             USD
                           </Text>
@@ -286,7 +329,7 @@ class Investments extends React.Component {
                     marginBottom: 4,
                   }}>
                   <Text style={styles.orderDescription}>Entry Price</Text>
-                  <Text style={styles.orderAmount}>$23000.454</Text>
+                  <Text style={styles.orderAmount}>${this.state.price}</Text>
                 </View>
                 <View
                   style={{
@@ -295,7 +338,7 @@ class Investments extends React.Component {
                     marginBottom: 4,
                   }}>
                   <Text style={styles.orderDescription}>Index Price</Text>
-                  <Text style={styles.orderAmount}>$23000.454</Text>
+                  <Text style={styles.orderAmount}>${this.state.buyPrice}</Text>
                 </View>
                 <View
                   style={{
@@ -340,9 +383,9 @@ class Investments extends React.Component {
                 : {display: 'none'}
             }>
             {this.state.btnSelected == 'short' ? (
-              <Text style={styles.confirmText}>Confirm Short</Text>
+              <Text style={styles.confirmText}>Coming Soon!</Text>
             ) : (
-              <Text style={styles.confirmText}>Confirm Long</Text>
+              <Text style={styles.confirmText}>Coming Soon!</Text>
             )}
           </TouchableOpacity>
           <BottomNavbar navigation={this.props.navigation} />
