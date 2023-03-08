@@ -91,7 +91,7 @@ export default function EnterAmountComponent({navigation, route}) {
               fontFamily: 'VelaSans-Medium',
               fontSize: 13,
             }}>
-            Wallet Address: {json.walletAddress.substring(0, 5)}...
+            Wallet Address: {json.walletAddress.substring(0, 10)}...
           </Text>
           <Text
             style={{

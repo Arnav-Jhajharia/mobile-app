@@ -1,30 +1,40 @@
 import React, {useEffect} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {Text} from 'react-native-elements';
-// import Video from 'react-native-video';
+import Video from 'react-native-video';
 import {signAndSendTransactionConnect} from '../../../particle-connect';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 const Web3 = require('web3');
+
+const successVideo = require('./pending.mp4');
+
 export default function Component({route, navigation}) {
   const {amount, walletAddress, emailAddress, mobileNumber} = route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
-    let status;
-    console.log('Is Auth:', global.withAuth);
-    if (global.withAuth) {
-      authAddress = global.loginAccount.publicAddress;
-      console.log('Global Account:', global.loginAccount);
-      status = this.signAndSendTransaction(walletAddress, weiVal);
-      if (status) navigation.navigate('Successful');
-      else navigation.navigate('Unsuccessful');
-    } else {
-      authAddress = global.connectAccount.publicAddress;
-      console.log('Global Account:', global.connectAccount);
-      status = this.signAndSendTransactionConnect(walletAddress, weiVal);
-      if (status) navigation.navigate('Successful');
-      else navigation.navigate('Unsuccessful');
-    }
+    const transaction = async () => {
+      let status;
+      console.log('Is Auth:', global.withAuth);
+      if (global.withAuth) {
+        authAddress = global.loginAccount.publicAddress;
+        console.log('Global Account:', global.loginAccount);
+        status = await this.signAndSendTransaction(walletAddress, weiVal);
+        if (status) navigation.navigate('Successful');
+        else navigation.navigate('Unsuccessful');
+      } else {
+        authAddress = global.connectAccount.publicAddress;
+        console.log('Global Account:', global.connectAccount);
+        status = await this.signAndSendTransactionConnect(
+          walletAddress,
+          weiVal,
+        );
+        if (status) navigation.navigate('Successful');
+        else navigation.navigate('Unsuccessful');
+      }
+    };
+
+    transaction();
   }, []);
 
   return (
@@ -37,10 +47,20 @@ export default function Component({route, navigation}) {
           textAlign: 'center',
           fontFamily: 'NeueMachina-UltraBold',
         }}>
-        Transaction Pending
+        Transaction Pending...
       </Text>
-      <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}></View>
-      {/* <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
+      <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}>
+        <Video
+          source={successVideo}
+          style={{width: 300, height: 300}}
+          controls={false}
+          repeat={true}
+          ref={ref => {
+            this.player = ref;
+          }}
+        />
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
         <Text
           style={{
             color: '#fff',
@@ -51,7 +71,7 @@ export default function Component({route, navigation}) {
           }}>
           Return Home
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 }

@@ -22,11 +22,15 @@ setChainInfo = async () => {
 
 login = async () => {
   const type = LoginType.Email;
-  const supportAuthType = [SupportAuthType.Phone];
+  const supportAuthType = [SupportAuthType.Phone, SupportAuthType.Google];
   const result = await particleAuth.login(type, '', supportAuthType, undefined);
   const account = result.data;
   if (result.status) {
-    const email = account.email ? account.email : account.phone;
+    const email = account.email
+      ? account.email
+      : account.googleEmail
+      ? account.googleEmail
+      : account.phone;
     const name = account.name ? account.name : 'Not Set';
     const address = account.wallets[0].publicAddress;
     global.loginAccount = new PNAccount(email, name, address);

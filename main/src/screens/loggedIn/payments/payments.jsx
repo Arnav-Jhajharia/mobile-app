@@ -60,7 +60,7 @@ const PaymentsComponent = ({navigation}) => {
     } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
-      console.log('Global Account:', global.walletType);
+      console.log('Global Wallet Type:', global.walletType);
       // this.signAndSendTransactionConnect(
       //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
       //   '1000000000000000',
@@ -75,8 +75,8 @@ const PaymentsComponent = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         if (data.message != 'NOTOK') {
-          console.log(data.message);
-          console.log(data);
+          //console.log(data.message);
+          //         console.log(data);
           const result = data.result;
           //        console.log('Arnav:', result);
           let len = result.length;
@@ -125,14 +125,14 @@ const PaymentsComponent = ({navigation}) => {
               date: formattedDate,
             };
             arr.push(json);
-            console.log(authAddress, res.to, json.truth);
+            // console.log(authAddress, res.to, json.truth);
           }
           //    console.log(json);
           setState(arr.reverse());
           // console.log(data.result);
         } else {
           console.log('Condition is working');
-          setState([{value: 0}]);
+          setState([]);
           return;
         }
       });
@@ -145,12 +145,12 @@ const PaymentsComponent = ({navigation}) => {
         const balance = data.result;
         const etherValue = Web3.utils.fromWei(balance, 'ether');
         setBalance(etherValue);
-        console.log(etherValue);
+        //     console.log(etherValue);
       });
   }, []);
   const t = true; // it means to send]
-  console.log('Address: ', address);
-  console.log('State: ', state);
+  // console.log('Address: ', address);
+  // console.log('State: ', state);
 
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
@@ -296,7 +296,7 @@ const PaymentsComponent = ({navigation}) => {
           {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         {/* <View style = {{width: '90%', height: '10%'}}> */}
-        <EventsCarousel images={images} />
+        <EventsCarousel images={images} navigation={navigation} />
         {/* </View> */}
       </View>
       <View style={styles.transactionContainer}>
@@ -314,7 +314,7 @@ const PaymentsComponent = ({navigation}) => {
         </View>
         {state.length > 0 ? (
           state.map(json => {
-            console.log(state);
+            // console.log(state);
             return (
               <View style={styles.transactions}>
                 <View style={styles.transactionLeft}>

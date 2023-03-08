@@ -51,9 +51,8 @@ class EventsCarousel extends React.Component {
     this.setState({selectedIndex});
   };
 
-  render() {
+  render(navigation) {
     const {images} = this.props;
-    console.log(images);
     const {selectedIndex} = this.state;
     return (
       <View
@@ -70,7 +69,7 @@ class EventsCarousel extends React.Component {
         <ScrollView
           horizontal
           pagingEnabled
-          onMomentumScrollEnd={this.setSelectedIndex}
+          //onMomentumScrollEnd={this.setSelectedIndex}
           ref={this.scrollRef}>
           {images.map(image => (
             // <View>
@@ -81,7 +80,15 @@ class EventsCarousel extends React.Component {
             // />
             // <Text style = {{color: 'white'}}>{image.name}</Text>
             // </View
-            <TouchableOpacity style={styles.depWith}>
+            <TouchableOpacity
+              style={styles.depWith}
+              onPress={() => {
+                image.name == 'DeriveX'
+                  ? this.props.navigation.navigate('Investments')
+                  : image.name == 'SabeX'
+                  ? this.props.navigation.navigate('Savings')
+                  : this.props.navigation.navigate('SendEmail');
+              }}>
               <LinearGradient
                 colors={['#1D2426', '#383838']}
                 useAngle

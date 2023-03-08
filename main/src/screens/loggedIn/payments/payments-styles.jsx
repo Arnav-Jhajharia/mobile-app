@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
 
   noTransaction: {
     color: '#d9d9d9',
-    marginTop: '20%',
+    marginTop: '7%',
     textAlign: 'center',
     fontFamily: 'EuclidCircularA-Regular',
     fontSize: 15,

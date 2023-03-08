@@ -22,6 +22,7 @@ class Investments extends React.Component {
       price: 'N/A',
       buyPrice: '',
       btnSelected: 'long',
+      nBtc: '',
       status: true,
       leverageValue: 1,
       latestBlock: {},
@@ -40,6 +41,7 @@ class Investments extends React.Component {
         this.setState({
           price: responseJson.bpi.USD.rate,
           buyPrice: responseJson.bpi.USD.rate,
+          nBtc: 1.0,
         });
       })
       .catch(error => {
@@ -169,10 +171,8 @@ class Investments extends React.Component {
                       //    onPress={this.updatePrice()}
                       style={styles.subPrice}
                       placeholderTextColor={'#C4C4C4'}
-                      value={this.state.buyPrice}
-                      onChangeText={newText =>
-                        this.setState({buyPrice: newText})
-                      }
+                      value={this.state.price}
+                      onChangeText={newText => this.setState({price: newText})}
                     />
                   </View>
                 </View>
@@ -197,9 +197,15 @@ class Investments extends React.Component {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={styles.subPrice}>
-                          {this.state.buyPrice}
-                        </Text>
+                        <TextInput
+                          //    onPress={this.updatePrice()}
+                          style={styles.subPrice}
+                          placeholderTextColor={'#C4C4C4'}
+                          value={this.state.buyPrice}
+                          onChangeText={newText =>
+                            this.setState({buyPrice: newText})
+                          }
+                        />
                         <Text
                           style={{
                             color: 'white',
@@ -216,12 +222,17 @@ class Investments extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                           }}>
-                          <Text style={styles.subPrice}>
-                            {(
-                              Number(this.state.buyPrice.replaceAll(',', '')) /
-                              Number(this.state.price.replaceAll(',', ''))
-                            ).toFixed(3)}
-                          </Text>
+                          <TextInput
+                            //    onPress={this.updatePrice()}
+                            style={styles.subPrice}
+                            placeholderTextColor={'#C4C4C4'}
+                            value={this.state.nBtc.toString()}
+                            onChangeText={newText =>
+                              this.setState({
+                                nBtc: newText,
+                              })
+                            }
+                          />
                           <Text style={{color: '#ffd700', fontSize: 20}}>
                             BTC
                           </Text>
@@ -278,7 +289,10 @@ class Investments extends React.Component {
                             justifyContent: 'space-between',
                           }}>
                           <Text style={styles.subPrice}>
-                            {this.state.buyPrice}
+                            {(
+                              Number(this.state.nBtc) *
+                              Number(this.state.price.replaceAll(',', ''))
+                            ).toFixed(3)}
                           </Text>
                           <Text style={{color: 'white', fontSize: 20}}>
                             USD
@@ -373,7 +387,7 @@ class Investments extends React.Component {
         </ScrollView>
         <View style={styles.confirmButton}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Pending')}
+            onPress={() => this.props.navigation.navigate('ComingSoon')}
             style={
               this.state.btnSelected == 'long' ||
               this.state.btnSelected == 'short'

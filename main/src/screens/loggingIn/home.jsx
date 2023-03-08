@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {
   ImageBackground,
   TouchableOpacity,
@@ -38,7 +38,11 @@ const LoginCheck = async ({navigation}) => {
   if (result) {
     var account = await particleAuth.getUserInfo();
     account = JSON.parse(account);
-    const email = account.email ? account.email : account.phone;
+    const email = account.email
+      ? account.email
+      : account.phone
+      ? account.phone
+      : account.googleEmail;
     const name = account.name ? account.name : 'Not Set';
     const address = await particleAuth.getAddress();
     global.loginAccount = new PNAccount(email, name, address);

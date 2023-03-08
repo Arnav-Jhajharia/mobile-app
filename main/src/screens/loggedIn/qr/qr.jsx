@@ -32,7 +32,7 @@ function QRCode() {
     info = global.loginAccount.phoneEmail;
   } else {
     address = global.connectAccount.publicAddress;
-    info = global.loginAccount.phoneEmail;
+    info = global.connectAccount.phoneEmail;
   }
   /*
   useEffect(() => {
@@ -90,7 +90,7 @@ function QRCode() {
   );
 }
 
-QRScanner = ({navigation}) => {
+const QRScanner = ({navigation}) => {
   const [qrvalue, setQrvalue] = useState('');
   const [openScanner, setOpenScanner] = useState(true);
 
@@ -101,6 +101,10 @@ QRScanner = ({navigation}) => {
   const onBarcodeScan = qrvalue => {
     setQrvalue(qrvalue);
     setOpenScanner(false);
+    navigation.navigate('EnterAmount', {
+      type: 'wallet',
+      walletAddress: qrvalue,
+    });
   };
 
   const onOpenScanner = () => {
@@ -144,7 +148,17 @@ QRScanner = ({navigation}) => {
             laserColor={'transparent'}
             frameColor={'transparent'}
             colorForScannerFrame={'transparent'}
-            onReadCode={event => onBarcodeScan(navigation)}
+            onReadCode={event => {
+              onBarcodeScan(event.nativeEvent.codeStringValue, navigation);
+              /*
+              setQrvalue(event.nativeEvent.codeStringValue);
+              setOpenScanner(false);
+              navigation.navigate('EnterAmount', {
+                type: 'wallet',
+                walletAddress: event.nativeEvent.codeStringValue,
+              });
+          */
+            }}
           />
         </View>
       ) : (
@@ -152,15 +166,6 @@ QRScanner = ({navigation}) => {
           <Text style={styles.scannedStyle}>
             {qrvalue ? 'Scanned Result: ' + qrvalue : ''}
           </Text>
-          {qrvalue.includes('https://') ||
-          qrvalue.includes('http://') ||
-          qrvalue.includes('geo:') ? (
-            <TouchableHighlight onPress={onOpenlink}>
-              <Text style={styles.textLinkStyle}>
-                {qrvalue.includes('geo:') ? 'Open in Map' : 'Open Link'}
-              </Text>
-            </TouchableHighlight>
-          ) : null}
         </View>
       )}
     </View>
@@ -215,7 +220,11 @@ class QRPage extends Component {
                 </View>
               </View>
               <View style={styles.mainContent}>
-                {this.state.status ? <QRCode /> : <QRScanner />}
+                {this.state.status ? (
+                  <QRCode />
+                ) : (
+                  <QRScanner navigation={this.props.navigation} />
+                )}
                 <TouchableHighlight
                   style={styles.bottomButton}
                   onPress={() => this.props.navigation.navigate('SendEmail')}>
@@ -223,7 +232,14 @@ class QRPage extends Component {
                     Send To Email Address Or Mobile Instead
                   </Text>
                 </TouchableHighlight>
-                <Text onPress={() => this.logout()} style={styles.logout}>
+                <Text
+                  onPress={() => {
+                    global.withAuth
+                      ? particleAuth.fastLogout()
+                      : particleConnect.disconnect();
+                    this.props.navigation.navigate('Home');
+                  }}
+                  style={styles.logout}>
                   Logout
                 </Text>
               </View>

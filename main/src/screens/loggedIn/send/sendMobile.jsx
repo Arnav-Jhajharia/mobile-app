@@ -52,15 +52,13 @@ const local_data = [
     value: '1',
     lable: 'Email',
     image: {
-      uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+      uri: './icon/email.png',
     },
   },
   {
     value: '2',
     lable: 'Wallet',
-    image: {
-      uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
-    },
+    image: require('./icon/email.png'),
   },
 ];
 const SendMobileComponent = ({navigation}) => {
@@ -149,7 +147,6 @@ const SendMobileComponent = ({navigation}) => {
               selectedTextStyle={styles.selectedTextStyle}
               maxHeight={200}
               data={countries}
-              search
               labelField="label"
               valueField="value"
               placeholder="Select item"

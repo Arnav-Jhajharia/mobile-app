@@ -93,7 +93,7 @@ onClickConnect = async ({navigation, walletype}) => {
     url: 'https://connect.particle.network',
   };
   const rpcUrl = {
-    evm_url: 'https://rpc.particle.network/',
+    evm_url: 'https://rpc.ankr.com/polygon_mumbai',
     solana_url: null,
   };
   particleConnect.init(

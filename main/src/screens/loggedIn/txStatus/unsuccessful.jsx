@@ -12,8 +12,8 @@ import {
   ScrollView,
 } from 'react-native';
 import {Text} from '@rneui/themed';
-// import Video from 'react-native-video';
-//const video = require('./unsuccessful.mp4');
+import Video from 'react-native-video';
+const successVideo = require('./unsuccess.mov');
 
 export default function Component({navigation}) {
   // Some routing must be done after Pending state
@@ -22,18 +22,23 @@ export default function Component({navigation}) {
       <Text
         style={{
           color: '#fff',
-          fontSize: 25,
+          fontSize: 30,
           marginTop: '20%',
           textAlign: 'center',
           fontFamily: 'NeueMachina-UltraBold',
         }}>
-        Transaction Unsuccessful!
+        Transaction Success!
       </Text>
       <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}>
-        {/* <Video
-          //   source={video}
+        <Video
+          source={successVideo}
           style={{width: 300, height: 300}}
-        /> */}
+          controls={false}
+          repeat={true}
+          ref={ref => {
+            this.player = ref;
+          }}
+        />
       </View>
       <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
         <Text

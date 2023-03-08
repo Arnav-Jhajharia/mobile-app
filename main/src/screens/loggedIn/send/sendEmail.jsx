@@ -37,16 +37,12 @@ const local_data = [
   {
     value: '1',
     lable: 'Email',
-    image: {
-      uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
-    },
+    image: require('./icon/email.png'),
   },
   {
     value: '2',
     lable: 'Wallet',
-    image: {
-      uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
-    },
+    image: require('./icon/wallet.png'),
   },
 ];
 const SendEmailComponent = ({navigation}) => {
@@ -132,20 +128,12 @@ const SendEmailComponent = ({navigation}) => {
           <View style={styles.choose}>
             <SelectCountry
               style={styles.dropdown}
-              selectedTextStyle={{width: 10}}
-              placeholderStyle={styles.placeholderStyle}
               containerStyle={{backgroundColor: 'black'}}
               imageStyle={styles.imageStyle}
-              iconStyle={styles.iconStyle}
+              placeholderStyle={{backgroundColor: 'black'}}
               maxHeight={200}
-              value={country}
               data={local_data}
-              valueField="value"
-              // labelField="lable"
               imageField="image"
-              placeholder=""
-              search={false}
-              searchPlaceholder="Search..."
               onChange={e => {
                 setCountry(e.value);
               }}
@@ -189,30 +177,21 @@ const styles = StyleSheet.create({
   enterAmount: {
     flexDirection: 'row',
   },
+
   dropdown: {
-    // margin: 16,
-    height: 50,
-    width: '10%',
-    // backgroundColor: '#000',
-    // borderRadius: 22,
-    marginHorizontal: 15,
+    margin: 10,
+    backgroundColor: '#232E34',
+    borderRadius: 22,
+    paddingHorizontal: 3,
   },
+
   imageStyle: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    margin: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 22,
   },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-    marginLeft: 8,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
+
   container: {
     alignItems: 'center',
     width: '100%',

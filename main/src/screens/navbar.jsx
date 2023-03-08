@@ -4,6 +4,7 @@ import {View, StyleSheet} from 'react-native';
 
 import {Text} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
+import {color} from 'react-native-elements/dist/helpers';
 const Web3 = require('web3');
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -69,7 +70,9 @@ const BottomNavbar = ({navigation}) => {
               type="antdesign"
               style={styles.icon}
               size={22}
-              onPress={() => navigation.navigate('ComingSoon')}
+              onPress={() => {
+                navigation.navigate('ComingSoon');
+              }}
               color={'grey'}
             />
             <Text style={styles.navItemText}>Card</Text>
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
   navItemText: {
     fontFamily: 'VelaSans-Light',
     fontSize: 10,
-    color: 'grey',  
+    color: 'grey',
     marginTop: 4,
   },
   icon: {
