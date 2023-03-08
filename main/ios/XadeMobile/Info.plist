@@ -45,21 +45,21 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-  <key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-      <key>NSAllowsArbitraryLoadsInWebContent</key>
-      <true/>
-      <key>NSAllowsLocalNetworking</key>
-      <true/>
-    </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We use the camera to scan barcodes</string>
+	<string>We use the camera to scan QRs for public addresses</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access in order to open photos of barcodes</string>
+	<string>We need access in order to open photos of QRs</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>VelaSans-Medium.otf</string>
@@ -90,6 +90,8 @@
 		<string>Fontisto.ttf</string>
 		<string>NeueMachina-UltraBold.otf</string>
 		<string>NeueMontreal-Bold.otf</string>
+		<string>EulidCircular-Regular.ttf</string>
+		<string>Benzin-Medium.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
@@ -97,6 +99,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

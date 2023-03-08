@@ -1,5 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: "kotlin-android"
+// apply plugin: "kotlin-android-extensions"
 
 import com.android.build.OutputFile
 
@@ -181,6 +183,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    compile project(':react-native-video')
+    implementation "androidx.appcompat:appcompat:1.0.0"
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

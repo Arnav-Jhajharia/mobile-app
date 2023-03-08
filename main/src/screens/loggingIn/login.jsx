@@ -11,10 +11,12 @@ import {
 import {Text} from '@rneui/themed';
 import {Icon} from 'react-native-elements';
 
-const bg = require('../../assets/bg.png');
+import onClickLogin from '../../particle-auth';
+
+const bg = require('../../../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
 
-const StaticHomeScreen = ({navigation}) => {
+const Login = ({navigation}) => {
   return (
     <ImageBackground source={bg} style={styles.bg}>
       <SafeAreaView>
@@ -25,17 +27,16 @@ const StaticHomeScreen = ({navigation}) => {
             </View>
             <View style={styles.mainContent}>
               <Text style={styles.mainText}>
-                One app{'\n'}
-                to manage{'\n'}
-                all your{'\n'}
-                finances
+                Enter a{'\n'}
+                new era of{'\n'}
+                banking
               </Text>
               <Text style={styles.subText}>
-                A financial super app powered{'\n'} by advanced DeFi protocols
+                The future of finance{'\n'} is now here...
               </Text>
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Particle')}>
+                style={styles.buttonTop}
+                onPress={() => navigation.navigate('ChooseConnect')}>
                 <Icon
                   style={styles.buttonIcon}
                   name="arrow-right"
@@ -43,7 +44,19 @@ const StaticHomeScreen = ({navigation}) => {
                   color="black"
                   type="feather"
                 />
-                <Text style={styles.buttonText}>Get Started</Text>
+                <Text style={styles.buttonText}>Connect</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.onClickLogin(navigation)}>
+                <Icon
+                  style={styles.buttonIcon}
+                  name="arrow-right"
+                  size={30}
+                  color="white"
+                  type="feather"
+                />
+                <Text style={styles.buttonTextbottom}>Login</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -57,6 +70,7 @@ const styles = StyleSheet.create({
   bg: {
     width: '100%',
     height: '100%',
+    flexDirection: 'column',
   },
 
   container: {
@@ -80,6 +94,7 @@ const styles = StyleSheet.create({
   mainContent: {
     width: '100%',
     backgroundColor: 'transparent',
+    marginTop: '-5%',
   },
 
   mainText: {
@@ -94,21 +109,34 @@ const styles = StyleSheet.create({
   subText: {
     color: '#979797',
     fontFamily: 'VelaSans-Medium',
-    fontSize: 20,
+    fontSize: 24,
     width: '100%',
     marginLeft: '10%',
     marginTop: '8%',
   },
 
+  buttonTop: {
+    width: '75%',
+    color: '#000',
+    borderRadius: 50,
+    marginLeft: '12%',
+    marginTop: '20%',
+    padding: '5%',
+    backgroundColor: '#fff',
+    marginBottom: '5%',
+  },
+
   button: {
     width: '75%',
     color: '#000',
-    borderRadius: 15,
+    borderRadius: 50,
     marginLeft: '12%',
-    marginTop: '15%',
+    marginTop: '3%',
     padding: '5%',
-    backgroundColor: '#E8FF59',
+    backgroundColor: '#000',
     marginBottom: '5%',
+    borderWidth: 2.5,
+    borderColor: '#fff',
   },
 
   buttonText: {
@@ -116,7 +144,15 @@ const styles = StyleSheet.create({
     fontFamily: 'VelaSans-Bold',
     fontSize: 20,
     marginTop: '-11.7%',
-    marginLeft: '2%',
+    marginLeft: '10%',
+  },
+
+  buttonTextbottom: {
+    color: '#fff',
+    fontFamily: 'VelaSans-Bold',
+    fontSize: 20,
+    marginTop: '-11.7%',
+    marginLeft: '10%',
   },
 
   buttonIcon: {
@@ -124,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StaticHomeScreen;
+export default Login;
