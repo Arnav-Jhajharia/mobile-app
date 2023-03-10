@@ -340,7 +340,7 @@ PODS:
     - glog
   - react-native-get-random-values (1.8.0):
     - React-Core
-  - react-native-particle-auth (0.10.4):
+  - react-native-particle-auth (0.10.7):
     - ParticleAuthService
     - ParticleNetworkBase
     - React-Core
@@ -767,7 +767,7 @@ SPEC CHECKSUMS:
   React-jsinspector: ea8101acf525ec08b2d87ddf0637d45f8e3b4148
   React-logger: 97987f46779d8dd24656474ad0c43a5b459f31d6
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
-  react-native-particle-auth: ae9332d3810b492efd42547727842505ede75c03
+  react-native-particle-auth: 0eba132c4c1616f03f945e2917d8cf58c141f2e3
   react-native-particle-connect: 875fc8826534f9684f5a2be1e2ab31c25732078a
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
