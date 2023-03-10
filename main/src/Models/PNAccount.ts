@@ -1,17 +1,14 @@
 export class PNAccount {
-     icons: [string]
-     name: string
-     publicAddress: string
-     url: string
+  phoneEmail: string;
+  name: string;
+  publicAddress: string;
+  constructor(phoneEmail: string, name: string, publicAddress: string) {
+    this.phoneEmail = phoneEmail;
+    this.name = name;
+    this.publicAddress = publicAddress;
+  }
 
-     constructor(icons: [string], name: string, publicAddress: string, url: string) {
-        this.icons = icons
-        this.name = name
-        this.publicAddress = publicAddress
-        this.url = url
-    }
-
-    static parseFrom(params:string): PNAccount{
-        return JSON.parse(params) as PNAccount
-    }
+  static parseFrom(params: string): PNAccount {
+    return JSON.parse(params) as PNAccount;
+  }
 }

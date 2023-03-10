@@ -2,6 +2,14 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Benzin-Medium.otf",
+      "sha1": "da12dab6ca134f29ccfb387758eebc04b3959b98"
+    },
+    {
+      "path": "assets/fonts/EulidCircular-Regular.ttf",
+      "sha1": "d1ad5380051d486ba359d1a38bb8feb3f2a26fe5"
+    },
+    {
       "path": "assets/fonts/Inter.ttf",
       "sha1": "c2c3c828eb848ff714fa8333eac410ca26a48406"
     },

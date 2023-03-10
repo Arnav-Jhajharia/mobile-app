@@ -1,8 +1,9 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Icon} from 'react-native-elements';
-
+import {Buffer} from 'buffer';
+global.Buffer = Buffer;
+import '../global';
 import {
   View,
   ActivityIndicator,
@@ -13,19 +14,28 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-
-import ParticleConnect from './ParticleConnect';
-import ParticleAuth from './ParticleAuth';
-import {openWebWallet, logoutAccount} from './ParticleAuth';
-import {disconnect} from './ParticleConnect';
-
-import StaticHomeScreen from './screens/home';
-import Login from './screens/login';
-import Countdown from './screens/countdown';
+import BottomNavbar from './screens/navbar';
+import StaticHomeScreen from './screens/loggingIn/home';
+import Login from './screens/loggingIn/login';
+import ChooseConnect from './screens/loggingIn/connect';
+import Countdown from './screens/loggedIn/countdown/countdown';
+import QRPage from './screens/loggedIn/qr/qr';
+import Investments from './screens/loggedIn/investments/investments';
+import SavingsComponent from './screens/loggedIn/savings/savings';
+import PaymentsComponent from './screens/loggedIn/payments/payments';
+import EnterAmountComponent from './screens/enterAmount';
+import EnterSavingsAmountComponent from './screens/enterSavingsAmount';
+import SendEmailComponent from './screens/loggedIn/send/sendEmail';
+import SendMobileComponent from './screens/loggedIn/send/sendMobile';
 import {Text} from 'react-native-elements';
 
+import Pending from './screens/loggedIn/txStatus/pending';
+import Successful from './screens/loggedIn/txStatus/successful';
+import Unsuccessful from './screens/loggedIn/txStatus/unsuccessful';
+
 const Stack = createNativeStackNavigator();
-const bg = require('../assets/bg.png');
+const bg = require('./../assets/bg.png');
+const particle = require('../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
 
 function Particle({navigation}) {
@@ -36,18 +46,10 @@ function Particle({navigation}) {
   );
 }
 
-function Connect({navigation}) {
+function ChooseWallet({navigation}) {
   return (
     <View>
-      <ParticleConnect navigation={navigation} />
-    </View>
-  );
-}
-
-function Auth({navigation}) {
-  return (
-    <View>
-      <ParticleAuth navigation={navigation} />
+      <ChooseConnect navigation={navigation} />
     </View>
   );
 }
@@ -82,7 +84,7 @@ function Connected({navigation}) {
 
 function Error({navigation}) {
   return (
-    <ImageBackground source={bg} style={styles.bg}>
+    <ImageBackground source={particle} style={styles.bg}>
       <SafeAreaView>
         <View>
           <Text style={styles.text}>Error...</Text>
@@ -114,10 +116,119 @@ function Loading({navigation}) {
   );
 }
 
+function ComingSoon({navigation}) {
+  return (
+    <ImageBackground source={particle} style={styles.bg}>
+      <ScrollView>
+        <SafeAreaView>
+          <View>
+            <Text style={styles.comingSoonText}>Coming Soon...</Text>
+          </View>
+        </SafeAreaView>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} />
+    </ImageBackground>
+  );
+}
+
+function Savings({navigation}) {
+  return (
+    <SafeAreaView style={styles.black}>
+      <ScrollView style={{height: windowHeight * 0.8}}>
+        <View>
+          <SavingsComponent navigation={navigation} />
+        </View>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} />
+    </SafeAreaView>
+  );
+}
+
+function Investment({navigation}) {
+  return (
+    <View>
+      <Investments navigation={navigation} />
+    </View>
+  );
+}
+
+function Payments({navigation}) {
+  return (
+    <SafeAreaView style={styles.black}>
+      <ScrollView style={{height: windowHeight * 0.8}}>
+        <View>
+          <PaymentsComponent navigation={navigation} />
+        </View>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} />
+    </SafeAreaView>
+  );
+}
+
+function EnterAmount({navigation, route}) {
+  return (
+    // <ScrollView>
+    <View style={styles.black}>
+      {/* <SafeAreaView>   */}
+      {/* <View> */}
+      <EnterAmountComponent navigation={navigation} route={route} />
+      {/* </View> */}
+      {/* </SafeAreaView> */}
+    </View>
+  );
+}
+
+function EnterSavingsAmount({navigation, route}) {
+  return (
+    // <ScrollView>
+    <View style={styles.black}>
+      {/* <SafeAreaView>   */}
+      {/* <View> */}
+      <EnterSavingsAmountComponent navigation={navigation} route={route} />
+      {/* </View> */}
+      {/* </SafeAreaView> */}
+    </View>
+  );
+}
+function SendEmail({navigation}) {
+  return (
+    <ScrollView>
+      <View style={styles.black}>
+        <SafeAreaView>
+          <View>
+            <SendEmailComponent navigation={navigation} />
+          </View>
+        </SafeAreaView>
+      </View>
+    </ScrollView>
+  );
+}
+
+function SendMobile({navigation}) {
+  return (
+    <ScrollView>
+      <View style={styles.black}>
+        <SafeAreaView>
+          <View>
+            <SendMobileComponent navigation={navigation} />
+          </View>
+        </SafeAreaView>
+      </View>
+    </ScrollView>
+  );
+}
+
 export default function App({navigation}) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/*
+        <Stack.Screen
+          name="Home"
+          component={StaticHomeScreen}
+          options={{headerShown: false}}
+        />
+        */}
         <Stack.Screen
           name="Home"
           component={StaticHomeScreen}
@@ -129,8 +240,12 @@ export default function App({navigation}) {
           navigation={navigation}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="ParticleAuth" component={Auth} />
-        <Stack.Screen name="ParticleConnect" component={Connect} />
+        <Stack.Screen
+          name="ChooseConnect"
+          component={ChooseWallet}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="LoggedIn"
           component={LoggedIn}
@@ -155,6 +270,74 @@ export default function App({navigation}) {
           navigation={navigation}
           options={{headerShown: false}}
         />
+        <Stack.Screen
+          name="ComingSoon"
+          component={ComingSoon}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="QRScreen"
+          component={QRPage}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Investments"
+          component={Investment}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Savings"
+          component={Savings}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Payments"
+          component={Payments}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EnterAmount"
+          component={EnterAmount}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EnterSavingsAmount"
+          component={EnterSavingsAmount}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SendEmail"
+          component={SendEmail}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SendMobile"
+          component={SendMobile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Pending"
+          component={Pending}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Successful"
+          component={Successful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Unsuccessful"
+          component={Unsuccessful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -172,11 +355,19 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: '#E8FF59',
+    color: '#e8ff59',
     fontFamily: 'NeueMachina-UltraBold',
     fontSize: 25,
-    textAlign: 'center',
     marginTop: '5%',
+    textAlign: 'center',
+  },
+
+  comingSoonText: {
+    color: '#fff',
+    fontFamily: 'Benzin-Medium',
+    fontSize: 35,
+    textAlign: 'center',
+    marginTop: '60%',
   },
 
   button: {
@@ -234,20 +425,6 @@ const styles = StyleSheet.create({
 
   black: {
     height: windowHeight,
-    backgroundColor: '#000',
+    backgroundColor: '#0C0C0C',
   },
 });
-
-/*
-    defaultConfig {
-        applicationId "com.org.xadefinance"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
-
-        manifestPlaceholders["PN_PROJECT_ID"] = "260df770-44b4-4afd-a408-0a9f2b9944a9"
-        manifestPlaceholders["PN_PROJECT_CLIENT_KEY"] = "c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm"
-        manifestPlaceholders["PN_APP_ID"] = "f84832a5-f295-4f30-a1b7-18aa0a616d16"
-    }
-    */
