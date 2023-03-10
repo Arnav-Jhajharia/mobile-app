@@ -27,7 +27,7 @@ const BottomNavbar = ({navigation}) => {
             <Icon
               name="home"
               type="octicon"
-              size={25}
+              size={26}
               style={styles.icon}
               onPress={() => navigation.navigate('Payments')}
               color={'#9D9D9D'}
@@ -39,7 +39,7 @@ const BottomNavbar = ({navigation}) => {
               name="piggy-bank-outline"
               type="material-community"
               style={styles.icon}
-              size={25}
+              size={30}
               onPress={() => navigation.navigate('Savings')}
               color={'#9D9D9D'}
             />
