@@ -15,7 +15,7 @@ const BottomNavbar = ({navigation}) => {
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
-          colors={['#0C0C0C', 'grey', '#0C0C0C']}
+          colors={['#0C0C0C', '#9D9D9D', '#0C0C0C']}
           style={styles.top}></LinearGradient>
         <View
           style={{
@@ -27,11 +27,11 @@ const BottomNavbar = ({navigation}) => {
             <Icon
               name="home"
               type="octicon"
+              size={25}
               style={styles.icon}
               onPress={() => navigation.navigate('Payments')}
-              color={'grey'}
+              color={'#9D9D9D'}
             />
-            <Text style={styles.navItemText}>Home</Text>
           </View>
 
           <View style={styles.navItem}>
@@ -39,43 +39,30 @@ const BottomNavbar = ({navigation}) => {
               name="piggy-bank-outline"
               type="material-community"
               style={styles.icon}
+              size={25}
               onPress={() => navigation.navigate('Savings')}
-              color={'grey'}
+              color={'#9D9D9D'}
             />
-            <Text style={styles.navItemText}>Savings</Text>
           </View>
           <View style={styles.navItem}>
             <Icon
               name="stats-chart"
               type="ionicon"
+              size={25}
               style={styles.icon}
               onPress={() => navigation.navigate('Investments')}
-              color={'grey'}
+              color={'#9D9D9D'}
             />
-            <Text style={styles.navItemText}>Investments</Text>
           </View>
           <View style={styles.navItem}>
             <Icon
               name="shopping-bag"
               type="feather"
               style={styles.icon}
+              size={25}
               onPress={() => navigation.navigate('ComingSoon')}
-              color={'grey'}
+              color={'#9D9D9D'}
             />
-            <Text style={styles.navItemText}>Shop</Text>
-          </View>
-          <View style={styles.navItem}>
-            <Icon
-              name="creditcard"
-              type="antdesign"
-              style={styles.icon}
-              size={22}
-              onPress={() => {
-                navigation.navigate('ComingSoon');
-              }}
-              color={'grey'}
-            />
-            <Text style={styles.navItemText}>Card</Text>
           </View>
         </View>
       </View>
@@ -92,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#0C0C0C',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     height: 60,
     position: 'absolute',
@@ -107,11 +94,11 @@ const styles = StyleSheet.create({
   navItemText: {
     fontFamily: 'VelaSans-Light',
     fontSize: 10,
-    color: 'grey',
+    color: '#9D9D9D',
     marginTop: 4,
   },
   icon: {
-    color: '#fff',
+    color: '#9D9D9D',
   },
 });
 

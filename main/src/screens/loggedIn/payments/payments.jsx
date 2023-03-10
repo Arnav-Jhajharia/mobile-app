@@ -192,7 +192,7 @@ const PaymentsComponent = ({navigation}) => {
             style={{
               color: 'white',
               fontSize: 18,
-              fontFamily: 'VelaSans-Regular',
+              fontFamily: 'VelaSans-Bold',
             }}>
             Your checking balance
           </Text>
@@ -244,11 +244,10 @@ const PaymentsComponent = ({navigation}) => {
               style={styles.innerDep}>
               <Icon
                 // style={styles.tup}
-                name={'arrow-circle-down'}
-                color={'#86969A'}
+                name={'plus'}
                 // size={40}
-                // color={t?'green': 'red'}
-                type="font-awesome"
+                color={'#86969A'}
+                type="feather"
               />
               <Text style={{color: '#86969A', fontFamily: 'VelaSans-Bold'}}>
                 Deposit
@@ -267,13 +266,7 @@ const PaymentsComponent = ({navigation}) => {
               angle={45}
               angleCenter={{x: 0.5, y: 0.5}}
               style={styles.innerDep}>
-              <Icon
-                // style={styles.tup}
-                name={'plus'}
-                // size={40}
-                color={'#86969A'}
-                type="feather"
-              />
+              <Icon name={'qr-code'} color={'#86969A'} type="ionicons" />
               <Text style={{color: '#86969A', fontFamily: 'VelaSans-Bold'}}>
                 Scan
               </Text>
@@ -287,7 +280,6 @@ const PaymentsComponent = ({navigation}) => {
             style={{
               color: 'white',
               fontSize: 20,
-              fontWeight: 'bold',
               fontFamily: 'VelaSans-Bold',
               // marginTop:'10%'
             }}>
@@ -305,7 +297,6 @@ const PaymentsComponent = ({navigation}) => {
             style={{
               color: 'white',
               fontSize: 20,
-              fontWeight: 'bold',
               fontFamily: 'VelaSans-Bold',
             }}>
             Transactions
@@ -324,7 +315,11 @@ const PaymentsComponent = ({navigation}) => {
                         ? require('./icon/positive.png')
                         : require('./icon/negative.png')
                     }
-                    style={{borderWidth: 1}}
+                    style={{
+                      borderWidth: 0,
+                      width: 60,
+                      height: 60,
+                    }}
                   />
                   <View style={styles.ttext}>
                     <TouchableHighlight

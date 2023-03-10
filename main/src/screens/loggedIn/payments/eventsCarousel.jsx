@@ -58,10 +58,9 @@ class EventsCarousel extends React.Component {
       <View
         style={{
           height: '100%',
-          width: '100%',
           flexDirection: 'row',
           width: '95%',
-          height: 240,
+          height: 280,
           justifyContent: 'space-around',
           flexDirection: 'row',
           marginLeft: 15,
@@ -94,15 +93,21 @@ class EventsCarousel extends React.Component {
                 useAngle
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
-                style={styles.innerDep2}>
+                style={
+                  image.name == 'DeriveX'
+                    ? styles.derivex
+                    : image.name == 'SabeX'
+                    ? styles.sabex
+                    : styles.remmitex
+                }>
                 <Image
                   source={{
                     uri: image.image,
                   }}
                   style={{
                     marginTop: '10%',
-                    width: 100,
-                    height: 100,
+                    width: 140,
+                    height: 140,
                   }}
                 />
 
@@ -152,20 +157,45 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: '#fff',
   },
+
   depWith: {
     flexDirection: 'row',
-    height: '100%',
-    width: DEVICE_WIDTH / 2,
-    borderRadius: 20,
+    width: DEVICE_WIDTH / 1.9,
+    // borderRadius: 20,
     marginRight: 30,
   },
-  innerDep2: {
+
+  derivex: {
     width: '100%',
     flexDirection: 'column',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 30,
+    borderWidth: 2,
+    borderColor: '#C7FFD6',
+  },
+
+  sabex: {
+    width: '100%',
+    flexDirection: 'column',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 30,
+    borderWidth: 2,
+    borderColor: '#87C4FF',
+  },
+
+  remmitex: {
+    width: '100%',
+    flexDirection: 'column',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 30,
+    borderWidth: 2,
+    borderColor: '#FFC7F9',
   },
 
   amountText: {
@@ -187,7 +217,7 @@ const styles = StyleSheet.create({
   },
 
   amountText2: {
-    fontFamily: 'VelaSans-medium',
+    fontFamily: 'VelaSans-Bold',
     marginTop: 15,
     marginLeft: 20,
     fontSize: 13,

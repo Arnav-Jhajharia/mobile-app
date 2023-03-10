@@ -119,13 +119,13 @@ const styles = StyleSheet.create({
 
   subText: {
     color: '#868686',
-    fontFamily: 'EuclidCircularA-Regular',
+    fontFamily: 'VelaSans-Medium',
     textAlign: 'left',
     fontSize: 15,
   },
 
   subPrice: {
-    fontFamily: 'EuclidCircularA-Regular',
+    fontFamily: 'VelaSans-Medium',
     textAlign: 'left',
     marginTop: 4,
     fontSize: 26,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
     color: '#787777',
     fontSize: 20,
-    fontFamily: 'EuclidCircularA-Regular',
+    fontFamily: 'VelaSans-Medium',
   },
 
   orderSummary: {
@@ -231,13 +231,13 @@ const styles = StyleSheet.create({
 
   orderDescription: {
     color: '#FFF',
-    fontFamily: 'EuclidCircularA-Regular',
+    fontFamily: 'VelaSans-Medium',
     paddingLeft: '5%',
   },
 
   orderAmount: {
     color: '#787777',
-    fontFamily: 'EuclidCircularA-Regular',
+    fontFamily: 'VelaSans-Medium',
     paddingRight: '5%',
   },
 });

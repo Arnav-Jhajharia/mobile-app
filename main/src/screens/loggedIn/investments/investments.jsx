@@ -151,7 +151,9 @@ class Investments extends React.Component {
                 </View>
                 <View style={styles.marketTrades}>
                   <View style={styles.subContents}>
-                    <Text style={styles.marketText}>Portfolio</Text>
+                    <Text style={styles.marketText}>
+                      Your Positions Appear Here
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -210,7 +212,7 @@ class Investments extends React.Component {
                           style={{
                             color: 'white',
                             fontSize: 20,
-                            fontFamily: 'EuclidCircularA-Regular',
+                            fontFamily: 'VelaSans-Medium',
                           }}>
                           USD
                         </Text>
@@ -276,7 +278,7 @@ class Investments extends React.Component {
                           style={{
                             color: '#ffd700',
                             fontSize: 20,
-                            fontFamily: 'EuclidCircularA-Regular',
+                            fontFamily: 'VelaSans-Medium',
                           }}>
                           BTC
                         </Text>

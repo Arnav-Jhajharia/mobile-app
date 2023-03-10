@@ -131,7 +131,7 @@ const SendEmailComponent = ({navigation}) => {
               containerStyle={{backgroundColor: 'black'}}
               imageStyle={styles.imageStyle}
               placeholderStyle={{backgroundColor: 'black'}}
-              maxHeight={200}
+              maxHeight={250}
               data={local_data}
               imageField="image"
               onChange={e => {
@@ -189,7 +189,6 @@ const styles = StyleSheet.create({
     margin: 10,
     width: 30,
     height: 30,
-    borderRadius: 22,
   },
 
   container: {

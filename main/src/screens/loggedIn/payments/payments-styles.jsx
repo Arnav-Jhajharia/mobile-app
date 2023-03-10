@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NeueMontreal-Bold',
     textAlign: 'center',
     fontSize: 25,
+    marginTop: '10%',
   },
 
   countdown: {
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     height: '100%',
     backgroundColor: '#d9d9d9',
-    shadowColor: '#0C0C0C000',
+    shadowColor: '#0C0C0C',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: {
@@ -153,10 +154,12 @@ const styles = StyleSheet.create({
   },
 
   transactionContainer: {
-    marginTop: 15,
+    marginTop: '10%',
     width: '100%',
     flexDirection: 'column',
     paddingBottom: 200,
+    //    backgroundColor: '#222',
+    borderRadius: 20,
   },
 
   exploreContainer: {
@@ -170,11 +173,13 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    fontFamily: 'VelaSans-Bold',
     padding: 20,
   },
 
   transactions: {
     width: '100%',
+    // marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

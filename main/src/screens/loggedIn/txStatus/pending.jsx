@@ -7,7 +7,7 @@ import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 const Web3 = require('web3');
 
-const successVideo = require('./pending.mp4');
+const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
   const {amount, walletAddress, emailAddress, mobileNumber} = route.params;
@@ -38,7 +38,7 @@ export default function Component({route, navigation}) {
   }, []);
 
   return (
-    <View style={{width: '100%', height: '100%', backgroundColor: '#151515'}}>
+    <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text
         style={{
           color: '#fff',
@@ -49,7 +49,7 @@ export default function Component({route, navigation}) {
         }}>
         Transaction Pending...
       </Text>
-      <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}>
+      <View style={{width: '80%', marginTop: '30%', marginLeft: '12%'}}>
         <Video
           source={successVideo}
           style={{width: 300, height: 300}}

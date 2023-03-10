@@ -85,12 +85,12 @@ const styles = StyleSheet.create({
     marginLeft: '15%',
     marginTop: '20%',
     paddingVertical: '5%',
-    backgroundColor: '#000',
+    backgroundColor: '#0C0C0C',
   },
 
   buttonText: {
     color: '#fff',
-    fontFamily: 'VelaSans-Medium',
+    fontFamily: 'VelaSans-Bold',
     fontSize: 15,
     textAlign: 'center',
   },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
 
   qrButton: {
     width: '15%',
-    color: '#000',
+    color: '#0C0C0C',
     borderRadius: 15,
     marginLeft: '1%',
     padding: '5%',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '37%',
-    color: '#000',
+    color: '#0C0C0C',
     borderRadius: 15,
     marginRight: '4%',
     padding: '0%',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     height: '100%',
     backgroundColor: '#d9d9d9',
-    shadowColor: '#000000',
+    shadowColor: '#0C0C0C0C0C0C',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: {
@@ -154,10 +154,11 @@ const styles = StyleSheet.create({
   },
 
   transactionContainer: {
-    marginTop: 15,
+    marginTop: '12.5%',
     width: '100%',
     flexDirection: 'column',
     paddingBottom: 200,
+    borderRadius: 20,
   },
 
   heading: {
@@ -223,11 +224,11 @@ const styles = StyleSheet.create({
   },
 
   amountText2: {
-    fontFamily: 'VelaSans-medium',
+    fontFamily: 'VelaSans-Bold',
     marginLeft: 20,
     fontSize: 13,
     alignSelf: 'flex-start',
-    color: '#FFFFFF',
+    color: '#ABFFAE',
   },
 });
 

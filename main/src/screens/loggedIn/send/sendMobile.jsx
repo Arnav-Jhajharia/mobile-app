@@ -47,20 +47,7 @@ const windowWidth = Dimensions.get('window').width;
 //         "image": "https://www.vigcenter.com/public/all/images/default-image.jpg"
 //       },
 //   ];
-const local_data = [
-  {
-    value: '1',
-    lable: 'Email',
-    image: {
-      uri: './icon/email.png',
-    },
-  },
-  {
-    value: '2',
-    lable: 'Wallet',
-    image: require('./icon/email.png'),
-  },
-];
+
 const SendMobileComponent = ({navigation}) => {
   let [amount, setAmount] = React.useState('');
   const [value, setValue] = useState('+1');

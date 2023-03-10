@@ -119,7 +119,7 @@ const Savings = ({navigation}) => {
           style={{
             flexDirection: 'row',
             width: '90%',
-            height: 232,
+            height: 250,
             justifyContent: 'space-around',
             flexDirection: 'row',
           }}>
@@ -132,9 +132,8 @@ const Savings = ({navigation}) => {
               style={styles.innerDep2}>
               <Image
                 source={require('./img/dollar-dollar-color.png')}
-                style={{borderWidth: 1}}
+                style={{width: 170, height: 170}}
               />
-
               <Text style={styles.amountText}>$0.00</Text>
               <Text style={styles.amountText2}>Interest earned</Text>
             </LinearGradient>
@@ -149,8 +148,9 @@ const Savings = ({navigation}) => {
               style={styles.innerDep2}>
               <Image
                 source={require('./img/chart-dynamics.png')}
-                style={{borderWidth: 1}}
+                style={{width: 170, height: 170}}
               />
+
               <Text style={styles.amountText}>7.1%</Text>
               <Text style={styles.amountText2}>APY on Feb 25</Text>
             </LinearGradient>

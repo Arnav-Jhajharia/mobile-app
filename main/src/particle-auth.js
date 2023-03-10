@@ -32,7 +32,7 @@ login = async () => {
       ? account.googleEmail
       : account.phone;
     const name = account.name ? account.name : 'Not Set';
-    const address = account.wallets[0].publicAddress;
+    const address = await particleAuth.getAddress();
     global.loginAccount = new PNAccount(email, name, address);
     global.withAuth = true;
     const userInfo = result.data;

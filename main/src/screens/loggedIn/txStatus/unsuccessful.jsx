@@ -18,16 +18,16 @@ const successVideo = require('./unsuccess.mov');
 export default function Component({navigation}) {
   // Some routing must be done after Pending state
   return (
-    <View style={{width: '100%', height: '100%', backgroundColor: '#151515'}}>
+    <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text
         style={{
           color: '#fff',
-          fontSize: 30,
+          fontSize: 27,
           marginTop: '20%',
           textAlign: 'center',
           fontFamily: 'NeueMachina-UltraBold',
         }}>
-        Transaction Success!
+        Transaction Unsuccessful
       </Text>
       <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}>
         <Video
