@@ -116,7 +116,7 @@ function Loading({navigation}) {
   );
 }
 
-function ComingSoon({navigation, route}) {
+function ComingSoon({navigation}) {
   return (
     <ImageBackground source={particle} style={styles.bg}>
       <ScrollView>
@@ -126,12 +126,12 @@ function ComingSoon({navigation, route}) {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <BottomNavbar navigation={navigation, route} />
+      <BottomNavbar navigation={navigation} />
     </ImageBackground>
   );
 }
 
-function Savings({navigation, route}) {
+function Savings({navigation}) {
   return (
     <SafeAreaView style={styles.black}>
       <ScrollView style={{height: windowHeight * 0.8}}>
@@ -139,7 +139,7 @@ function Savings({navigation, route}) {
           <SavingsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} route = {route} />
+      <BottomNavbar navigation={navigation} />
     </SafeAreaView>
   );
 }
@@ -152,7 +152,7 @@ function Investment({navigation}) {
   );
 }
 
-function Payments({navigation, route}) {
+function Payments({navigation}) {
   return (
     <SafeAreaView style={styles.black}>
       <ScrollView style={{height: windowHeight * 0.8}}>
@@ -160,7 +160,7 @@ function Payments({navigation, route}) {
           <PaymentsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation, route} />
+      <BottomNavbar navigation={navigation} />
     </SafeAreaView>
   );
 }
