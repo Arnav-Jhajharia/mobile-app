@@ -15,10 +15,14 @@ import styles from './payments-styles';
 import {Icon} from 'react-native-elements';
 import {useEffect} from 'react';
 import * as particleAuth from 'react-native-particle-auth';
-const Web3 = require('web3');
-import {signAndSendTransactionConnect} from '../../particle-connect';
-// import { POLYGON_API_KEY } from "@env";
+import createProvider from '../../../particle-auth';
 import {EventsCarousel} from './eventsCarousel';
+import ABI from './XUSD';
+
+let web3;
+
+// import {signAndSendTransactionConnect} from '../../particle-connect';
+// import { POLYGON_API_KEY } from "@env";
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 const images = [
   {
@@ -51,12 +55,34 @@ const PaymentsComponent = ({navigation}) => {
   ]);
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
+
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
+
+    const test = async web3 => {
+      const contract = new web3.eth.Contract(ABI, contractAddress);
+
+      async function getTokenBalance() {
+        let result = await contract.methods
+          .balanceOf(global.loginAccount.publicAddress)
+          .call();
+        const formattedResult = web3.utils.fromWei(result, 'ether');
+        console.log('Auth Balance:', formattedResult);
+        setBalance(formattedResult);
+      }
+
+      getTokenBalance();
+    };
 
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
+      web3 = this.createProvider(
+        '260df770-44b4-4afd-a408-0a9f2b9944a9',
+        'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm',
+      );
+      test(web3);
+      //  console.log(web3.eth.getAccounts());
     } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
@@ -65,9 +91,17 @@ const PaymentsComponent = ({navigation}) => {
       //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
       //   '1000000000000000',
       // );
+      fetch(
+        `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${address}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+      )
+        .then(response => response.json())
+        .then(data => {
+          const balance = data.result;
+          const etherValue = web3.utils.fromWei(balance, 'ether');
+          setBalance(etherValue);
+          console.log('Connect Balance:', etherValue);
+        });
     }
-
-    // let authAddress = '0x1a2EAF515a6ca05bfab9bf3d9850ea29e5C7882E';
 
     fetch(
       `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
@@ -84,7 +118,7 @@ const PaymentsComponent = ({navigation}) => {
           for (let i = 0; i < len; i++) {
             let res = result[i];
             let val = res.value;
-            const etherValue = Web3.utils.fromWei(val, 'ether');
+            const etherValue = web3.utils.fromWei(val, 'ether');
             var pubDate = new Date(res.timeStamp * 1000);
             var weekday = new Array(
               'Sun',
@@ -137,16 +171,16 @@ const PaymentsComponent = ({navigation}) => {
         }
       });
 
-    fetch(
-      `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
-    )
-      .then(response => response.json())
-      .then(data => {
-        const balance = data.result;
-        const etherValue = Web3.utils.fromWei(balance, 'ether');
-        setBalance(etherValue);
-        //     console.log(etherValue);
-      });
+    // fetch(
+    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+    // )
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     const balance = data.result;
+    //     const etherValue = Web3.utils.fromWei(balance, 'ether');
+    //     //  setBalance(etherValue);
+    //     //     console.log(etherValue);
+    //   });
   }, []);
   const t = true; // it means to send]
   // console.log('Address: ', address);

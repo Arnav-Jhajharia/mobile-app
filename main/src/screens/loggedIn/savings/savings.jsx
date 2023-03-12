@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   TouchableOpacity,
   TouchableHighlight,
@@ -14,9 +14,22 @@ import CountDown from 'react-native-countdown-component';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './savings-styles';
 import {Icon} from 'react-native-elements';
+import ethProvider from './integration/ethProvider';
+// import {ALCHEMY_URL} from '@env';
+import Web3 from 'web3';
 
 const Savings = ({navigation}) => {
   const t = true;
+  const provider = new Web3(
+    'https://polygon-mumbai.g.alchemy.com/v2/RTeIBb4KXMb8NH1ASh6VHi01q_beaDd9',
+  );
+  const address = global.loginAccount.publicAddress;
+  const {getUserPoolBalance} = ethProvider(provider, address, 80081);
+  const [balance, setBalance] = useState(1);
+  useEffect(() => {
+    setBalance(getUserPoolBalance());
+    console.log(balance);
+  }, []);
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View style={styles.topbar}>
@@ -39,7 +52,7 @@ const Savings = ({navigation}) => {
                 fontSize: 45,
                 fontFamily: 'Benzin-Medium',
               }}>
-              0
+              {/* {balance.split('.')[0]} */}
             </Text>
             <Text
               style={{
@@ -48,7 +61,8 @@ const Savings = ({navigation}) => {
                 fontFamily: 'Benzin-Medium',
                 marginBottom: 5,
               }}>
-              .00
+              {/* {'.'}
+              {balance.split('.')[1] ? balance.split('.')[1] : '00'} */}
             </Text>
           </View>
           <Text
@@ -71,7 +85,9 @@ const Savings = ({navigation}) => {
           }}>
           <TouchableOpacity
             style={styles.depWith}
-            onPress={() => navigation.navigate('EnterSavingsAmount')}>
+            onPress={() =>
+              navigation.navigate('EnterSavingsAmount', {widthdraw: false})
+            }>
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle
@@ -93,7 +109,9 @@ const Savings = ({navigation}) => {
 
           <TouchableOpacity
             style={styles.depWith}
-            onPress={() => navigation.navigate('EnterSavingsAmount')}>
+            onPress={() =>
+              navigation.navigate('EnterSavingsAmount', {widthdraw: true})
+            }>
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle
@@ -119,7 +137,7 @@ const Savings = ({navigation}) => {
           style={{
             flexDirection: 'row',
             width: '90%',
-            height: 250,
+            height: 232,
             justifyContent: 'space-around',
             flexDirection: 'row',
           }}>
@@ -130,11 +148,9 @@ const Savings = ({navigation}) => {
               angle={45}
               angleCenter={{x: 0.5, y: 0.5}}
               style={styles.innerDep2}>
-              <Image
-                source={require('./img/dollar-dollar-color.png')}
-                style={{width: 170, height: 170}}
-              />
-              <Text style={styles.amountText}>$0.00</Text>
+              <Image source={require('./img/dollar-dollar-color.png')} />
+
+              <Text style={styles.amountText}>$1,836.25</Text>
               <Text style={styles.amountText2}>Interest earned</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -146,11 +162,7 @@ const Savings = ({navigation}) => {
               angle={45}
               angleCenter={{x: 0.5, y: 0.5}}
               style={styles.innerDep2}>
-              <Image
-                source={require('./img/chart-dynamics.png')}
-                style={{width: 170, height: 170}}
-              />
-
+              <Image source={require('./img/chart-dynamics.png')} />
               <Text style={styles.amountText}>7.1%</Text>
               <Text style={styles.amountText2}>APY on Feb 25</Text>
             </LinearGradient>

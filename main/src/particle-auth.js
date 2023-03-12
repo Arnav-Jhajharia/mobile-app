@@ -8,6 +8,20 @@ import * as particleAuth from 'react-native-particle-auth';
 import {PNAccount} from './Models/PNAccount';
 import * as Helper from './helper';
 
+import Web3 from 'web3';
+import {ParticleProvider} from 'react-native-particle-auth';
+
+createProvider = (projectId, clientKey) => {
+  const provider = new ParticleProvider({projectId, clientKey});
+  const web3 = new Web3(provider);
+  return web3;
+};
+
+web3_getAccounts = async () => {
+  const accounts = await web3.eth.getAccounts();
+  console.log('web3.eth.getAccounts', accounts);
+};
+
 init = async () => {
   const chainInfo = ChainInfo.PolygonMumbai;
   const env = Env.Production;
@@ -145,6 +159,7 @@ onClickLogin = async navigation => {
 
 export default {
   init,
+  createProvider,
   onClickLogin,
   openWebWallet,
   signAndSendTransaction,
