@@ -18,7 +18,9 @@ import * as particleAuth from 'react-native-particle-auth';
 import createProvider from '../../../particle-auth';
 import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
-
+// import { PROJECT_ID, CLIENT_KEY } from 'react-native-dotenv'
+const PROJECT_ID = '260df770-44b4-4afd-a408-0a9f2b9944a9'
+const CLIENT_KEY = 'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm'
 let web3;
 
 // import {signAndSendTransactionConnect} from '../../particle-connect';
@@ -46,6 +48,7 @@ const images = [
     image:
       'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125032/Wallet_eriqpx.png',
   },
+  
   // {},
   // {}
 ];
@@ -78,11 +81,11 @@ const PaymentsComponent = ({navigation}) => {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
       web3 = this.createProvider(
-        '260df770-44b4-4afd-a408-0a9f2b9944a9',
-        'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm',
+        PROJECT_ID,
+        CLIENT_KEY
       );
       test(web3);
-      //  console.log(web3.eth.getAccounts());
+       console.log(web3.eth.getAccounts());
     } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);

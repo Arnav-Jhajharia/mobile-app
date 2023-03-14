@@ -404,7 +404,7 @@ class Investments extends React.Component {
               <Text style={styles.confirmText}>Coming Soon!</Text>
             )}
           </TouchableOpacity>
-          <BottomNavbar navigation={this.props.navigation} />
+          <BottomNavbar navigation={this.props.navigation} selected = "Investments" />
         </View>
       </View>
     );

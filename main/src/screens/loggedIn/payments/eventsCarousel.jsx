@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   depWith: {
     flexDirection: 'row',
-    width: DEVICE_WIDTH / 1.9,
+    width: DEVICE_WIDTH / 2,
     // borderRadius: 20,
     marginRight: 30,
   },

@@ -84,7 +84,7 @@ const provider = Web3.HTTPProvider(ALCHEMY_URL);
               id: 1,
               method: "particle_abi_encodeFunctionCall",
               params: [
-                  "0xB8c77482e45F1F44dE1745F52C74426C631bDD52", 
+                  liquidityPoolAddress, 
                   "erc20_approve", 
                   [
                       "0x329a7f8b91Ce7479035cb1B5D62AB41845830Ce8", 
