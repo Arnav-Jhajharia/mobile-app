@@ -60,7 +60,7 @@ class EventsCarousel extends React.Component {
           height: '100%',
           flexDirection: 'row',
           width: '95%',
-          height: 280,
+          height: 300,
           justifyContent: 'space-around',
           flexDirection: 'row',
           marginLeft: 15,
@@ -105,9 +105,9 @@ class EventsCarousel extends React.Component {
                     uri: image.image,
                   }}
                   style={{
-                    marginTop: '10%',
-                    width: 140,
-                    height: 140,
+                    marginTop: '5%',
+                    width: 165,
+                    height: 165,
                   }}
                 />
 
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
   depWith: {
     flexDirection: 'row',
-    width: DEVICE_WIDTH / 1.9,
+    width: DEVICE_WIDTH / 1.6,
     // borderRadius: 20,
     marginRight: 30,
   },
