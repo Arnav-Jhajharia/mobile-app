@@ -5,7 +5,6 @@ import {View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {color} from 'react-native-elements/dist/helpers';
-const Web3 = require('web3');
 import LinearGradient from 'react-native-linear-gradient';
 
 const BottomNavbar = ({navigation}) => {

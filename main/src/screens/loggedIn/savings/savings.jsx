@@ -15,14 +15,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './savings-styles';
 import {Icon} from 'react-native-elements';
 import ethProvider from './integration/ethProvider';
-// import {ALCHEMY_URL} from '@env';
+import {REACT_APP_ALCHEMY_URL} from '@env';
 import Web3 from 'web3';
 
+const alchemories = REACT_APP_ALCHEMY_URL;
 const Savings = ({navigation}) => {
   const t = true;
-  const provider = new Web3(
-    'https://polygon-mumbai.g.alchemy.com/v2/RTeIBb4KXMb8NH1ASh6VHi01q_beaDd9',
-  );
+  const provider = new Web3(alchemories);
   const address = global.loginAccount.publicAddress;
   const {getUserPoolBalance} = ethProvider(provider, address, 80081);
   const [balance, setBalance] = useState(1);

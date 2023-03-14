@@ -9,9 +9,8 @@ import {newKitFromWeb3, CeloContract} from '@celo/contractkit';
 import XUSD from './XUSD.json';
 import {Any} from 'io-ts';
 import {IntegerType} from 'mongodb';
-// import { PARTICLE_PASSWORD, PARTICLE_USERNAME, ALCHEMY_URL } from '@env';
-const PARTICLE_PASSWORD = 'sLtNpeJtfiAz610LQQLgKyzwLxnyGphuX0KLpama';
-const PARTICLE_USERNAME = '260df770-44b4-4afd-a408-0a9f2b9944a9';
+import {PARTICLE_PASSWORD, PARTICLE_USERNAME, ALCHEMY_URL} from '@env';
+
 var done = false;
 var address = '';
 const ethProvider = (provider, account, chainId) => {

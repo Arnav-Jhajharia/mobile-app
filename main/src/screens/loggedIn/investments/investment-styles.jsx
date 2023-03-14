@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0C0C0C',
     width: '100%',
     height: '100%',
+    position: 'relative',
   },
 
   investmentsNav: {},
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     alignItems: 'center',
     marginTop: '5%',
+    position: 'relative',
   },
 
   btc: {
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#1E1E1E',
     borderRadius: 7,
-    marginTop: '3%',
+    marginTop: '7%',
   },
 
   leverage: {

@@ -22,7 +22,7 @@ import ABI from './XUSD';
 let web3;
 
 // import {signAndSendTransactionConnect} from '../../particle-connect';
-// import { POLYGON_API_KEY } from "@env";
+import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 const images = [
   {
@@ -77,10 +77,7 @@ const PaymentsComponent = ({navigation}) => {
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
-      web3 = this.createProvider(
-        '260df770-44b4-4afd-a408-0a9f2b9944a9',
-        'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm',
-      );
+      web3 = this.createProvider();
       test(web3);
       //  console.log(web3.eth.getAccounts());
     } else {
@@ -92,7 +89,7 @@ const PaymentsComponent = ({navigation}) => {
       //   '1000000000000000',
       // );
       fetch(
-        `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${address}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+        `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${address}&tag=latest&apikey=${POLYGON_API_KEY}`,
       )
         .then(response => response.json())
         .then(data => {
@@ -104,7 +101,7 @@ const PaymentsComponent = ({navigation}) => {
     }
 
     fetch(
-      `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+      `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
     )
       .then(response => response.json())
       .then(data => {
@@ -172,7 +169,7 @@ const PaymentsComponent = ({navigation}) => {
       });
 
     // fetch(
-    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=${POLYGON_API_KEY}`,
     // )
     //   .then(response => response.json())
     //   .then(data => {
