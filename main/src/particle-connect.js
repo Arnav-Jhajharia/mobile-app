@@ -9,6 +9,24 @@ import {
 } from 'react-native-particle-connect';
 import {ChainInfo} from 'react-native-particle-connect';
 
+import Web3 from 'web3';
+import {ParticleConnectProvider} from 'react-native-particle-connect';
+import {PROJECT_ID, CLIENT_KEY} from '@env';
+
+const projectId = PROJECT_ID;
+const clientKey = CLIENT_KEY;
+
+createConnectProvider = () => {
+  let walletType = global.walletType;
+  const provider = new ParticleConnectProvider({
+    projectId,
+    clientKey,
+    walletType,
+  });
+  const web3 = new Web3(provider);
+  return web3;
+};
+
 setChainInfo = async () => {
   const chainInfo = ChainInfo.PolygonMumbai;
   const result = await particleConnect.setChainInfo(chainInfo);
@@ -136,4 +154,9 @@ disconnect = async () => {
   }
 };
 
-export default {onClickConnect, disconnect, signAndSendTransactionConnect};
+export default {
+  onClickConnect,
+  disconnect,
+  signAndSendTransactionConnect,
+  createConnectProvider,
+};

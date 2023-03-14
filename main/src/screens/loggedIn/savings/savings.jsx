@@ -22,7 +22,9 @@ const alchemories = REACT_APP_ALCHEMY_URL;
 const Savings = ({navigation}) => {
   const t = true;
   const provider = new Web3(alchemories);
-  const address = global.loginAccount.publicAddress;
+  const address = global.withAuth
+    ? global.loginAccount.publicAddress
+    : global.connectAccount.publicAddress;
   const {getUserPoolBalance} = ethProvider(provider, address, 80081);
   const [balance, setBalance] = useState(1);
   useEffect(() => {
@@ -51,7 +53,7 @@ const Savings = ({navigation}) => {
                 fontSize: 45,
                 fontFamily: 'Benzin-Medium',
               }}>
-              {/* {balance.split('.')[0]} */}
+              {/* {balance.split('.')[0]} */}0
             </Text>
             <Text
               style={{
@@ -62,13 +64,14 @@ const Savings = ({navigation}) => {
               }}>
               {/* {'.'}
               {balance.split('.')[1] ? balance.split('.')[1] : '00'} */}
+              .00
             </Text>
           </View>
           <Text
             style={{
               color: 'white',
               fontSize: 18,
-              fontFamily: 'VelaSans-Medium',
+              fontFamily: 'VelaSans-Bold',
             }}>
             Total amount deposited
           </Text>
@@ -79,7 +82,7 @@ const Savings = ({navigation}) => {
             flexDirection: 'row',
             width: '80%',
             height: 50,
-            justifyContent: 'space-around',
+            justifyContent: 'space-evenly',
             flexDirection: 'row',
           }}>
           <TouchableOpacity
@@ -135,33 +138,48 @@ const Savings = ({navigation}) => {
         <View
           style={{
             flexDirection: 'row',
-            width: '90%',
-            height: 232,
+            width: '95%',
+            height: 250,
             justifyContent: 'space-around',
             flexDirection: 'row',
           }}>
           <TouchableOpacity style={styles.depWith}>
             <LinearGradient
-              colors={['#1D2426', '#383838']}
+              colors={['#1D2426', '#1D2426', '#383838']}
               useAngle
               angle={45}
               angleCenter={{x: 0.5, y: 0.5}}
               style={styles.innerDep2}>
-              <Image source={require('./img/dollar-dollar-color.png')} />
+              <Image
+                source={require('./img/dollar-dollar-color.png')}
+                style={{width: 180, height: 180}}
+              />
 
               <Text style={styles.amountText}>$1,836.25</Text>
-              <Text style={styles.amountText2}>Interest earned</Text>
+              <Text
+                style={{
+                  fontFamily: 'VelaSans-Bold',
+                  fontSize: 13,
+                  alignSelf: 'center',
+                  color: '#ABFFAE',
+                  marginTop: '2%',
+                }}>
+                Interest earned
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.depWith}>
             <LinearGradient
-              colors={['#1D2426', '#383838']}
+              colors={['#1D2426', '#1D2426', '#383838']}
               useAngle
               angle={45}
               angleCenter={{x: 0.5, y: 0.5}}
               style={styles.innerDep2}>
-              <Image source={require('./img/chart-dynamics.png')} />
+              <Image
+                source={require('./img/chart-dynamics.png')}
+                style={{width: 180, height: 180}}
+              />
               <Text style={styles.amountText}>7.1%</Text>
               <Text style={styles.amountText2}>APY on Feb 25</Text>
             </LinearGradient>

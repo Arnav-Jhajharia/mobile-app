@@ -52,7 +52,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-os": "^1.2.6",
     "react-native-particle-auth": "^0.10.4",
-    "react-native-particle-connect": "^0.10.3",
+    "react-native-particle-connect": "^0.10.4",
     "react-native-qrcode": "^0.2.7",
     "react-native-qrcode-svg": "^6.2.0",
     "react-native-randombytes": "^3.6.1",

@@ -89,7 +89,7 @@ class EventsCarousel extends React.Component {
                   : this.props.navigation.navigate('SendEmail');
               }}>
               <LinearGradient
-                colors={['#1D2426', '#383838']}
+                colors={['#1D2426', '#272727', '#383838']}
                 useAngle
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}

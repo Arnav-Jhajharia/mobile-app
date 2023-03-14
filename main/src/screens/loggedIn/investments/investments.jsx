@@ -74,12 +74,12 @@ class Investments extends React.Component {
 
   componentDidMount() {
     this.updatePrice();
+    test();
   }
 
   render(navigation) {
-    console.log('Test');
+    // events.test();
     test();
-    console.log('Done Test');
     return (
       <View style={styles.black}>
         <ScrollView>
@@ -230,7 +230,7 @@ class Investments extends React.Component {
                           style={{
                             color: 'white',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Medium',
+                            fontFamily: 'VelaSans-Bold',
                           }}>
                           USD
                         </Text>
@@ -253,7 +253,12 @@ class Investments extends React.Component {
                               })
                             }
                           />
-                          <Text style={{color: '#ffd700', fontSize: 20}}>
+                          <Text
+                            style={{
+                              color: '#ffd700',
+                              fontSize: 20,
+                              fontFamily: 'VelaSans-Bold',
+                            }}>
                             BTC
                           </Text>
                         </View>
@@ -296,7 +301,7 @@ class Investments extends React.Component {
                           style={{
                             color: '#ffd700',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Medium',
+                            fontFamily: 'VelaSans-Bold',
                           }}>
                           BTC
                         </Text>
@@ -314,7 +319,12 @@ class Investments extends React.Component {
                               Number(this.state.price.replaceAll(',', ''))
                             ).toFixed(3)}
                           </Text>
-                          <Text style={{color: 'white', fontSize: 20}}>
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 20,
+                              fontFamily: 'VelaSans-Bold',
+                            }}>
                             USD
                           </Text>
                         </View>

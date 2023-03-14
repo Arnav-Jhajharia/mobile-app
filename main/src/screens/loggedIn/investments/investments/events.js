@@ -9,9 +9,10 @@ function test() {
   let web3;
   if (global.withAuth) {
     user = global.loginAccount.publicAddress;
-    console.log('Global Account:', authAddress);
     web3 = this.createProvider();
     console.log(web3);
+    console.log('Local Account:', authAddress);
+    console.log('Auth Account:', global.withAuth);
   } else {
     authAddress = global.connectAccount.publicAddress;
     console.log('Global Account:', global.connectAccount);
