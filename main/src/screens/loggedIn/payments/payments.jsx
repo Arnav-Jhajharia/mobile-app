@@ -142,11 +142,15 @@ const PaymentsComponent = ({navigation}) => {
               pubDate.getFullYear();
             const json = {
               truth: authAddress.toString().toLowerCase() == res.to, // true while accepting
-              to: res.to == SABEX_LP ? 'SabeX Deposit' : res.to,
-              from: res.from == SABEX_LP ? 'SabeX Withdrawal' : res.from,
+              to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
+              from:
+                res.from == SABEX_LP.toLowerCase()
+                  ? 'SabeX Withdrawal'
+                  : res.from,
               value: etherValue,
               date: formattedDate,
             };
+            // console.log(json);
             arr.push(json);
             // console.log(authAddress, res.to, json.truth);
           }
@@ -347,12 +351,12 @@ const PaymentsComponent = ({navigation}) => {
                   <View style={styles.ttext}>
                     <TouchableHighlight
                       onPress={() => {
-                        Clipboard.setString(json.truth ? json.to : json.from);
+                        Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');
                       }}>
                       <Text
                         style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {(json.truth ? json.from : json.to).slice(0, 10)}...
+                        {(json.truth ? json.from : json.to).slice(0, 15)}...
                       </Text>
                     </TouchableHighlight>
 

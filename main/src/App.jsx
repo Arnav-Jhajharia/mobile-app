@@ -37,7 +37,6 @@ import SavingsPending from './screens/loggedIn/savings/savingStatus/pending';
 import SavingsSuccessful from './screens/loggedIn/savings/savingStatus/successful';
 // import SavingsUnsuccessful from './screens/loggedIn/savings/savingStatus/unsuccessful';
 
-
 const Stack = createNativeStackNavigator();
 const bg = require('./../assets/bg.png');
 const particle = require('../assets/particle.jpg');
@@ -131,7 +130,7 @@ function ComingSoon({navigation}) {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "ComingSoon"/>
+      <BottomNavbar navigation={navigation} selected="ComingSoon" />
     </ImageBackground>
   );
 }
@@ -144,7 +143,7 @@ function Savings({navigation}) {
           <SavingsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "Savings" />
+      <BottomNavbar navigation={navigation} selected="Savings" />
     </SafeAreaView>
   );
 }
@@ -165,7 +164,7 @@ function Payments({navigation}) {
           <PaymentsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "Payments" />
+      <BottomNavbar navigation={navigation} selected="Payments" />
     </SafeAreaView>
   );
 }
@@ -226,7 +225,7 @@ function SendMobile({navigation}) {
 export default function App({navigation}) {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ animation: 'none' }}>
+      <Stack.Navigator>
         {/*
         <Stack.Screen
           name="Home"
@@ -343,7 +342,7 @@ export default function App({navigation}) {
           navigation={navigation}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="SavingsPending"
           component={SavingsPending}
           navigation={navigation}

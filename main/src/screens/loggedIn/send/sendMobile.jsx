@@ -128,7 +128,7 @@ const SendMobileComponent = ({navigation}) => {
               style={styles.dropdown}
               // selectedTextStyle={{'width': 0}}
               placeholderStyle={styles.placeholderStyle}
-              containerStyle={{backgroundColor: 'black'}}
+              containerStyle={{backgroundColor: '#0c0c0c'}}
               imageStyle={styles.imageStyle}
               iconStyle={styles.iconStyle}
               selectedTextStyle={styles.selectedTextStyle}
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     // margin: 16,
     height: 50,
     width: '100%',
-    // backgroundColor: '#000',
+    backgroundColor: 'transparent',
     // borderRadius: 22,
     marginHorizontal: 15,
   },
