@@ -85,19 +85,19 @@ const styles = StyleSheet.create({
     marginLeft: '15%',
     marginTop: '20%',
     paddingVertical: '5%',
-    backgroundColor: '#0C0C0C',
+    backgroundColor: '#000',
   },
 
   buttonText: {
     color: '#fff',
-    fontFamily: 'VelaSans-Bold',
+    fontFamily: 'VelaSans-Medium',
     fontSize: 15,
     textAlign: 'center',
   },
 
   fontContainer: {
     alignItems: 'center',
-    marginTop: '15%',
+    marginTop: '5%',
   },
 
   buttonsContainer: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
 
   qrButton: {
     width: '15%',
-    color: '#0C0C0C',
+    color: '#000',
     borderRadius: 15,
     marginLeft: '1%',
     padding: '5%',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '37%',
-    color: '#0C0C0C',
+    color: '#000',
     borderRadius: 15,
     marginRight: '4%',
     padding: '0%',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     height: '100%',
     backgroundColor: '#d9d9d9',
-    shadowColor: '#0C0C0C0C0C0C',
+    shadowColor: '#000000',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: {
@@ -154,11 +154,10 @@ const styles = StyleSheet.create({
   },
 
   transactionContainer: {
-    marginTop: '12.5%',
+    marginTop: 15,
     width: '100%',
     flexDirection: 'column',
     paddingBottom: 200,
-    borderRadius: 20,
   },
 
   heading: {

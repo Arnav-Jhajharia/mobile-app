@@ -24,7 +24,7 @@ import Investments from './screens/loggedIn/investments/investments';
 import SavingsComponent from './screens/loggedIn/savings/savings';
 import PaymentsComponent from './screens/loggedIn/payments/payments';
 import EnterAmountComponent from './screens/enterAmount';
-import EnterSavingsAmountComponent from './screens/enterSavingsAmount';
+import EnterSavingsAmountComponent from './screens/loggedIn/savings/savingStatus/enterSavingsAmount';
 import SendEmailComponent from './screens/loggedIn/send/sendEmail';
 import SendMobileComponent from './screens/loggedIn/send/sendMobile';
 import {Text} from 'react-native-elements';
@@ -32,6 +32,11 @@ import {Text} from 'react-native-elements';
 import Pending from './screens/loggedIn/txStatus/pending';
 import Successful from './screens/loggedIn/txStatus/successful';
 import Unsuccessful from './screens/loggedIn/txStatus/unsuccessful';
+
+import SavingsPending from './screens/loggedIn/savings/savingStatus/pending';
+import SavingsSuccessful from './screens/loggedIn/savings/savingStatus/successful';
+// import SavingsUnsuccessful from './screens/loggedIn/savings/savingStatus/unsuccessful';
+
 
 const Stack = createNativeStackNavigator();
 const bg = require('./../assets/bg.png');
@@ -126,7 +131,7 @@ function ComingSoon({navigation}) {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <BottomNavbar navigation={navigation} />
+      <BottomNavbar navigation={navigation} selected = "ComingSoon"/>
     </ImageBackground>
   );
 }
@@ -134,12 +139,12 @@ function ComingSoon({navigation}) {
 function Savings({navigation}) {
   return (
     <SafeAreaView style={styles.black}>
-      <ScrollView style={{height: windowHeight * 0.8}}>
+      <ScrollView style={{height: windowHeight * 0.7}}>
         <View>
           <SavingsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} />
+      <BottomNavbar navigation={navigation} selected = "Savings" />
     </SafeAreaView>
   );
 }
@@ -160,7 +165,7 @@ function Payments({navigation}) {
           <PaymentsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} />
+      <BottomNavbar navigation={navigation} selected = "Payments" />
     </SafeAreaView>
   );
 }
@@ -221,7 +226,7 @@ function SendMobile({navigation}) {
 export default function App({navigation}) {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ animation: 'none' }}>
         {/*
         <Stack.Screen
           name="Home"
@@ -338,6 +343,24 @@ export default function App({navigation}) {
           navigation={navigation}
           options={{headerShown: false}}
         />
+         <Stack.Screen
+          name="SavingsPending"
+          component={SavingsPending}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SavingsSuccessful"
+          component={SavingsSuccessful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        {/* <Stack.Screen
+          name="SavingsUnsuccessful"
+          component={SavingsUnsuccessful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

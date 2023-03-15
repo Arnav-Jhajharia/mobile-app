@@ -19,12 +19,13 @@ import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
-
+import {SABEX_LP} from '@env';
 let web3;
 
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
+
 const images = [
   {
     name: 'DeriveX',
@@ -141,8 +142,8 @@ const PaymentsComponent = ({navigation}) => {
               pubDate.getFullYear();
             const json = {
               truth: authAddress.toString().toLowerCase() == res.to, // true while accepting
-              to: res.to,
-              from: res.from,
+              to: res.to == SABEX_LP ? 'SabeX Deposit' : res.to,
+              from: res.from == SABEX_LP ? 'SabeX Withdrawal' : res.from,
               value: etherValue,
               date: formattedDate,
             };

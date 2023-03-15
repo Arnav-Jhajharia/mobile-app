@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 
   fontContainer: {
     alignItems: 'center',
-    marginTop: '15%',
+    marginTop: '20%',
   },
 
   buttonsContainer: {

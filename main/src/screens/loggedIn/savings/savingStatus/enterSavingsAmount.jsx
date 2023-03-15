@@ -24,14 +24,14 @@ function renderButtons() {
     );
   });
 }
-export default function EnterAmountComponent({navigation}) {
+export default function EnterAmountComponent({navigation, route}) {
 //   let params = route.params;
   let [amount, setAmount] = React.useState(0);
-  let [address, setAddress] = React.useState(1);
+  let { withdraw } = route.params // True if withdraw, False if deposit 
 //   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0};
 //   console.log(json);
 
-  console.log('Address: ', address);
+  // console.log('Address: ', address);
   // console.log('User Info: ', info);
 
   function handleButtonPress(button) {
@@ -97,7 +97,10 @@ export default function EnterAmountComponent({navigation}) {
           );
         })}
         <TouchableOpacity
-          onPress={() => navigation.navigate('Savings')}
+          onPress={() => navigation.navigate('SavingsPending', {
+            amount:amount.toString(),
+            withdraw
+          })}
           style={styles.confirmButton}>
           <Text
             style={{

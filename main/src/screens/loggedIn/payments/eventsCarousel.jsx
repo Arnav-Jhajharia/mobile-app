@@ -34,7 +34,7 @@ class EventsCarousel extends React.Component {
         () => {
           this.scrollRef.current.scrollTo({
             animated: true,
-            x: (DEVICE_WIDTH / 2) * this.state.selectedIndex,
+            x: (DEVICE_WIDTH / 1.6) * this.state.selectedIndex,
             y: 0,
           });
         },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
 
   depWith: {
-    flexDirection: 'row',
+    flexDirection: 'row', 
     width: DEVICE_WIDTH / 1.6,
     // borderRadius: 20,
     marginRight: 30,
