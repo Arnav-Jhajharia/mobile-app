@@ -13,13 +13,14 @@ import {Text, Icon} from '@rneui/themed';
 import {Slider} from 'react-native-elements';
 import styles from './investment-styles';
 import BottomNavbar from '../../navbar';
+import test from './investments/events';
 
 red = true;
 class Investments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      price: 'N/A',
+      price: 'Updating',
       buyPrice: '',
       btnSelected: 'long',
       nBtc: '',
@@ -29,6 +30,20 @@ class Investments extends React.Component {
     };
     this.updatePrice = this.updatePrice.bind(this);
   }
+
+  // test() {
+  //   let web3;
+  //   if (global.withAuth) {
+  //     user = global.loginAccount.publicAddress;
+  //     console.log('Global Account:', authAddress);
+  //     web3 = this.createProvider();
+  //     console.log(web3);
+  //   } else {
+  //     authAddress = global.connectAccount.publicAddress;
+  //     console.log('Global Account:', global.connectAccount);
+  //     console.log('Global Wallet Type:', global.walletType);
+  //   }
+  // }
 
   updatePrice() {
     let bitcoinPriceUrl =
@@ -59,9 +74,12 @@ class Investments extends React.Component {
 
   componentDidMount() {
     this.updatePrice();
+    test();
   }
 
   render(navigation) {
+    // events.test();
+    test();
     return (
       <View style={styles.black}>
         <ScrollView>
@@ -212,7 +230,7 @@ class Investments extends React.Component {
                           style={{
                             color: 'white',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Medium',
+                            fontFamily: 'VelaSans-Bold',
                           }}>
                           USD
                         </Text>
@@ -235,7 +253,12 @@ class Investments extends React.Component {
                               })
                             }
                           />
-                          <Text style={{color: '#ffd700', fontSize: 20}}>
+                          <Text
+                            style={{
+                              color: '#ffd700',
+                              fontSize: 20,
+                              fontFamily: 'VelaSans-Bold',
+                            }}>
                             BTC
                           </Text>
                         </View>
@@ -243,23 +266,23 @@ class Investments extends React.Component {
                     )}
                   </View>
                 </View>
-                <TouchableOpacity
-                  onPress={() => this.btcFirst()}
-                  style={{
-                    transform: [{rotate: '90deg'}],
-                    flex: 10,
-                    position: 'absolute',
-                    marginTop: '10%',
-                  }}>
-                  <Icon
-                    reverse
-                    name="swap"
-                    type="antdesign"
-                    color="#161616"
-                    size={25}
-                  />
-                </TouchableOpacity>
                 <View style={styles.usd}>
+                  <TouchableOpacity
+                    onPress={() => this.btcFirst()}
+                    style={{
+                      transform: [{rotate: '90deg'}],
+                      position: 'absolute',
+                      marginTop: '-10%',
+                      alignSelf: 'center',
+                    }}>
+                    <Icon
+                      reverse
+                      name="swap"
+                      type="antdesign"
+                      color="#161616"
+                      size={30}
+                    />
+                  </TouchableOpacity>
                   <View style={styles.subContents}>
                     <Text style={styles.subText}>You Receive</Text>
                     {this.state.status ? (
@@ -278,7 +301,7 @@ class Investments extends React.Component {
                           style={{
                             color: '#ffd700',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Medium',
+                            fontFamily: 'VelaSans-Bold',
                           }}>
                           BTC
                         </Text>
@@ -296,7 +319,12 @@ class Investments extends React.Component {
                               Number(this.state.price.replaceAll(',', ''))
                             ).toFixed(3)}
                           </Text>
-                          <Text style={{color: 'white', fontSize: 20}}>
+                          <Text
+                            style={{
+                              color: 'white',
+                              fontSize: 20,
+                              fontFamily: 'VelaSans-Bold',
+                            }}>
                             USD
                           </Text>
                         </View>

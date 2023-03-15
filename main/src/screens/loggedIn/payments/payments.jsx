@@ -16,17 +16,16 @@ import {Icon} from 'react-native-elements';
 import {useEffect} from 'react';
 import * as particleAuth from 'react-native-particle-auth';
 import createProvider from '../../../particle-auth';
+import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
-// import { PROJECT_ID, CLIENT_KEY } from 'react-native-dotenv'
-const PROJECT_ID = '260df770-44b4-4afd-a408-0a9f2b9944a9'
-const CLIENT_KEY = 'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm'
+import {SABEX_LP} from '@env';
 let web3;
-let authAddress;
 
 // import {signAndSendTransactionConnect} from '../../particle-connect';
-// import { POLYGON_API_KEY } from "@env";
+import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
+
 const images = [
   {
     name: 'DeriveX',
@@ -49,7 +48,6 @@ const images = [
     image:
       'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125032/Wallet_eriqpx.png',
   },
-  
   // {},
   // {}
 ];
@@ -63,15 +61,13 @@ const PaymentsComponent = ({navigation}) => {
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
 
-    const test = async web3 => {
+    const test = async (web3, address) => {
       const contract = new web3.eth.Contract(ABI, contractAddress);
 
       async function getTokenBalance() {
-        let result = await contract.methods
-          .balanceOf(global.loginAccount.publicAddress)
-          .call();
+        let result = await contract.methods.balanceOf(address).call();
         const formattedResult = web3.utils.fromWei(result, 'ether');
-        console.log('Auth Balance:', formattedResult);
+        console.log('Balance:', formattedResult);
         setBalance(formattedResult);
       }
 
@@ -81,34 +77,23 @@ const PaymentsComponent = ({navigation}) => {
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
-      web3 = this.createProvider(
-        PROJECT_ID,
-        CLIENT_KEY
-      );
-      test(web3);
-       console.log(web3.eth.getAccounts());
-    } else { 
+      web3 = this.createProvider();
+      test(web3, authAddress);
+      //  console.log(web3.eth.getAccounts());
+    } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
       console.log('Global Wallet Type:', global.walletType);
+      web3 = this.createConnectProvider();
+      test(web3, authAddress);
       // this.signAndSendTransactionConnect(
       //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
       //   '1000000000000000',
       // );
-      fetch(
-        `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${address}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
-      )
-        .then(response => response.json())
-        .then(data => {
-          const balance = data.result;
-          const etherValue = web3.utils.fromWei(balance, 'ether');
-          setBalance(etherValue);
-          console.log('Connect Balance:', etherValue);
-        });
     }
 
     fetch(
-      `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+      `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
     )
       .then(response => response.json())
       .then(data => {
@@ -157,8 +142,8 @@ const PaymentsComponent = ({navigation}) => {
               pubDate.getFullYear();
             const json = {
               truth: authAddress.toString().toLowerCase() == res.to, // true while accepting
-              to: res.to,
-              from: res.from,
+              to: res.to == SABEX_LP ? 'SabeX Deposit' : res.to,
+              from: res.from == SABEX_LP ? 'SabeX Withdrawal' : res.from,
               value: etherValue,
               date: formattedDate,
             };
@@ -176,7 +161,7 @@ const PaymentsComponent = ({navigation}) => {
       });
 
     // fetch(
-    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=26UDEN3Z37KX5V7PS9UMGHU11WAJ38RZ57`,
+    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=${POLYGON_API_KEY}`,
     // )
     //   .then(response => response.json())
     //   .then(data => {

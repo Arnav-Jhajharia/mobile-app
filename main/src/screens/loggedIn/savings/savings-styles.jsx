@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    marginTop: 10,
     width: '100%',
     height: '70%',
     // borderWidth: 1,
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
   ttext: {
     marginLeft: 10,
   },
+
   depWith: {
     flexDirection: 'row',
     height: '100%',
@@ -216,18 +217,18 @@ const styles = StyleSheet.create({
 
   amountText: {
     fontFamily: 'VelaSans-Bold',
-    marginLeft: 20,
     fontSize: 18,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     color: '#FFFFFF',
+    marginTop: '2%',
   },
 
   amountText2: {
-    fontFamily: 'VelaSans-medium',
-    marginLeft: 20,
+    fontFamily: 'VelaSans-Bold',
     fontSize: 13,
-    alignSelf: 'flex-start',
-    color: '#FFFFFF',
+    alignSelf: 'center',
+    color: '#85969A',
+    marginTop: '2%',
   },
 });
 

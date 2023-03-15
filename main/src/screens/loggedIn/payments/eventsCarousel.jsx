@@ -34,7 +34,7 @@ class EventsCarousel extends React.Component {
         () => {
           this.scrollRef.current.scrollTo({
             animated: true,
-            x: (DEVICE_WIDTH / 2) * this.state.selectedIndex,
+            x: (DEVICE_WIDTH / 1.6) * this.state.selectedIndex,
             y: 0,
           });
         },
@@ -60,7 +60,7 @@ class EventsCarousel extends React.Component {
           height: '100%',
           flexDirection: 'row',
           width: '95%',
-          height: 280,
+          height: 300,
           justifyContent: 'space-around',
           flexDirection: 'row',
           marginLeft: 15,
@@ -89,7 +89,7 @@ class EventsCarousel extends React.Component {
                   : this.props.navigation.navigate('SendEmail');
               }}>
               <LinearGradient
-                colors={['#1D2426', '#383838']}
+                colors={['#1D2426', '#272727', '#383838']}
                 useAngle
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
@@ -105,9 +105,9 @@ class EventsCarousel extends React.Component {
                     uri: image.image,
                   }}
                   style={{
-                    marginTop: '10%',
-                    width: 140,
-                    height: 140,
+                    marginTop: '5%',
+                    width: 165,
+                    height: 165,
                   }}
                 />
 
@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
   },
 
   depWith: {
-    flexDirection: 'row',
-    width: DEVICE_WIDTH / 2,
+    flexDirection: 'row', 
+    width: DEVICE_WIDTH / 1.6,
     // borderRadius: 20,
     marginRight: 30,
   },

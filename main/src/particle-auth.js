@@ -10,8 +10,12 @@ import * as Helper from './helper';
 
 import Web3 from 'web3';
 import {ParticleProvider} from 'react-native-particle-auth';
+import {PROJECT_ID, CLIENT_KEY} from '@env';
 
-createProvider = (projectId, clientKey) => {
+const projectId = PROJECT_ID;
+const clientKey = CLIENT_KEY;
+
+createProvider = () => {
   const provider = new ParticleProvider({projectId, clientKey});
   const web3 = new Web3(provider);
   return web3;
@@ -51,7 +55,9 @@ login = async () => {
     global.withAuth = true;
     const userInfo = result.data;
     console.log('User Info:', userInfo);
-    const uuid = userInfo.wallets[0].uuid;
+    const uuid = userInfo.wallets[0].uuid
+      ? userInfo.wallets[0].uuid
+      : userInfo.uuid;
     console.log('User Info:', userInfo);
     fetch('https://mongo.api.xade.finance/polygon', {
       method: 'POST',

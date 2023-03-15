@@ -5,7 +5,6 @@ import {View, StyleSheet,Dimensions} from 'react-native';
 import {Text} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import {color} from 'react-native-elements/dist/helpers';
-const Web3 = require('web3');
 import LinearGradient from 'react-native-linear-gradient';
 const windowHeight = Dimensions.get('window').height;
 const selectedIcon = '#fff';
