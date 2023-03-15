@@ -28,11 +28,17 @@ export default function Component({route, navigation}) {
         CLIENT_KEY
       );
       const address = global.loginAccount.publicAddress;
-      const { withdrawAmount, provideLiquidityToContract } = ethProvider(web3)
+      const { withdrawAmount, provideLiquidityToContract,getUserPoolBalance } = ethProvider(web3)
       console.log('Global Account:', global.loginAccount);
       console.log("IsWithdraw: " + withdraw)
       if(withdraw)
       {
+        const balance = await getUserPoolBalance();
+        console.log(balance, amount)
+        if(balance < amount) {
+          navigation.navigate('Unsuccessful')
+          return;
+        }
         const status = await withdrawAmount(amount);
         if(status) {
           navigation.navigate('SavingsSuccessful', {withdraw: true, amount: amount})

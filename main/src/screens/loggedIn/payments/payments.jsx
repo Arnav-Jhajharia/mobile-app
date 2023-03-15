@@ -22,6 +22,7 @@ import ABI from './XUSD';
 const PROJECT_ID = '260df770-44b4-4afd-a408-0a9f2b9944a9'
 const CLIENT_KEY = 'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm'
 let web3;
+let authAddress;
 
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 // import { POLYGON_API_KEY } from "@env";
@@ -86,7 +87,7 @@ const PaymentsComponent = ({navigation}) => {
       );
       test(web3);
        console.log(web3.eth.getAccounts());
-    } else {
+    } else { 
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
       console.log('Global Wallet Type:', global.walletType);
