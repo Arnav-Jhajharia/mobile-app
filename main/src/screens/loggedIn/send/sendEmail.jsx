@@ -128,9 +128,7 @@ const SendEmailComponent = ({navigation}) => {
           <View style={styles.choose}>
             <SelectCountry
               style={styles.dropdown}
-              containerStyle={{backgroundColor: 'black'}}
               imageStyle={styles.imageStyle}
-              placeholderStyle={{backgroundColor: 'black'}}
               maxHeight={250}
               data={local_data}
               imageField="image"
@@ -180,15 +178,14 @@ const styles = StyleSheet.create({
 
   dropdown: {
     margin: 10,
-    backgroundColor: '#232E34',
-    borderRadius: 22,
-    paddingHorizontal: 3,
+    backgroundColor: 'transparent',
+    paddingHorizontal: 10,
   },
 
   imageStyle: {
-    margin: 10,
     width: 30,
     height: 30,
+    backgroundColor: '#232E34',
   },
 
   container: {

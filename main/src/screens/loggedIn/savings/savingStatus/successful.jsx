@@ -18,10 +18,10 @@ import {Text} from '@rneui/themed';
 const successVideo = require('./success.mov');
 
 export default function Component({navigation, route}) {
-  const { amount, withdraw } = route.params;
+  const {amount, withdraw} = route.params;
   // Some routing must be done after Pending state
   return (
-    <View style={{width: '100%', height: '100%', backgroundColor: '#151515'}}>
+    <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text
         style={{
           color: '#fff',
@@ -41,7 +41,7 @@ export default function Component({navigation, route}) {
           textAlign: 'center',
           fontFamily: 'NeueMachina-UltraBold',
         }}>
-        {amount} {withdraw?"Withdrawed":"Deposited"} 
+        {amount} {withdraw ? 'Withdrawed' : 'Deposited'}
       </Text>
       {/* <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}> */}
       <View style={{width: '80%', marginTop: '30%', marginLeft: '12%'}}>

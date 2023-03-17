@@ -2,19 +2,18 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     width: '100%',
-    height: '70%',
-    // borderWidth: 1,
-    //   borderColor: 'rgba(128,128,128, 0.5)',
-    //   borderRadius: 50,
-    //   borderTopRightRadius: 0,
-    //   borderTopLeftRadius: 0,
-    //   // borderBottomWidth: 0,
-    //   borderRightWidth: 0,
-    //   borderLeftWidth: 0,
-    //   borderTopWidth: 0,
+    borderWidth: 1,
+    // borderColor: 'rgba(128,128,128, 0.5)',
+    // borderRadius: 50,
+    // borderTopRightRadius: 0,
+    // borderTopLeftRadius: 0,
+    // // borderBottomWidth: 0,
+    // borderRightWidth: 0,
+    // borderLeftWidth: 0,
+    // borderTopWidth: 0,
     // flex: 0.5,
+    // height: '70%',
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -28,6 +27,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#0C0C0C',
   },
 
+  mainContent: {
+    marginTop: '20%',
+    width: '100%',
+    backgroundColor: 'transparent',
+  },
   logo: {
     fontFamily: 'VelaSans-ExtraBold',
     color: '#fff',
@@ -35,12 +39,6 @@ const styles = StyleSheet.create({
     marginLeft: '8%',
     marginTop: '2%',
     marginBottom: '2%',
-  },
-
-  mainContent: {
-    marginTop: '20%',
-    width: '100%',
-    backgroundColor: 'transparent',
   },
 
   topContent: {
@@ -53,6 +51,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NeueMontreal-Bold',
     textAlign: 'center',
     fontSize: 25,
+    marginTop: '10%',
   },
 
   countdown: {
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     marginLeft: '15%',
     marginTop: '20%',
     paddingVertical: '5%',
-    backgroundColor: '#000',
+    backgroundColor: '#0C0C0C',
   },
 
   buttonText: {
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
 
   fontContainer: {
     alignItems: 'center',
-    marginTop: '5%',
+    marginTop: '20%',
   },
 
   buttonsContainer: {
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
 
   qrButton: {
     width: '15%',
-    color: '#000',
+    color: '#0C0C0C',
     borderRadius: 15,
     marginLeft: '1%',
     padding: '5%',
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '37%',
-    color: '#000',
+    color: '#0C0C0C',
     borderRadius: 15,
     marginRight: '4%',
     padding: '0%',
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     height: '100%',
     backgroundColor: '#d9d9d9',
-    shadowColor: '#000000',
+    shadowColor: '#0C0C0C',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: {
@@ -154,21 +153,32 @@ const styles = StyleSheet.create({
   },
 
   transactionContainer: {
+    marginTop: '25%',
+    width: '100%',
+    flexDirection: 'column',
+    paddingBottom: 100,
+    //    backgroundColor: '#222',
+    borderRadius: 20,
+  },
+
+  exploreContainer: {
     marginTop: 15,
     width: '100%',
     flexDirection: 'column',
-    paddingBottom: 200,
+    // paddingBottom: 200,
   },
 
   heading: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    fontFamily: 'VelaSans-Bold',
     padding: 20,
   },
 
   transactions: {
     width: '100%',
+    // marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -190,6 +200,7 @@ const styles = StyleSheet.create({
   },
 
   depWith: {
+    marginTop: '10%',
     flexDirection: 'row',
     height: '100%',
     width: '47%',
@@ -229,6 +240,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#85969A',
     marginTop: '2%',
+  },
+
+  noTransaction: {
+    color: '#d9d9d9',
+    marginTop: '7%',
+    textAlign: 'center',
+    fontFamily: 'EuclidCircularA-Regular',
+    fontSize: 15,
   },
 });
 

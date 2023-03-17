@@ -348,7 +348,7 @@ PODS:
     - ParticleAuthService
     - ParticleNetworkBase
     - React-Core
-  - react-native-particle-connect (0.10.3):
+  - react-native-particle-connect (0.10.4):
     - ConnectCommon
     - ConnectEVMAdapter
     - ConnectPhantomAdapter
@@ -776,7 +776,7 @@ SPEC CHECKSUMS:
   react-native-config: 5330c8258265c1e5fdb8c009d2cabd6badd96727
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
   react-native-particle-auth: 0eba132c4c1616f03f945e2917d8cf58c141f2e3
-  react-native-particle-connect: 875fc8826534f9684f5a2be1e2ab31c25732078a
+  react-native-particle-connect: 84472b54ca3bef93b5800139ec41d532c0aee372
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-udp: ff9d13e523f2b58e6bc5d4d32321ac60671b5dc9
