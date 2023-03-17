@@ -456,7 +456,7 @@ PODS:
     - React-Core
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNCClipboard (1.11.2):
+  - RNCClipboard (1.11.1):
     - React-Core
   - RNCMaskedView (0.2.8):
     - React-Core
@@ -465,7 +465,7 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
-  - RNShare (8.2.1):
+  - RNShare (8.2.0):
     - React-Core
   - RNSVG (13.8.0):
     - React-Core
@@ -796,11 +796,11 @@ SPEC CHECKSUMS:
   ReactCommon: 856d48a0b0b066a26c07a7acaae6cfd9f2042464
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
+  RNCClipboard: 2834e1c4af68697089cdd455ee4a4cdd198fa7dd
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
-  RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
+  RNShare: b089c33619bbfb0a32bc4069c858b9274e694187
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   RNTextGradientView: 3eb4744303f801546fad35ac47a53cc82257cb25
   RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620

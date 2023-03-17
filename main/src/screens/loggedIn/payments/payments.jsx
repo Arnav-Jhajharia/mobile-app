@@ -356,7 +356,7 @@ const PaymentsComponent = ({navigation}) => {
                       }}>
                       <Text
                         style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {(json.truth ? json.from : json.to).slice(0, 15)}...
+                        {(json.truth ? json.from : json.to).slice(0, 16)}...
                       </Text>
                     </TouchableHighlight>
 
