@@ -174,7 +174,7 @@ const PaymentsComponent = ({navigation}) => {
     //     //  setBalance(etherValue);
     //     //     console.log(etherValue);
     //   });
-  }, []);
+  }, [navigation]);
   const t = true; // it means to send]
   // console.log('Address: ', address);
   // console.log('State: ', state);
