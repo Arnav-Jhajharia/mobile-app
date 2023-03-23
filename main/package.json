@@ -47,6 +47,7 @@
     "react-native-element-dropdown": "^2.7.1",
     "react-native-elements": "^3.4.3",
     "react-native-get-random-values": "^1.8.0",
+    "react-native-in-app-notification": "^3.2.0",
     "react-native-level-fs": "^3.0.1",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-os": "^1.2.6",

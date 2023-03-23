@@ -119,16 +119,14 @@ signAndSendTransaction = async (receiver, amount) => {
   if (chainInfo.chain_name.toLowerCase() == 'solana') {
     transaction = await Helper.getSolanaTransaction(sender);
   } else {
-    // transaction = await Helper.getEthereumTransacion(sender);
-    // transaction = await Helper.getEvmTokenTransaction(sender);
     transaction = await Helper.getEvmTokenTransaction(sender, receiver, amount);
   }
   console.log(transaction);
   const result = await particleAuth.signAndSendTransaction(transaction);
   if (result.status) {
     const signature = result.data;
-    console.log(signature);
-    return true;
+    console.log('TX Hash:', signature);
+    return signature;
   } else {
     const error = result.data;
     console.log(error);

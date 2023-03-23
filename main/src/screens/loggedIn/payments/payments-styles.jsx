@@ -21,9 +21,12 @@ const styles = StyleSheet.create({
 
   topbar: {
     position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     top: 0,
     left: 0,
-    width: '100%',
+    width: '90%',
+    marginLeft: '5%',
     backgroundColor: '#0C0C0C',
   },
 
@@ -31,8 +34,7 @@ const styles = StyleSheet.create({
     fontFamily: 'VelaSans-ExtraBold',
     color: '#fff',
     fontSize: 25,
-    marginLeft: '8%',
-    marginTop: '2%',
+    // marginLeft: '5%',
     marginBottom: '2%',
   },
 
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
 
   fontContainer: {
     alignItems: 'center',
-    marginTop: '20%',
+    marginTop: '17%',
   },
 
   buttonsContainer: {

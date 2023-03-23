@@ -8,6 +8,9 @@ import {
   ScrollView,
   Clipboard,
   Alert,
+  Modal,
+  Pressable,
+  Linking,
 } from 'react-native';
 import {Text} from '@rneui/themed';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,7 +28,6 @@ let web3;
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
-
 const images = [
   {
     name: 'DeriveX',
@@ -53,10 +55,13 @@ const images = [
 ];
 const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
-    {truth: true, to: '0', from: '0', value: 0},
+    {truth: true, to: '0', from: '0', value: 0, hash: ''},
   ]);
+  const [groupedState, setGroupedState] = React.useState([{'': {}}]);
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
+  const [transactionVisible, setTransactionVisible] = useState(false);
+  const [notificationVisible, setNotificiationsVisible] = useState(false);
 
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
@@ -149,6 +154,7 @@ const PaymentsComponent = ({navigation}) => {
                   : res.from,
               value: etherValue,
               date: formattedDate,
+              hash: res.hash,
             };
             // console.log(json);
             arr.push(json);
@@ -156,10 +162,10 @@ const PaymentsComponent = ({navigation}) => {
           }
           //    console.log(json);
           setState(arr.reverse());
-          // console.log(data.result);
         } else {
           console.log('Condition is working');
           setState([]);
+          setGroupedState({});
           return;
         }
       });
@@ -177,20 +183,28 @@ const PaymentsComponent = ({navigation}) => {
   }, []);
   const t = true; // it means to send]
   // console.log('Address: ', address);
-  // console.log('State: ', state);
-
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
         <View style={styles.topbar}>
           <Text style={styles.logo}>Payments</Text>
+          <TouchableOpacity onPress={() => setNotificiationsVisible(true)}>
+            <Icon
+              // style={styles.tup}
+              name={'notification'}
+              size={30}
+              color={'#fff'}
+              type="entypo"
+              // style = {{marginRight: '1%'}}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
             <Text
               style={{
                 color: '#6D797D',
-                fontSize: 45,
+                fontSize: 50,
                 fontFamily: 'Benzin-Medium',
               }}>
               $
@@ -199,7 +213,7 @@ const PaymentsComponent = ({navigation}) => {
               style={{
                 marginTop: '5%',
                 color: 'white',
-                fontSize: 45,
+                fontSize: 50,
                 fontFamily: 'Benzin-Medium',
               }}>
               {balance.split('.')[0]}
@@ -207,7 +221,7 @@ const PaymentsComponent = ({navigation}) => {
             <Text
               style={{
                 color: '#6D797D',
-                fontSize: 30,
+                fontSize: 35,
                 fontFamily: 'Benzin-Medium',
                 marginBottom: 5,
               }}>
@@ -328,11 +342,146 @@ const PaymentsComponent = ({navigation}) => {
             }}>
             Transactions
           </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setTransactionVisible(true);
+            }}>
+            <Text
+              style={{
+                color: '#87C4FF',
+                fontFamily: 'VelaSans-Bold',
+                fontSize: 15,
+                padding: 5,
+              }}>
+              View All
+            </Text>
+          </TouchableOpacity>
           {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
+        <Modal
+          animationType="slide"
+          visible={transactionVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setTransactionVisible(!transactionVisible);
+          }}>
+          <View style={{backgroundColor: '#0C0C0C'}}>
+            <ScrollView>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '90%',
+                  marginTop: '15%',
+                  marginLeft: '5%',
+                }}>
+                <Text
+                  style={{
+                    color: '#F0F0F0',
+                    fontSize: 25,
+                    fontFamily: 'VelaSans-ExtraBold',
+                  }}>
+                  Your Transactions
+                </Text>
+                <TouchableOpacity
+                  onPress={() => setTransactionVisible(!transactionVisible)}>
+                  <Icon
+                    name={'close'}
+                    size={30}
+                    color={'#f0f0f0'}
+                    type="simplelineicons"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{marginTop: '7%'}}>
+                {state.length > 0 ? (
+                  state.map(json => {
+                    return (
+                      <View>
+                        <Text
+                          style={{
+                            color: '#F0F0F0',
+                            marginLeft: '5%',
+                            fontFamily: 'VelaSans-Bold',
+                            fontSize: 15,
+                          }}>
+                          {/* {prevDate == json.date ? '' : json.date} */}
+                        </Text>
+                        <View style={styles.transactions}>
+                          <View style={styles.transactionLeft}>
+                            <Image
+                              source={
+                                json.truth
+                                  ? require('./icon/positive.png')
+                                  : require('./icon/negative.png')
+                              }
+                              style={{
+                                borderWidth: 0,
+                                width: 65,
+                                height: 65,
+                              }}
+                            />
+                            <View style={{margin: 10}}>
+                              <TouchableHighlight
+                                onPress={() => {
+                                  Linking.openURL(
+                                    `https://mumbai.polygonscan.com/tx/${json.hash}`,
+                                  );
+                                }}>
+                                <Text
+                                  style={{
+                                    color: 'white',
+                                    fontFamily: 'VelaSans-Bold',
+                                    fontSize: 17,
+                                  }}>
+                                  {(json.truth ? json.from : json.to).slice(
+                                    0,
+                                    16,
+                                  )}
+                                  ...
+                                </Text>
+                              </TouchableHighlight>
+
+                              <Text
+                                style={{
+                                  color: 'grey',
+                                  fontFamily: 'VelaSans-Bold',
+                                  fontSize: 15,
+                                }}>
+                                {json.date}
+                              </Text>
+                            </View>
+                          </View>
+
+                          <View style={styles.transactionRight}>
+                            <Text
+                              style={{
+                                color: json.truth ? '#4EE58B' : '#E14C4C',
+                                fontSize: 22,
+                                fontFamily: 'VelaSans-Bold',
+                              }}>
+                              {json.truth ? '+' : '-'}
+                              {json.value}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    );
+                  })
+                ) : (
+                  <View>
+                    <Text style={styles.noTransaction}>
+                      Your Transactions Appear Here
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+          </View>
+        </Modal>
         {state.length > 0 ? (
-          state.map(json => {
-            // console.log(state);
+          state.slice(0, 10).map(json => {
+            // console.log(groupedState);
             return (
               <View style={styles.transactions}>
                 <View style={styles.transactionLeft}>

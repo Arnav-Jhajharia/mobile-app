@@ -5,14 +5,34 @@ import Video from 'react-native-video';
 import {signAndSendTransactionConnect} from '../../../particle-connect';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
+import createProvider from '../../../particle-auth';
+import createConnectProvider from '../../../particle-connect';
 const Web3 = require('web3');
-
+let web3;
 const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
   const {amount, walletAddress, emailAddress, mobileNumber} = route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
+    if (global.withAuth) {
+      authAddress = global.loginAccount.publicAddress;
+      console.log('Global Account:', global.loginAccount);
+      web3 = this.createProvider();
+      // test(web3, authAddress);
+      //  console.log(web3.eth.getAccounts());
+    } else {
+      authAddress = global.connectAccount.publicAddress;
+      console.log('Global Account:', global.connectAccount);
+      console.log('Global Wallet Type:', global.walletType);
+      web3 = this.createConnectProvider();
+      // test(web3, authAddress);
+      // this.signAndSendTransactionConnect(
+      //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
+      //   '1000000000000000',
+      // );
+    }
+
     const transaction = async () => {
       let status;
       console.log('Is Auth:', global.withAuth);
@@ -20,7 +40,8 @@ export default function Component({route, navigation}) {
         authAddress = global.loginAccount.publicAddress;
         console.log('Global Account:', global.loginAccount);
         status = await this.signAndSendTransaction(walletAddress, weiVal);
-        if (status) navigation.navigate('Successful');
+        console.log('TX1:', status);
+        if (status !== false) navigation.navigate('Successful', {status});
         else navigation.navigate('Unsuccessful');
       } else {
         authAddress = global.connectAccount.publicAddress;
@@ -29,7 +50,8 @@ export default function Component({route, navigation}) {
           walletAddress,
           weiVal,
         );
-        if (status) navigation.navigate('Successful');
+        console.log('TX1:', status);
+        if (status !== false) navigation.navigate('Successful', {status});
         else navigation.navigate('Unsuccessful');
       }
     };
