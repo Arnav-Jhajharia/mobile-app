@@ -21,7 +21,7 @@ import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
 import {SABEX_LP} from '@env';
 let web3;
-
+const REMMITEX_CONTRACT = "0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7"
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
@@ -53,7 +53,7 @@ const images = [
 ];
 const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
-    {truth: true, to: '0', from: '0', value: 0},
+    {truth: 1, to: '0', from: '0', value: 0},
   ]);
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
@@ -98,13 +98,16 @@ const PaymentsComponent = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         if (data.message != 'NOTOK') {
+          
           //console.log(data.message);
           //         console.log(data);
           const result = data.result;
           //        console.log('Arnav:', result);
           let len = result.length;
+          
           let arr = [];
           for (let i = 0; i < len; i++) {
+            console.log("This is working!")
             let res = result[i];
             let val = res.value;
             const etherValue = web3.utils.fromWei(val, 'ether');
@@ -140,8 +143,10 @@ const PaymentsComponent = ({navigation}) => {
               pubDate.getDate() +
               ', ' +
               pubDate.getFullYear();
+              const truth = (REMMITEX_CONTRACT.toLowerCase() == res.to)?2:((authAddress.toString().toLowerCase() == res.to)?1:0)
+              console.log(truth)
             const json = {
-              truth: authAddress.toString().toLowerCase() == res.to, // true while accepting
+              truth: truth, // true while accepting
               to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
               from:
                 res.from == SABEX_LP.toLowerCase()
@@ -154,6 +159,7 @@ const PaymentsComponent = ({navigation}) => {
             arr.push(json);
             // console.log(authAddress, res.to, json.truth);
           }
+          console.log(arr)
           //    console.log(json);
           setState(arr.reverse());
           // console.log(data.result);
@@ -174,7 +180,7 @@ const PaymentsComponent = ({navigation}) => {
     //     //  setBalance(etherValue);
     //     //     console.log(etherValue);
     //   });
-  }, [navigation]);
+  }, []);
   const t = true; // it means to send]
   // console.log('Address: ', address);
   // console.log('State: ', state);
@@ -261,8 +267,9 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('ComingSoon');
-            }}>
+              navigation.navigate('Settings');
+            }}
+            >
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle
@@ -277,7 +284,7 @@ const PaymentsComponent = ({navigation}) => {
                 type="feather"
               />
               <Text style={{color: '#86969A', fontFamily: 'VelaSans-Bold'}}>
-                Deposit
+                Settings
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -338,7 +345,10 @@ const PaymentsComponent = ({navigation}) => {
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
-                      json.truth
+                      (json.truth == 2)
+                        ? require('./icon/pending.png')
+                        :
+                      (json.truth == 1)
                         ? require('./icon/positive.png')
                         : require('./icon/negative.png')
                     }
@@ -356,7 +366,12 @@ const PaymentsComponent = ({navigation}) => {
                       }}>
                       <Text
                         style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {(json.truth ? json.from : json.to).slice(0, 16)}...
+                        {((json.truth == 2)
+                        ? 'Pending'
+                        :
+                      (json.truth == 1)
+                        ? json.from
+                        : json.to).slice(0, 16)}...
                       </Text>
                     </TouchableHighlight>
 
@@ -373,7 +388,7 @@ const PaymentsComponent = ({navigation}) => {
                       fontSize: 20,
                       fontFamily: 'VelaSans-Bold',
                     }}>
-                    {json.truth ? '+' : '-'}
+                    {(json.truth != 0 && json.truth != 2) ? '+' : '-'}
                     {json.value}
                   </Text>
                 </View>

@@ -13,6 +13,7 @@ import {
 import {useState, useMemo, useEffect} from 'react';
 import {Text} from '@rneui/themed';
 import {SelectCountry} from 'react-native-element-dropdown';
+const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7'
 
 // import styles from './paymentsStyles'
 // import { Picker, onOpen } from 'react-native-actions-sheet-picker';
@@ -33,6 +34,8 @@ import {Icon} from 'react-native-elements';
 //         "image": "https://www.vigcenter.com/public/all/images/default-image.jpg"
 //       },
 //   ];
+const width = Dimensions.get('window').width;
+
 const local_data = [
   {
     value: '1',
@@ -61,7 +64,7 @@ const SendEmailComponent = ({navigation}) => {
   const [country, setCountry] = useState('1');
   const [text, setText] = useState('');
   const handleSubmit = () => {
-    if (country == 1) {
+    if (country == 1) { // Email
       // if(!country.includes('@')) return;
       fetch(`https://emailfind.api.xade.finance/polygon?email=${text}`, {
         method: 'GET',
@@ -80,6 +83,13 @@ const SendEmailComponent = ({navigation}) => {
               walletAddress: data,
               emailAddress: text,
             });
+          else {
+            navigation.navigate('EnterAmount', {
+              type: 'v2',
+              walletAddress: REMMITEX_CONTRACT,
+              emailAddress: text,
+            });
+          }
         });
     } else if (country == 2) {
       navigation.navigate('EnterAmount', {
@@ -95,15 +105,17 @@ const SendEmailComponent = ({navigation}) => {
         height: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}>
+      }}>   
       <View
         style={{
           position: 'absolute',
           top: '5%',
-          width: '100%',
+          width: width,
           alignItems: 'center',
-          flexDirection: 'column',
+          justifyContent: 'center',
+          flexDirection: 'row',
         }}>
+          {/* <View style = {{alignSelf: 'flex-start'}}> */}
         <Icon
           name="arrow-left"
           style={{position: 'absolute', left: 0, display: 'none'}}
@@ -112,8 +124,9 @@ const SendEmailComponent = ({navigation}) => {
           type="feather"
           onPress={() => navigation.navigate('Payments')}
         />
+        {/* </View> */}
         <Text
-          style={{fontSize: 25, fontFamily: 'VelaSans-Bold', color: 'white'}}>
+          style={{width: width * 0.8,fontSize: 25, textAlign: 'center', fontFamily: 'VelaSans-Bold', color: 'white'}}>
           Enter{' '}
           {country == 1
             ? 'email'

@@ -13,11 +13,13 @@ import {
   Platform,
   TouchableHighlight,
   Alert,
+  Dimensions
 } from 'react-native';
 import {CameraScreen} from 'react-native-camera-kit';
 
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
+const width = Dimensions.get('window').width;
 
 import QR from '../../../qr-generator';
 import {logout} from '../../../particle-auth';
@@ -205,6 +207,7 @@ class QRPage extends Component {
                   type="feather"
                   onPress={() => this.props.navigation.navigate('Payments')}
                 />
+               <View style = {{justifyContent: "flex-start", alignItems: 'center',width: width * 0.9}}> 
                 <View style={styles.nav}>
                   <TouchableOpacity
                     style={styles.navLeft}
@@ -218,6 +221,7 @@ class QRPage extends Component {
                     }}>
                     <Text style={styles.rightText}>Scan</Text>
                   </TouchableOpacity>
+                </View>
                 </View>
               </View>
               <View style={styles.mainContent}>
@@ -233,7 +237,7 @@ class QRPage extends Component {
                     Send To Email Address Or Mobile Instead
                   </Text>
                 </TouchableHighlight>
-                <Text
+                {/* <Text
                   onPress={() => {
                     global.withAuth
                       ? particleAuth.fastLogout()
@@ -243,7 +247,7 @@ class QRPage extends Component {
                   }}
                   style={styles.logout}>
                   Logout
-                </Text>
+                </Text> */}
               </View>
             </View>
           </ScrollView>

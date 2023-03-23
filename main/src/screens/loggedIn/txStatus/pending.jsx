@@ -6,11 +6,10 @@ import {signAndSendTransactionConnect} from '../../../particle-connect';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 const Web3 = require('web3');
-
 const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
-  const {amount, walletAddress, emailAddress, mobileNumber} = route.params;
+  const {amount, walletAddress, emailAddress, mobileNumber, type} = route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
     const transaction = async () => {
@@ -20,6 +19,12 @@ export default function Component({route, navigation}) {
         authAddress = global.loginAccount.publicAddress;
         console.log('Global Account:', global.loginAccount);
         status = await this.signAndSendTransaction(walletAddress, weiVal);
+        fetch(
+          `https://amtowe.api.xade.finance?from=${authAddress}&to=${emailAddress}&amt=${amount}`)
+                      .then((res) => res.json())
+                      .then((json) => {
+                        navigation.navigate('Successful')         
+                      })
         if (status) navigation.navigate('Successful');
         else navigation.navigate('Unsuccessful');
       } else {
@@ -60,6 +65,8 @@ export default function Component({route, navigation}) {
           }}
         />
       </View>
+      {(type == 'v2')?
+
       <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
         <Text
           style={{
@@ -71,7 +78,19 @@ export default function Component({route, navigation}) {
           }}>
           Return Home
         </Text>
+          
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 15,
+            // marginTop: '20%',
+            textAlign: 'center',
+            fontFamily: 'VelaSans-Bold',
+          }}>
+          We will let you know when the recipient has recieved the money.
+        </Text>
       </TouchableOpacity>
+:<View></View>}
     </View>
   );
 }

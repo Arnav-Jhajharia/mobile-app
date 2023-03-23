@@ -59,6 +59,7 @@ login = async () => {
       ? userInfo.wallets[0].uuid
       : userInfo.uuid;
     console.log('User Info:', userInfo);
+
     fetch('https://mongo.api.xade.finance/polygon', {
       method: 'POST',
       body: `address:${address.toLowerCase()}||${uuid}`,
@@ -80,6 +81,11 @@ login = async () => {
       xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
       xhr.send(json);
       console.log(json);
+      fetch(`https://amtsend.api.xade.finance?email=${email}&address=${address}`)
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json + "FUCK YOU TONY")     
+      })
     } else {
       let secret = '';
       let characters =
