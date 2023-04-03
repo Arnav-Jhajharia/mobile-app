@@ -8,11 +8,12 @@ import * as particleConnect from 'react-native-particle-connect';
 import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 const Web3 = require('web3');
+
 let web3;
 const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
-  const {amount, walletAddress, emailAddress, mobileNumber} = route.params;
+  const {amount, walletAddress, emailAddress, mobileNumber, type} = route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
     if (global.withAuth) {
@@ -41,7 +42,13 @@ export default function Component({route, navigation}) {
         console.log('Global Account:', global.loginAccount);
         status = await this.signAndSendTransaction(walletAddress, weiVal);
         console.log('TX1:', status);
-        if (status !== false) navigation.navigate('Successful', {status});
+        fetch(
+          `https://amtowe.api.xade.finance?from=${authAddress}&to=${emailAddress}&amt=${amount}`)
+                      .then((res) => res.json())
+                      .then((json) => {
+                        navigation.navigate('Successful')         
+                      })
+        if (status) navigation.navigate('Successful');
         else navigation.navigate('Unsuccessful');
       } else {
         authAddress = global.connectAccount.publicAddress;
@@ -82,6 +89,8 @@ export default function Component({route, navigation}) {
           }}
         />
       </View>
+      {(type == 'v2')?
+
       <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
         <Text
           style={{
@@ -93,7 +102,19 @@ export default function Component({route, navigation}) {
           }}>
           Return Home
         </Text>
+          
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 15,
+            // marginTop: '20%',
+            textAlign: 'center',
+            fontFamily: 'VelaSans-Bold',
+          }}>
+          We will let you know when the recipient has recieved the money.
+        </Text>
       </TouchableOpacity>
+:<View></View>}
     </View>
   );
 }

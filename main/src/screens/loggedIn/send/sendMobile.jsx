@@ -30,7 +30,7 @@ const buttons = [
 // import styles from './paymentsStyles'
 // import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 import {Icon} from 'react-native-elements';
-const windowWidth = Dimensions.get('window').width;
+const width = Dimensions.get('window').width;
 // const countries = [
 //     {
 //         "name": "Email Address",
@@ -104,10 +104,12 @@ const SendMobileComponent = ({navigation}) => {
         style={{
           position: 'absolute',
           top: '5%',
-          width: '100%',
+          width: width,
           alignItems: 'center',
-          flexDirection: 'column',
+          justifyContent: 'center',
+          flexDirection: 'row',
         }}>
+          {/* <View style = {{alignSelf: 'flex-start'}}> */}
         <Icon
           name="arrow-left"
           style={{position: 'absolute', left: 0, display: 'none'}}
@@ -116,9 +118,10 @@ const SendMobileComponent = ({navigation}) => {
           type="feather"
           onPress={() => navigation.navigate('Payments')}
         />
+        {/* </View> */}
         <Text
-          style={{fontSize: 25, fontFamily: 'VelaSans-Bold', color: 'white'}}>
-          Enter mobile no.
+          style={{width: width * 0.8,fontSize: 25, textAlign: 'center', fontFamily: 'VelaSans-Bold', color: 'white'}}>
+            Enter mobile no.
         </Text>
       </View>
       <View style={styles.container}>

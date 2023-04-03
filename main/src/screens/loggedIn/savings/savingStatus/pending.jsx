@@ -35,7 +35,7 @@ export default function Component({route, navigation}) {
       {
         const balance = await getUserPoolBalance();
         console.log(balance, amount)
-        if(balance < amount) {
+        if(parseInt(balance) < parseInt(amount)) {
           navigation.navigate('Unsuccessful')
           return;
         }

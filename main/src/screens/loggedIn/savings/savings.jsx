@@ -122,17 +122,18 @@ const Savings = ({navigation}) => {
             ) {
               console.log(res);
               const json = {
-                truth: authAddress.toString().toLowerCase() == res.to, // true while accepting
-                to: res.to == SABEX_LP.toLowerCase() ? 'Deposit' : res.to,
-                from:
-                  res.from == SABEX_LP.toLowerCase() ? 'Withdrawal' : res.from,
+                truth: authAddress.toString().toLowerCase() != res.to, // true while accepting
+                to: 'Deposit',
+                from: 'Withdraw',
                 value: etherValue,
                 date: formattedDate,
               };
               arr.push(json);
-              setState(arr.reverse());
+              
             }
           }
+          console.log(arr)
+          setState(arr.reverse());
         } else {
           console.log('Condition is working');
           setState([]);

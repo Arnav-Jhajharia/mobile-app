@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Buffer} from 'buffer';
@@ -37,11 +37,18 @@ import SavingsPending from './screens/loggedIn/savings/savingStatus/pending';
 import SavingsSuccessful from './screens/loggedIn/savings/savingStatus/successful';
 // import SavingsUnsuccessful from './screens/loggedIn/savings/savingStatus/unsuccessful';
 
+import FiatAmountComponent from './screens/fiatRamps/components/amount'
+import FiatAggregatorComponent from './screens/fiatRamps/components/aggregator'
+import FiatWidgetComponent from './screens/fiatRamps/components/widget'
+
+import SettingsComponent from './screens/settings/settings'
+
 const Stack = createNativeStackNavigator();
 const bg = require('./../assets/bg.png');
-const particle = require('../assets/particle.jpg');
+const particle = require('./../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
-
+import messaging from '@react-native-firebase/messaging';
+import { requestUserPermission } from './utils/push'
 function Particle({navigation}) {
   return (
     <View>
@@ -58,6 +65,42 @@ function ChooseWallet({navigation}) {
   );
 }
 
+function FiatAmount({navigation}) {
+  return (
+    <View>
+      <FiatAmountComponent navigation={navigation} />
+    </View>
+  );
+}
+
+function FiatAggregator({navigation}) {
+  return (
+    <View>
+      <FiatAggregatorComponent navigation={navigation} />
+    </View>
+  );
+}
+
+function FiatWidget({navigation}) {
+  return (
+    <View>
+      <FiatWidgetComponent navigation={navigation} />
+    </View>
+  );
+}
+
+function Settings({navigation}) {
+  return (
+    <SafeAreaView style={styles.black}>
+    <ScrollView style={{height: windowHeight * 0.8}}>
+      <View>
+        <SettingsComponent navigation={navigation} />
+      </View>
+    </ScrollView>
+    <BottomNavbar navigation={navigation} selected = "Settings" />
+  </SafeAreaView>
+  );
+}
 function LoggedIn({navigation}) {
   return (
     <ScrollView>
@@ -130,7 +173,7 @@ function ComingSoon({navigation}) {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected="ComingSoon" />
+      <BottomNavbar navigation={navigation} selected = "ComingSoon"/>
     </ImageBackground>
   );
 }
@@ -143,7 +186,7 @@ function Savings({navigation}) {
           <SavingsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected="Savings" />
+      <BottomNavbar navigation={navigation} selected = "Savings" />
     </SafeAreaView>
   );
 }
@@ -164,7 +207,7 @@ function Payments({navigation}) {
           <PaymentsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected="Payments" />
+      <BottomNavbar navigation={navigation} selected = "Payments" />
     </SafeAreaView>
   );
 }
@@ -223,9 +266,22 @@ function SendMobile({navigation}) {
 }
 
 export default function App({navigation}) {
+useEffect(() => {
+  messaging().onNotificationOpenedApp(remoteMessage => {
+    console.log(
+      'Notification caused app to open from background state:',
+      remoteMessage.notification,
+    );
+  });
+  messaging().onMessage(async remoteMessage => {
+    console.log('notification on foreground state.......'. remoteMessage)
+  })
+  requestUserPermission()
+})
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ animation: 'none' }}>
         {/*
         <Stack.Screen
           name="Home"
@@ -342,7 +398,7 @@ export default function App({navigation}) {
           navigation={navigation}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+         <Stack.Screen
           name="SavingsPending"
           component={SavingsPending}
           navigation={navigation}
@@ -355,11 +411,29 @@ export default function App({navigation}) {
           options={{headerShown: false}}
         />
         {/* <Stack.Screen
-          name="SavingsUnsuccessful"
-          component={SavingsUnsuccessful}
+          name="FiatAmount"
+          component={FiatAmount}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FiatAggregator"
+          component={FiatAggregator}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FiatWidget"
+          component={FiatWidget}
           navigation={navigation}
           options={{headerShown: false}}
         /> */}
+          <Stack.Screen
+            name="Settings"
+            component={Settings}
+            navigation={navigation}
+            options={{headerShown: false}}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );

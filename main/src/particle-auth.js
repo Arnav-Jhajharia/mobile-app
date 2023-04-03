@@ -7,7 +7,7 @@ import {
 import * as particleAuth from 'react-native-particle-auth';
 import {PNAccount} from './Models/PNAccount';
 import * as Helper from './helper';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Web3 from 'web3';
 import {ParticleProvider} from 'react-native-particle-auth';
 import {PROJECT_ID, CLIENT_KEY} from '@env';
@@ -97,6 +97,34 @@ login = async () => {
       s.open('POST', 'https://mongo.api.xade.finance/polygon');
       s.send(data);
     }
+    const url = "https://notifs.api.xade.finance/registerDevice";
+    const token = await AsyncStorage.getItem('token')
+    const notifsdata = { 
+    walletAddress: address,
+    deviceToken: token
+    };
+    console.log('req being sent')
+    fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(notifsdata)
+    })
+    .then(response => {
+    if (!response.ok) {
+      console.log(response)
+      throw new Error("Network response was not ok");
+    }
+    // console.log(response.json());
+    return response.json();
+    })
+    .then(data => {
+    console.log(data);
+    })
+    .catch(error => {
+    console.error("There was an error:", error);
+    });
   }
 };
 
