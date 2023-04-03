@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Buffer} from 'buffer';
@@ -47,7 +47,8 @@ const Stack = createNativeStackNavigator();
 const bg = require('./../assets/bg.png');
 const particle = require('./../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
-
+import messaging from '@react-native-firebase/messaging';
+import { requestUserPermission } from './utils/push'
 function Particle({navigation}) {
   return (
     <View>
@@ -265,6 +266,19 @@ function SendMobile({navigation}) {
 }
 
 export default function App({navigation}) {
+useEffect(() => {
+  messaging().onNotificationOpenedApp(remoteMessage => {
+    console.log(
+      'Notification caused app to open from background state:',
+      remoteMessage.notification,
+    );
+  });
+  messaging().onMessage(async remoteMessage => {
+    console.log('notification on foreground state.......'. remoteMessage)
+  })
+  requestUserPermission()
+})
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ animation: 'none' }}>

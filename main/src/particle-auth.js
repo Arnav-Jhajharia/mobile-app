@@ -11,6 +11,7 @@ import * as Helper from './helper';
 import Web3 from 'web3';
 import {ParticleProvider} from 'react-native-particle-auth';
 import {PROJECT_ID, CLIENT_KEY} from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const projectId = PROJECT_ID;
 const clientKey = CLIENT_KEY;
@@ -64,6 +65,23 @@ login = async () => {
       method: 'POST',
       body: `address:${address.toLowerCase()}||${uuid}`,
     });
+    const token = await AsyncStorage.getItem('token')
+    if(token) {
+    const response = await fetch("URL", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({walletAddress, deviceToken:token }), // body data type must match "Content-Type" header
+    });
+  }
+  }
     if (email[0] != '+') {
       const login_type = '';
       const object = {
@@ -96,6 +114,7 @@ login = async () => {
           Math.floor(Math.random() * charactersLength),
         );
       }
+      
       console.log('Condition is not not working!');
       let phone = email.replace('+', '');
       let data = `{"phone":"${phone}","id":"${secret}"}`;
