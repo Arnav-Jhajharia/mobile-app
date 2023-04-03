@@ -179,7 +179,7 @@ const Savings = ({navigation}) => {
             style={{
               color: 'white',
               fontSize: 18,
-              fontFamily: 'VelaSans-Medium',
+              fontFamily: 'VelaSans-Bold',
             }}>
             Total amount deposited
           </Text>

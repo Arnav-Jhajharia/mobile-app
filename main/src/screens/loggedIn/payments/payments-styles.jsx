@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
 
   ttext: {
     marginLeft: 10,
+    marginTop: 10,
   },
 
   depWith: {
@@ -223,8 +224,15 @@ const styles = StyleSheet.create({
     color: '#d9d9d9',
     marginTop: '7%',
     textAlign: 'center',
-    fontFamily: 'EuclidCircularA-Regular',
-    fontSize: 15,
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 17,
+  },
+
+  dates: {
+    color: '#6D797D',
+    fontSize: 17,
+    fontFamily: 'EuclidCircularA-Medium',
+    marginLeft: '5%',
   },
 });
 

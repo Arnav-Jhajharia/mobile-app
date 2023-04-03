@@ -9910,12 +9910,17 @@ react-native-linear-gradient@^2.6.2:
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz"
   integrity sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ==
 
+react-native-notifications@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.npmjs.org/react-native-notifications/-/react-native-notifications-4.3.3.tgz"
+  integrity sha512-t7uPgpC93A4L41Jea2zet3BUqgh45gpN/ATS9gxejNH3r6kWgMdGeeZJhuMpl1gSXw1gcvgzdjzIjN7YZSOP0A==
+
 react-native-os@^1.2.6:
   version "1.2.6"
   resolved "https://registry.npmjs.org/react-native-os/-/react-native-os-1.2.6.tgz"
   integrity sha512-OlT+xQAcvkcnf7imgXiu+myMkqDt4xw2bP5SlVo19hEn5XHBkPMLX7dk3sSGxxncH/ToMDsf1KLyrPabNVtadA==
 
-react-native-particle-auth@^0.10.4:
+react-native-particle-auth@^0.10.7:
   version "0.10.7"
   resolved "https://registry.npmjs.org/react-native-particle-auth/-/react-native-particle-auth-0.10.7.tgz"
   integrity sha512-7kXXzKO/NmfTk/vxxcmzoSBk3Rx9D+PooLalp8k8+CA8S6FBTazfE4KX2PCoNamA0NB5A33yEv3wIcr6ZWIO7w==

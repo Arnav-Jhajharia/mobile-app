@@ -15,7 +15,7 @@ const Web3 = require('web3');
 import {PNAccount} from '../../Models/PNAccount';
 
 import * as particleAuth from 'react-native-particle-auth';
-import {signAndSendTransactionConnect} from '../../particle-connect';
+
 const bg = require('../../../assets/bg.png');
 const windowHeight = Dimensions.get('window').height;
 
@@ -24,16 +24,8 @@ const LoginCheck = async ({navigation}) => {
     particleAuth.ChainInfo.PolygonMumbai,
     particleAuth.Env.Production,
   );
-  // await particleAuth.logout();
   console.log('Checking if user is logged in');
   const result = await particleAuth.isLogin();
-
-  /*
-  this.signAndSendTransaction(
-    '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
-    '1000000000000000',
-  );
-  */
 
   if (result) {
     var account = await particleAuth.getUserInfo();

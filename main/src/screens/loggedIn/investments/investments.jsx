@@ -13,7 +13,9 @@ import {Text, Icon} from '@rneui/themed';
 import {Slider} from 'react-native-elements';
 import styles from './investment-styles';
 import BottomNavbar from '../../navbar';
-import test from './investments/events';
+
+import getSpotPrice from './backend/viewFunctions';
+import transactions from './backend/txFunctions';
 
 red = true;
 class Investments extends React.Component {
@@ -74,12 +76,11 @@ class Investments extends React.Component {
 
   componentDidMount() {
     this.updatePrice();
-    test();
+    // console.log(getSpotPrice('BTC'));
   }
 
   render(navigation) {
     // events.test();
-    test();
     return (
       <View style={styles.black}>
         <ScrollView>
@@ -417,7 +418,16 @@ class Investments extends React.Component {
         </ScrollView>
         <View style={styles.confirmButton}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ComingSoon')}
+            onPress={() =>
+              transactions().openPosition(
+                'BTC',
+                this.state.btnSelected == 'short' ? 0 : 1,
+                this.state.buyPrice,
+                this.state.leverageValue,
+                this.state.price,
+                this.props.navigation,
+              )
+            }
             style={
               this.state.btnSelected == 'long' ||
               this.state.btnSelected == 'short'
@@ -427,12 +437,15 @@ class Investments extends React.Component {
                 : {display: 'none'}
             }>
             {this.state.btnSelected == 'short' ? (
-              <Text style={styles.confirmText}>Coming Soon!</Text>
+              <Text style={styles.confirmText}>Confirm Short</Text>
             ) : (
-              <Text style={styles.confirmText}>Coming Soon!</Text>
+              <Text style={styles.confirmText}>Confirm Long</Text>
             )}
           </TouchableOpacity>
-          <BottomNavbar navigation={this.props.navigation} selected = "Investments" />
+          <BottomNavbar
+            navigation={this.props.navigation}
+            selected="Investments"
+          />
         </View>
       </View>
     );

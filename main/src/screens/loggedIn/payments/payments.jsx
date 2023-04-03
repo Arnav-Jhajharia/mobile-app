@@ -9,8 +9,8 @@ import {
   Clipboard,
   Alert,
   Modal,
-  Pressable,
   Linking,
+  Dimensions,
 } from 'react-native';
 import {Text} from '@rneui/themed';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,7 +24,7 @@ import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
 import {SABEX_LP} from '@env';
 let web3;
-
+const windowHeight = Dimensions.get('window').height;
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
@@ -57,7 +57,7 @@ const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0, hash: ''},
   ]);
-  const [groupedState, setGroupedState] = React.useState([{'': {}}]);
+  const [dates, setDates] = React.useState([]);
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
   const [transactionVisible, setTransactionVisible] = useState(false);
@@ -109,6 +109,7 @@ const PaymentsComponent = ({navigation}) => {
           //        console.log('Arnav:', result);
           let len = result.length;
           let arr = [];
+          let date = [];
           for (let i = 0; i < len; i++) {
             let res = result[i];
             let val = res.value;
@@ -156,16 +157,21 @@ const PaymentsComponent = ({navigation}) => {
               date: formattedDate,
               hash: res.hash,
             };
+            date.push(formattedDate);
+            // console.log(date);
             // console.log(json);
             arr.push(json);
             // console.log(authAddress, res.to, json.truth);
           }
           //    console.log(json);
+          setDates([...new Set(date)].reverse());
           setState(arr.reverse());
+          // console.log(dates);
+          // console.log(state);
         } else {
           console.log('Condition is working');
           setState([]);
-          setGroupedState({});
+          setDates([]);
           return;
         }
       });
@@ -198,6 +204,51 @@ const PaymentsComponent = ({navigation}) => {
               // style = {{marginRight: '1%'}}
             />
           </TouchableOpacity>
+          <Modal
+            animationType="fade"
+            visible={notificationVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setNotificiationsVisible(!notificationVisible);
+            }}>
+            <View style={{height: windowHeight, backgroundColor: '#0C0C0C'}}>
+              <ScrollView>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '90%',
+                    marginTop: '15%',
+                    marginLeft: '5%',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#F0F0F0',
+                      fontSize: 25,
+                      fontFamily: 'EuclidCircularA-Medium',
+                    }}>
+                    Notifications
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setNotificiationsVisible(!notificationVisible)
+                    }>
+                    <Icon
+                      name={'keyboard-backspace'}
+                      size={30}
+                      color={'#f0f0f0'}
+                      type="materialicons"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{marginTop: '50%'}}>
+                  <Text style={styles.noTransaction}>
+                    Your Notifications Appear Here
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
+          </Modal>
         </View>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -374,97 +425,140 @@ const PaymentsComponent = ({navigation}) => {
                   width: '90%',
                   marginTop: '15%',
                   marginLeft: '5%',
+                  marginBottom: '2%',
                 }}>
                 <Text
                   style={{
                     color: '#F0F0F0',
                     fontSize: 25,
-                    fontFamily: 'VelaSans-ExtraBold',
+                    fontFamily: 'EuclidCircularA-Medium',
                   }}>
                   Your Transactions
                 </Text>
                 <TouchableOpacity
                   onPress={() => setTransactionVisible(!transactionVisible)}>
                   <Icon
-                    name={'close'}
+                    name={'keyboard-backspace'}
                     size={30}
                     color={'#f0f0f0'}
-                    type="simplelineicons"
+                    type="materialicons"
                   />
                 </TouchableOpacity>
               </View>
               <View style={{marginTop: '7%'}}>
-                {state.length > 0 ? (
-                  state.map(json => {
+                {dates.length > 0 ? (
+                  // state.map(json => {
+                  dates.map(date => {
+                    // return state.map(json => {
+                    var today = new Date();
+
+                    var weekday = new Array(
+                      'Sun',
+                      'Mon',
+                      'Tue',
+                      'Wed',
+                      'Thu',
+                      'Fri',
+                      'Sat',
+                    );
+
+                    var monthname = new Array(
+                      'Jan',
+                      'Feb',
+                      'Mar',
+                      'Apr',
+                      'May',
+                      'Jun',
+                      'Jul',
+                      'Aug',
+                      'Sep',
+                      'Oct',
+                      'Nov',
+                      'Dec',
+                    );
+
+                    var formattedDate =
+                      monthname[today.getMonth()] +
+                      ' ' +
+                      today.getDate() +
+                      ', ' +
+                      today.getFullYear();
+                    let transactions = [];
+                    Object.keys(state).forEach(key => {
+                      if (
+                        state[key].date == date &&
+                        !transactions.includes(state[key])
+                      ) {
+                        transactions.push(state[key]);
+                      }
+                    });
+                    // console.log(transactions);
                     return (
                       <View>
-                        <Text
-                          style={{
-                            color: '#F0F0F0',
-                            marginLeft: '5%',
-                            fontFamily: 'VelaSans-Bold',
-                            fontSize: 15,
-                          }}>
-                          {/* {prevDate == json.date ? '' : json.date} */}
+                        <Text style={styles.dates}>
+                          {date == formattedDate ? 'Today' : date}
                         </Text>
-                        <View style={styles.transactions}>
-                          <View style={styles.transactionLeft}>
-                            <Image
-                              source={
-                                json.truth
-                                  ? require('./icon/positive.png')
-                                  : require('./icon/negative.png')
-                              }
-                              style={{
-                                borderWidth: 0,
-                                width: 65,
-                                height: 65,
-                              }}
-                            />
-                            <View style={{margin: 10}}>
-                              <TouchableHighlight
-                                onPress={() => {
-                                  Linking.openURL(
-                                    `https://mumbai.polygonscan.com/tx/${json.hash}`,
-                                  );
-                                }}>
+                        {transactions.map(json => {
+                          return (
+                            <View style={styles.transactions}>
+                              <View style={styles.transactionLeft}>
+                                <Image
+                                  source={
+                                    json.truth
+                                      ? require('./icon/positive.png')
+                                      : require('./icon/negative.png')
+                                  }
+                                  style={{
+                                    borderWidth: 0,
+                                    width: 60,
+                                    height: 60,
+                                  }}
+                                />
+                                <View style={{margin: 10}}>
+                                  <TouchableHighlight
+                                    onPress={() => {
+                                      Linking.openURL(
+                                        `https://mumbai.polygonscan.com/tx/${json.hash}`,
+                                      );
+                                    }}>
+                                    <Text
+                                      style={{
+                                        color: 'white',
+                                        fontFamily: 'VelaSans-Bold',
+                                        fontSize: 15,
+                                      }}>
+                                      {(json.truth ? json.from : json.to).slice(
+                                        0,
+                                        16,
+                                      )}
+                                      ...
+                                    </Text>
+                                  </TouchableHighlight>
+
+                                  <Text
+                                    style={{
+                                      color: 'grey',
+                                      fontFamily: 'VelaSans-Bold',
+                                      fontSize: 13,
+                                    }}>
+                                    {json.date}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View style={styles.transactionRight}>
                                 <Text
                                   style={{
-                                    color: 'white',
+                                    color: json.truth ? '#4EE58B' : '#E14C4C',
+                                    fontSize: 20,
                                     fontFamily: 'VelaSans-Bold',
-                                    fontSize: 17,
                                   }}>
-                                  {(json.truth ? json.from : json.to).slice(
-                                    0,
-                                    16,
-                                  )}
-                                  ...
+                                  {json.truth ? '+' : '-'}
+                                  {json.value}
                                 </Text>
-                              </TouchableHighlight>
-
-                              <Text
-                                style={{
-                                  color: 'grey',
-                                  fontFamily: 'VelaSans-Bold',
-                                  fontSize: 15,
-                                }}>
-                                {json.date}
-                              </Text>
+                              </View>
                             </View>
-                          </View>
-
-                          <View style={styles.transactionRight}>
-                            <Text
-                              style={{
-                                color: json.truth ? '#4EE58B' : '#E14C4C',
-                                fontSize: 22,
-                                fontFamily: 'VelaSans-Bold',
-                              }}>
-                              {json.truth ? '+' : '-'}
-                              {json.value}
-                            </Text>
-                          </View>
-                        </View>
+                          );
+                        })}
                       </View>
                     );
                   })
@@ -504,12 +598,20 @@ const PaymentsComponent = ({navigation}) => {
                         Alert.alert('Copied Address To Clipboard');
                       }}>
                       <Text
-                        style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
+                        style={{
+                          color: 'white',
+                          fontFamily: 'EuclidCircularA-Medium',
+                          fontSize: 15,
+                        }}>
                         {(json.truth ? json.from : json.to).slice(0, 16)}...
                       </Text>
                     </TouchableHighlight>
 
-                    <Text style={{color: 'grey', fontFamily: 'VelaSans-Bold'}}>
+                    <Text
+                      style={{
+                        color: 'grey',
+                        fontFamily: 'EuclidCircularA-Medium',
+                      }}>
                       {json.date}
                     </Text>
                   </View>
@@ -518,9 +620,9 @@ const PaymentsComponent = ({navigation}) => {
                 <View style={styles.transactionRight}>
                   <Text
                     style={{
-                      color: json.truth ? '#4EE58B' : 'red',
+                      color: json.truth ? '#4EE58B' : '#E14C4C',
                       fontSize: 20,
-                      fontFamily: 'VelaSans-Bold',
+                      fontFamily: 'EuclidCircularA-Medium',
                     }}>
                     {json.truth ? '+' : '-'}
                     {json.value}
