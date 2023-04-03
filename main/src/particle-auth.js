@@ -7,11 +7,10 @@ import {
 import * as particleAuth from 'react-native-particle-auth';
 import {PNAccount} from './Models/PNAccount';
 import * as Helper from './helper';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Web3 from 'web3';
 import {ParticleProvider} from 'react-native-particle-auth';
 import {PROJECT_ID, CLIENT_KEY} from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const projectId = PROJECT_ID;
 const clientKey = CLIENT_KEY;
@@ -60,28 +59,10 @@ login = async () => {
       ? userInfo.wallets[0].uuid
       : userInfo.uuid;
     console.log('User Info:', userInfo);
-
     fetch('https://mongo.api.xade.finance/polygon', {
       method: 'POST',
       body: `address:${address.toLowerCase()}||${uuid}`,
     });
-    const token = await AsyncStorage.getItem('token')
-    if(token) {
-    const response = await fetch("URL", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify({walletAddress, deviceToken:token }), // body data type must match "Content-Type" header
-    });
-  }
-  }
     if (email[0] != '+') {
       const login_type = '';
       const object = {
@@ -99,11 +80,6 @@ login = async () => {
       xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
       xhr.send(json);
       console.log(json);
-      fetch(`https://amtsend.api.xade.finance?email=${email}&address=${address}`)
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json + "FUCK YOU TONY")     
-      })
     } else {
       let secret = '';
       let characters =
@@ -114,7 +90,6 @@ login = async () => {
           Math.floor(Math.random() * charactersLength),
         );
       }
-      
       console.log('Condition is not not working!');
       let phone = email.replace('+', '');
       let data = `{"phone":"${phone}","id":"${secret}"}`;
@@ -122,6 +97,34 @@ login = async () => {
       s.open('POST', 'https://mongo.api.xade.finance/polygon');
       s.send(data);
     }
+    const url = "https://notifs.api.xade.finance/registerDevice";
+    const token = await AsyncStorage.getItem('token')
+    const notifsdata = { 
+    walletAddress: address,
+    deviceToken: token
+    };
+    console.log('req being sent')
+    fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(notifsdata)
+    })
+    .then(response => {
+    if (!response.ok) {
+      console.log(response)
+      throw new Error("Network response was not ok");
+    }
+    // console.log(response.json());
+    return response.json();
+    })
+    .then(data => {
+    console.log(data);
+    })
+    .catch(error => {
+    console.error("There was an error:", error);
+    });
   }
 };
 
@@ -144,16 +147,14 @@ signAndSendTransaction = async (receiver, amount) => {
   if (chainInfo.chain_name.toLowerCase() == 'solana') {
     transaction = await Helper.getSolanaTransaction(sender);
   } else {
-    // transaction = await Helper.getEthereumTransacion(sender);
-    // transaction = await Helper.getEvmTokenTransaction(sender);
     transaction = await Helper.getEvmTokenTransaction(sender, receiver, amount);
   }
   console.log(transaction);
   const result = await particleAuth.signAndSendTransaction(transaction);
   if (result.status) {
     const signature = result.data;
-    console.log(signature);
-    return true;
+    console.log('TX Hash:', signature);
+    return signature;
   } else {
     const error = result.data;
     console.log(error);
