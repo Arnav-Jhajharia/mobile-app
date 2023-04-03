@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* XadeMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* XadeMobileTests.m */; };
 		0841FDD29900B8B66C76B406 /* Pods_XadeMobile_XadeMobileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 886A90F9CB6993848EDF0BB4 /* Pods_XadeMobile_XadeMobileTests.framework */; };
+		136728E04AE14A3492EFFAC3 /* EuclidCircular-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B540653F0354C50A173D543 /* EuclidCircular-SemiBold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* XadeMobile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* XadeMobile.m */; };
+		40BCE07F740A4A70BB76D301 /* EuclidCircular-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68100CEF4F924914A71FCB7D /* EuclidCircular-Medium.ttf */; };
 		4B7E47A3788A41CFAAF4D60F /* VelaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 577B344C2AE84ED993161D2B /* VelaSans-Bold.otf */; };
 		5D1B123AD6A44B84940A0EA9 /* Benzin-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B38457686C4646B9A31674E1 /* Benzin-Medium.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -42,6 +44,7 @@
 		B7892641A50B43BC83A089C3 /* VelaSans-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF350E0611424AC4B1E1FAE4 /* VelaSans-ExtraBold.otf */; };
 		BD2CCEC0BF484F88BC943D7E /* NeueMontreal-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5527FF91DF54433594363E93 /* NeueMontreal-Bold.otf */; };
 		BF850EDD35DF48A594AB5399 /* NeueMachina-UltraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6106704CA49472FBF050379 /* NeueMachina-UltraBold.otf */; };
+		C4C5D11EC7884372905BEF64 /* EuclidCircular-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 398C61367ACE45B880127761 /* EuclidCircular-Bold.ttf */; };
 		CC7D72D2134D4E7DAF11FE48 /* VelaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0F29E1AB951D4AC4BFACFF79 /* VelaSans-SemiBold.otf */; };
 		D8055FD304DB4D589D6DCD31 /* VelaSans-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 92DCC70407BF46CEAE294FBD /* VelaSans-ExtraLight.otf */; };
 		E21DC469E7AD4C1E823060DB /* VelaSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7DDD8CA4C4F04E72A9337D7F /* VelaSans-Medium.otf */; };
@@ -72,12 +75,15 @@
 		1A3457CF55654EA39B47196F /* LemonMilk-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LemonMilk-Regular.otf"; path = "../assets/fonts/LemonMilk-Regular.otf"; sourceTree = "<group>"; };
 		232299E82D904BA0A0E2A5BB /* VelaSans-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-Regular.otf"; path = "../assets/fonts/VelaSans-Regular.otf"; sourceTree = "<group>"; };
 		241E79D26CB45AF5E5B494A0 /* Pods_XadeMobile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XadeMobile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		398C61367ACE45B880127761 /* EuclidCircular-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-Bold.ttf"; path = "../assets/fonts/EuclidCircular-Bold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-XadeMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XadeMobile.debug.xcconfig"; path = "Target Support Files/Pods-XadeMobile/Pods-XadeMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		4CA994A5F6D54A34B82F2A33 /* LemonMilk-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "LemonMilk-Bold.otf"; path = "../assets/fonts/LemonMilk-Bold.otf"; sourceTree = "<group>"; };
 		5527FF91DF54433594363E93 /* NeueMontreal-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NeueMontreal-Bold.otf"; path = "../assets/fonts/NeueMontreal-Bold.otf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-XadeMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XadeMobile.release.xcconfig"; path = "Target Support Files/Pods-XadeMobile/Pods-XadeMobile.release.xcconfig"; sourceTree = "<group>"; };
 		577B344C2AE84ED993161D2B /* VelaSans-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-Bold.otf"; path = "../assets/fonts/VelaSans-Bold.otf"; sourceTree = "<group>"; };
+		5B540653F0354C50A173D543 /* EuclidCircular-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-SemiBold.ttf"; path = "../assets/fonts/EuclidCircular-SemiBold.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-XadeMobile-XadeMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XadeMobile-XadeMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-XadeMobile-XadeMobileTests/Pods-XadeMobile-XadeMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		68100CEF4F924914A71FCB7D /* EuclidCircular-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-Medium.ttf"; path = "../assets/fonts/EuclidCircular-Medium.ttf"; sourceTree = "<group>"; };
 		7DDD8CA4C4F04E72A9337D7F /* VelaSans-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-Medium.otf"; path = "../assets/fonts/VelaSans-Medium.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = XadeMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		886A90F9CB6993848EDF0BB4 /* Pods_XadeMobile_XadeMobileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XadeMobile_XadeMobileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +197,9 @@
 				5527FF91DF54433594363E93 /* NeueMontreal-Bold.otf */,
 				8C6D9D1142DE42098E0BD822 /* EulidCircular-Regular.ttf */,
 				B38457686C4646B9A31674E1 /* Benzin-Medium.otf */,
+				398C61367ACE45B880127761 /* EuclidCircular-Bold.ttf */,
+				5B540653F0354C50A173D543 /* EuclidCircular-SemiBold.ttf */,
+				68100CEF4F924914A71FCB7D /* EuclidCircular-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -388,6 +397,9 @@
 				BD2CCEC0BF484F88BC943D7E /* NeueMontreal-Bold.otf in Resources */,
 				84B747FA6A494F4AA7E9FEE7 /* EulidCircular-Regular.ttf in Resources */,
 				5D1B123AD6A44B84940A0EA9 /* Benzin-Medium.otf in Resources */,
+				C4C5D11EC7884372905BEF64 /* EuclidCircular-Bold.ttf in Resources */,
+				136728E04AE14A3492EFFAC3 /* EuclidCircular-SemiBold.ttf in Resources */,
+				40BCE07F740A4A70BB76D301 /* EuclidCircular-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
