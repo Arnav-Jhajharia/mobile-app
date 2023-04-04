@@ -64,6 +64,7 @@ login = async () => {
       body: `address:${address.toLowerCase()}||${uuid}`,
     });
     if (email[0] != '+') {
+      console.log('um')
       const login_type = '';
       const object = {
         email: email,

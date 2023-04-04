@@ -20,7 +20,7 @@ const bg = require('../../../assets/bg.png');
 const windowHeight = Dimensions.get('window').height;
 
 const LoginCheck = async ({navigation}) => {
-  // await particleAuth.logout()
+  await particleAuth.logout()
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMumbai,
     particleAuth.Env.Production,
