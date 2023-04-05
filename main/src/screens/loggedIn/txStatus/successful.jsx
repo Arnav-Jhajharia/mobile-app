@@ -10,13 +10,16 @@ import {
   View,
   Linking,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {Text} from '@rneui/themed';
 import Video from 'react-native-video';
 const successVideo = require('./success.mov');
 
-export default function Component({navigation}) {
+export default function Component({navigation, route}) {
   // Some routing must be done after Pending state
+  const hash = route.params;
+  console.log('TX Hash:', hash['status']);
   return (
     <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text
@@ -29,7 +32,7 @@ export default function Component({navigation}) {
         }}>
         Transaction Success!
       </Text>
-      <View style={{width: '80%', marginTop: '30%', marginLeft: '11%'}}>
+      <View style={{width: '80%', marginTop: '25%', marginLeft: '11%'}}>
         <Video
           source={successVideo}
           style={{width: 300, height: 300}}
@@ -40,12 +43,31 @@ export default function Component({navigation}) {
           }}
         />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
+      <TouchableOpacity
+        onPress={() =>
+          Linking.openURL(`https://mumbai.polygonscan.com/tx/${hash['status']}`)
+        }
+        style={{marginTop: '20%'}}>
         <Text
           style={{
             color: '#fff',
             fontSize: 20,
-            marginTop: '20%',
+            textAlign: 'center',
+            fontFamily: 'VelaSans-ExtraBold',
+          }}>
+          View Transaction On BlockExplorer
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Payments');
+          // Alert.alert('Success');
+        }}>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 20,
+            marginTop: '30%',
             textAlign: 'center',
             fontFamily: 'VelaSans-Bold',
           }}>
