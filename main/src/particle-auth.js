@@ -101,7 +101,7 @@ login = async () => {
     const url = "https://notifs.api.xade.finance/registerDevice";
     const token = await AsyncStorage.getItem('token')
     const notifsdata = { 
-    walletAddress: address,
+    walletAddress: address.toLowerCase(),
     deviceToken: token
     };
     console.log('req being sent')

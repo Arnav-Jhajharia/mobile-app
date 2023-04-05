@@ -8,6 +8,7 @@ import {
   WalletType,
 } from 'react-native-particle-connect';
 import {ChainInfo} from 'react-native-particle-connect';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Web3 from 'web3';
 import {ParticleConnectProvider} from 'react-native-particle-connect';
@@ -52,6 +53,34 @@ connect = async ({walleType}) => {
     fetch('https://mongo.api.xade.finance/polygon', {
       method: 'POST',
       body: `address:${global.connectAccount.publicAddress.toLowerCase()}||${uuid}`,
+    });
+    const url = "https://notifs.api.xade.finance/registerDevice";
+    const token = await AsyncStorage.getItem('token')
+    const notifsdata = { 
+    walletAddress: global.connectAccount.publicAddress.toLowerCase(),
+    deviceToken: token
+    };
+    console.log('req being sent')
+    fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(notifsdata)
+    })
+    .then(response => {
+    if (!response.ok) {
+      console.log(response)
+      throw new Error("Network response was not ok");
+    }
+    // console.log(response.json());
+    return response.json();
+    })
+    .then(data => {
+    console.log(data);
+    })
+    .catch(error => {
+    console.error("There was an error:", error);
     });
     const login_type = '';
     const object = {

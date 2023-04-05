@@ -274,9 +274,14 @@ useEffect(() => {
     );
   });
   messaging().onMessage(async remoteMessage => {
-    console.log('notification on foreground state.......'. remoteMessage)
+    console.log('notification on foreground state.......', remoteMessage)
   })
   requestUserPermission()
+
+  messaging().subscribeToTopic('random')
+      .then(() => console.log('Subscribed to topic!'))
+      .catch(error => console.error('Error subscribing to topic:', error));
+
 })
 
   return (
