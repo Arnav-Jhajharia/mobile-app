@@ -19,35 +19,11 @@ import * as particleAuth from 'react-native-particle-auth';
 const bg = require('../../../assets/bg.png');
 const windowHeight = Dimensions.get('window').height;
 
-const LoginCheck = async ({navigation}) => {
-  // await particleAuth.logout()
-  particleAuth.init(
-    particleAuth.ChainInfo.PolygonMumbai,
-    particleAuth.Env.Production,
-  );
-  console.log('Checking if user is logged in');
-  const result = await particleAuth.isLogin();
-
-  if (result) {
-    var account = await particleAuth.getUserInfo();
-    account = JSON.parse(account);
-    const email = account.email
-      ? account.email
-      : account.phone
-      ? account.phone
-      : account.googleEmail;
-    const name = account.name ? account.name : 'Not Set';
-    const address = await particleAuth.getAddress();
-    global.loginAccount = new PNAccount(email, name, address);
-    global.withAuth = true;
-    console.log('Logged In:', global.loginAccount);
-    navigation.navigate('Payments');
-  } else {
-    navigation.navigate('Particle');
-  }
-};
-
 const StaticHomeScreen = ({navigation}) => {
+  useEffect(() => {
+    // LoginCheck({navigation});
+  }, []);
+
   return (
     <ImageBackground source={bg} style={styles.bg}>
       <SafeAreaView>
@@ -69,7 +45,7 @@ const StaticHomeScreen = ({navigation}) => {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  LoginCheck({navigation});
+                  navigation.navigate('Particle');
                 }}>
                 <Icon
                   style={styles.buttonIcon}

@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "RNNotifications.h"
+#import <Firebase.h>
 #import <react_native_particle_connect/react_native_particle_connect-Swift.h>
 #import <react_native_particle_auth/react_native_particle_auth-Swift.h>
 #import <React/RCTBundleURLProvider.h>
@@ -10,6 +11,7 @@
 {
   [RNNotifications startMonitorNotifications]; // -> Add this line
   self.moduleName = @"Xade Mobile";
+  [FIRApp configure];
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};

@@ -66,6 +66,7 @@ const Login = ({navigation}) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   bg: {
     width: '100%',

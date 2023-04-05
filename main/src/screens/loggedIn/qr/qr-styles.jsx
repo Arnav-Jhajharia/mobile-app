@@ -15,12 +15,8 @@ const styles = StyleSheet.create({
 
   topbar: {
     width: '100%',
-    // height: windowHeight / 5,
-    justifyContent: 'flex-start',
-  flexDirection: 'row',
-  marginBottom: 40,
-  marginTop: 40,
-  alignItems: 'center'
+    height: windowHeight / 5,
+    alignContent: 'flex-start',
   },
 
   buttonIcon: {
@@ -35,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     width: '50%',
-    // marginLeft: '25%',
+    marginLeft: '25%',
   },
 
   navLeft: {

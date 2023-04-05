@@ -19,7 +19,6 @@ const successVideo = require('./success.mov');
 export default function Component({navigation, route}) {
   // Some routing must be done after Pending state
   const hash = route.params;
-  console.log('TX Hash:', hash['status']);
   return (
     <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text
