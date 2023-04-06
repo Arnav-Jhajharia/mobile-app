@@ -55,7 +55,7 @@ const transactions = () => {
 
     const quoteAssetAmount = [
       web3.utils
-        .toBN(web3.utils.toWei(quoteAssetAmounti.replace(',', ''), 'ether'))
+        .toBN(web3.utils.toWei('10'.replace(',', ''), 'ether'))
         .toString(),
     ];
 
@@ -65,7 +65,9 @@ const transactions = () => {
         .toString(),
     ];
 
-    const side = Number(sidei).toString();
+    const side = Number(sidei);
+
+    // const side = 'BUY';
 
     const baseAssetAmountLimit = [
       web3.utils
@@ -80,13 +82,15 @@ const transactions = () => {
     console.log('Side:', side.toString());
 
     try {
-      const txString = await clearingHouse.methods.openPosition(
-        Amm,
-        side,
-        quoteAssetAmount,
-        leverage,
-        baseAssetAmountLimit,
-      );
+      const txString = await clearingHouse.methods
+        .openPosition(
+          Amm,
+          side,
+          quoteAssetAmount,
+          leverage,
+          baseAssetAmountLimit,
+        )
+        .send({from: authAddress, contractAddress: clearingHouseAddress});
       console.log('String:', txString);
 
       // navigation.navigate('Successful', txString);

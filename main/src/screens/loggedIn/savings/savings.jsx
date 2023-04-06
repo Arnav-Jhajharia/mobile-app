@@ -46,8 +46,8 @@ const Savings = ({navigation}) => {
   const date = new Date().getDate();
   const month = monthname[new Date().getMonth() + 1];
   const t = true;
+
   // const provider = Web3(ALCHEMY_URL)
-  const address = global.loginAccount.publicAddress;
   // web3 = this.createProvider(PROJECT_ID, CLIENT_KEY);
   if (global.withAuth) {
     authAddress = global.loginAccount.publicAddress;
@@ -60,7 +60,8 @@ const Savings = ({navigation}) => {
     console.log('Global Wallet Type:', global.walletType);
     web3 = this.createConnectProvider();
   }
-  const {getUserPoolBalance} = ethProvider(web3);
+
+  const {getUserPoolBalance} = ethProvider({web3});
   const [balance, setBalance] = useState('0.00');
   useEffect(async () => {
     const balance = await getUserPoolBalance();
@@ -123,16 +124,15 @@ const Savings = ({navigation}) => {
               console.log(res);
               const json = {
                 truth: authAddress.toString().toLowerCase() != res.to, // true while accepting
-                to: 'Deposit',
-                from: 'Withdraw',
+                to: 'Withdraw',
+                from: 'Deposit',
                 value: etherValue,
                 date: formattedDate,
               };
               arr.push(json);
-              
             }
           }
-          console.log(arr)
+          console.log(arr);
           setState(arr.reverse());
         } else {
           console.log('Condition is working');
@@ -197,7 +197,10 @@ const Savings = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() =>
-              navigation.navigate('EnterSavingsAmount', {widthdraw: false})
+              navigation.navigate('EnterSavingsAmount', {
+                withdraw: false,
+                web3: web3,
+              })
             }>
             <LinearGradient
               colors={['#1D2426', '#383838']}
@@ -220,9 +223,13 @@ const Savings = ({navigation}) => {
 
           <TouchableOpacity
             style={styles.depWith}
-            onPress={() =>
-              navigation.navigate('EnterSavingsAmount', {withdraw: true})
-            }>
+            onPress={() => {
+              console.log(web3);
+              navigation.navigate('EnterSavingsAmount', {
+                withdraw: true,
+                web3: web3,
+              });
+            }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle

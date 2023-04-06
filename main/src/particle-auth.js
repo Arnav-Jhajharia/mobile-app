@@ -40,7 +40,7 @@ setChainInfo = async () => {
 
 login = async () => {
   const type = LoginType.Email;
-  const supportAuthType = [SupportAuthType.Phone, SupportAuthType.Google];
+  const supportAuthType = [SupportAuthType.Phone];
   const result = await particleAuth.login(type, '', supportAuthType, undefined);
   const account = result.data;
   if (result.status) {
@@ -50,83 +50,159 @@ login = async () => {
       ? account.googleEmail
       : account.phone;
     const name = account.name ? account.name : 'Not Set';
-    const address = await particleAuth.getAddress();
-    global.loginAccount = new PNAccount(email, name, address);
-    global.withAuth = true;
     const userInfo = result.data;
-    console.log('User Info:', userInfo);
+    const address = (await particleAuth.getAddress()).toLowerCase();
     const uuid = userInfo.wallets[0].uuid
       ? userInfo.wallets[0].uuid
       : userInfo.uuid;
     console.log('User Info:', userInfo);
-    fetch('https://mongo.api.xade.finance/polygon', {
-      method: 'POST',
-      body: `address:${address.toLowerCase()}||${uuid}`,
-    });
-    if (email[0] != '+') {
-      console.log('um')
-      const login_type = '';
-      const object = {
-        email: email,
-        name: email,
-        profileImage: '',
-        verifier: '',
-        verifierId: '',
-        typeOfLogin: '',
-        id: uuid,
-      };
-      console.log(object);
-      const json = JSON.stringify(object || {}, null, 2);
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
-      xhr.send(json);
-      console.log(json);
-    } else {
-      let secret = '';
-      let characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let charactersLength = characters.length;
-      for (let i = 0; i < 50; i++) {
-        secret += characters.charAt(
-          Math.floor(Math.random() * charactersLength),
-        );
-      }
-      console.log('Condition is not not working!');
-      let phone = email.replace('+', '');
-      let data = `{"phone":"${phone}","id":"${secret}"}`;
-      let s = new XMLHttpRequest();
-      s.open('POST', 'https://mongo.api.xade.finance/polygon');
-      s.send(data);
-    }
-    const url = "https://notifs.api.xade.finance/registerDevice";
-    const token = await AsyncStorage.getItem('token')
-    const notifsdata = { 
-    walletAddress: address.toLowerCase(),
-    deviceToken: token
-    };
-    console.log('req being sent')
-    fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(notifsdata)
-    })
-    .then(response => {
-    if (!response.ok) {
-      console.log(response)
-      throw new Error("Network response was not ok");
-    }
-    // console.log(response.json());
-    return response.json();
-    })
-    .then(data => {
-    console.log(data);
-    })
-    .catch(error => {
-    console.error("There was an error:", error);
-    });
+// <<<<<<< HEAD
+    // fetch('https://mongo.api.xade.finance/polygon', {
+    //   method: 'POST',
+    //   body: `address:${address.toLowerCase()}||${uuid}`,
+    // });
+    // if (email[0] != '+') {
+    //   console.log('um')
+    //   const login_type = '';
+    //   const object = {
+    //     email: email,
+    //     name: email,
+    //     profileImage: '',
+    //     verifier: '',
+    //     verifierId: '',
+    //     typeOfLogin: '',
+    //     id: uuid,
+    //   };
+    //   console.log(object);
+    //   const json = JSON.stringify(object || {}, null, 2);
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
+    //   xhr.send(json);
+    //   console.log(json);
+    // } else {
+    //   let secret = '';
+    //   let characters =
+    //     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //   let charactersLength = characters.length;
+    //   for (let i = 0; i < 50; i++) {
+    //     secret += characters.charAt(
+    //       Math.floor(Math.random() * charactersLength),
+    //     );
+    //   }
+    //   console.log('Condition is not not working!');
+    //   let phone = email.replace('+', '');
+    //   let data = `{"phone":"${phone}","id":"${secret}"}`;
+    //   let s = new XMLHttpRequest();
+    //   s.open('POST', 'https://mongo.api.xade.finance/polygon');
+    //   s.send(data);
+    // }
+    // const url = "https://notifs.api.xade.finance/registerDevice";
+    // const token = await AsyncStorage.getItem('token')
+    // const notifsdata = { 
+    // walletAddress: address.toLowerCase(),
+    // deviceToken: token
+    // };
+    // console.log('req being sent')
+    // fetch(url, {
+    // method: "POST",
+    // headers: {
+    //   "Content-Type": "application/json"
+    // },
+    // body: JSON.stringify(notifsdata)
+    // })
+    // .then(response => {
+    // if (!response.ok) {
+    //   console.log(response)
+    //   throw new Error("Network response was not ok");
+    // }
+    // // console.log(response.json());
+    // return response.json();
+    // })
+    // .then(data => {
+    // console.log(data);
+    // })
+    // .catch(error => {
+    // console.error("There was an error:", error);
+    // });
+// =======
+    global.loginAccount = new PNAccount(
+      email.toLowerCase(),
+      name,
+      address,
+      uuid,
+    );
+    global.withAuth = true;
+  } else {
+    const error = result.data;
+    console.log('Error:', error);
+// >>>>>>> d31a09b1fd785f39612a6e0944d02705783ce0fd
   }
+  // fetch('https://mongo.api.xade.finance/polygon', {
+  //   method: 'POST',
+  //   body: `address:${address.toLowerCase()}||${uuid}`,
+  // });
+  // if (email[0] != '+') {
+  //   const login_type = '';
+  //   const object = {
+  //     email: email.toLowerCase(),
+  //     name: email.toLowerCase(),
+  //     profileImage: '',
+  //     verifier: '',
+  //     verifierId: '',
+  //     typeOfLogin: '',
+  //     id: uuid,
+  //   };
+  //   console.log(object);
+  //   const json = JSON.stringify(object || {}, null, 2);
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
+  //   xhr.send(json);
+  //   console.log(json);
+  // } else {
+  //   let secret = '';
+  //   let characters =
+  //     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   let charactersLength = characters.length;
+  //   for (let i = 0; i < 50; i++) {
+  //     secret += characters.charAt(
+  //       Math.floor(Math.random() * charactersLength),
+  //     );
+  //   }
+  //   console.log('Condition is not not working!');
+  //   let phone = email.replace('+', '');
+  //   let data = `{"phone":"${phone}","id":"${secret}"}`;
+  //   let s = new XMLHttpRequest();
+  //   s.open('POST', 'https://mongo.api.xade.finance/polygon');
+  //   s.send(data);
+  // }
+  // const url = 'https://notifs.api.xade.finance/registerDevice';
+  // const token = await AsyncStorage.getItem('token');
+  // const notifsdata = {
+  //   walletAddress: address.toLowerCase(),
+  //   deviceToken: token,
+  // };
+  // console.log('req being sent');
+  // fetch(url, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify(notifsdata),
+  // })
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       console.log(response);
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     // console.log(response.json());
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     console.log(data);
+  //   })
+  //   .catch(error => {
+  //     console.error('There was an error:', error);
+  //   });
 };
 
 logout = async navigation => {
@@ -182,7 +258,38 @@ onClickLogin = async navigation => {
 
   console.log('Logged In:', result);
   if (result) {
-    navigation.navigate('Payments');
+    // navigation.navigate('EnterName');
+    const address = global.loginAccount.publicAddress;
+    const email = global.loginAccount.phoneEmail;
+    const uuid = global.loginAccount.uiud;
+
+    await fetch(
+      `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`,
+      {
+        method: 'GET',
+      },
+    )
+      .then(response => {
+        console.log(response);
+        if (response.status == 200) {
+          return response.text();
+        } else {
+          navigation.navigate('EnterName');
+        }
+      })
+      .then(data => {
+        if (
+          data == '' ||
+          data.length == 0 ||
+          data.toLowerCase() == email.toLowerCase() ||
+          data == 'Not Set'
+        ) {
+          navigation.navigate('EnterName');
+        } else {
+          global.loginAccount.name = data;
+          navigation.navigate('Payments');
+        }
+      });
   } else {
     navigation.navigate('Error');
   }

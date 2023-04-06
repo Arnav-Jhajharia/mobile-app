@@ -24,7 +24,7 @@ import {EventsCarousel} from './eventsCarousel';
 import ABI from './XUSD';
 import {SABEX_LP} from '@env';
 let web3;
-const REMMITEX_CONTRACT = "0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7"
+const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
 const windowHeight = Dimensions.get('window').height;
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
@@ -56,7 +56,6 @@ const images = [
 ];
 const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
-
     {truth: true, to: '0', from: '0', value: 0, hash: ''},
   ]);
   const [dates, setDates] = React.useState([]);
@@ -105,17 +104,15 @@ const PaymentsComponent = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         if (data.message != 'NOTOK') {
-          
           //console.log(data.message);
           //         console.log(data);
           const result = data.result;
           //        console.log('Arnav:', result);
           let len = result.length;
-          
+
           let arr = [];
           let date = [];
           for (let i = 0; i < len; i++) {
-            console.log("This is working!")
             let res = result[i];
             let val = res.value;
             const etherValue = web3.utils.fromWei(val, 'ether');
@@ -151,8 +148,12 @@ const PaymentsComponent = ({navigation}) => {
               pubDate.getDate() +
               ', ' +
               pubDate.getFullYear();
-              const truth = (REMMITEX_CONTRACT.toLowerCase() == res.to)?2:((authAddress.toString().toLowerCase() == res.to)?1:0)
-              console.log(truth)
+            const truth =
+              REMMITEX_CONTRACT.toLowerCase() == res.to
+                ? 2
+                : authAddress.toString().toLowerCase() == res.to
+                ? 1
+                : 0;
             const json = {
               truth: truth, // true while accepting
               to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
@@ -170,14 +171,12 @@ const PaymentsComponent = ({navigation}) => {
             arr.push(json);
             // console.log(authAddress, res.to, json.truth);
           }
-          console.log(arr)
           //    console.log(json);
           setDates([...new Set(date)].reverse());
           setState(arr.reverse());
           // console.log(dates);
           // console.log(state);
         } else {
-          console.log('Condition is working');
           setState([]);
           setDates([]);
           return;
@@ -202,17 +201,17 @@ const PaymentsComponent = ({navigation}) => {
       <View colors={['#222222', '#000']} style={styles.container}>
         <View style={styles.topbar}>
           <Text style={styles.logo}>Payments</Text>
-          <TouchableOpacity onPress={() => setNotificiationsVisible(true)}>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
             <Icon
               // style={styles.tup}
-              name={'notification'}
+              name={'settings'}
               size={30}
               color={'#fff'}
-              type="entypo"
+              type="material"
               // style = {{marginRight: '1%'}}
             />
           </TouchableOpacity>
-          <Modal
+          {/* <Modal
             animationType="fade"
             visible={notificationVisible}
             onRequestClose={() => {
@@ -256,7 +255,7 @@ const PaymentsComponent = ({navigation}) => {
                 </View>
               </ScrollView>
             </View>
-          </Modal>
+          </Modal> */}
         </View>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -334,9 +333,11 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('Settings');
-            }}
-            >
+              navigation.navigate('EnterSavingsAmount', {
+                withdraw: false,
+                web3: web3,
+              });
+            }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle
@@ -351,7 +352,7 @@ const PaymentsComponent = ({navigation}) => {
                 type="feather"
               />
               <Text style={{color: '#86969A', fontFamily: 'VelaSans-Bold'}}>
-                Settings
+                Deposit
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -590,10 +591,9 @@ const PaymentsComponent = ({navigation}) => {
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
-                      (json.truth == 2)
+                      json.truth == 2
                         ? require('./icon/pending.png')
-                        :
-                      (json.truth == 1)
+                        : json.truth == 1
                         ? require('./icon/positive.png')
                         : require('./icon/negative.png')
                     }
@@ -636,7 +636,7 @@ const PaymentsComponent = ({navigation}) => {
                       fontSize: 20,
                       fontFamily: 'EuclidCircularA-Medium',
                     }}>
-                    {(json.truth != 0 && json.truth != 2) ? '+' : '-'}
+                    {json.truth != 0 && json.truth != 2 ? '+' : '-'}
                     {json.value}
                   </Text>
                 </View>

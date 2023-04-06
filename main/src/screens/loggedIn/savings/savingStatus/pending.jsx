@@ -5,69 +5,98 @@ import {Text} from 'react-native-elements';
 import {signAndSendTransactionConnect} from '../../../particle-connect';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
-import ethProvider from './../integration/ethProvider'
-// import { PROJECT_ID, CLIENT_KEY } from 'react-native-dotenv'
-const PROJECT_ID = '260df770-44b4-4afd-a408-0a9f2b9944a9'
-const CLIENT_KEY = 'c2HUrCSv7ymat5zCKhD41B9BA8bsRIFJgAXM0Jlm'
+import ethProvider from './../integration/ethProvider';
+import {PROJECT_ID, CLIENT_KEY} from 'react-native-dotenv';
+import createProvider from '../../../../particle-auth';
+import createConnectProvider from '../../../../particle-connect';
+
 const Web3 = require('web3');
 import Video from 'react-native-video';
 
-let web3;
 const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
-  const {withdraw, amount} = route.params;
+  const {withdraw, amount, web3} = route.params;
+
+  console.log('Web3 not being carried to pending:', web3);
   // const provider = Web3(ALCHEMY_URL)
 
   useEffect(async () => {
     let status;
     console.log('Is Auth:', global.withAuth);
     if (global.withAuth) {
-      web3 = this.createProvider(
-        PROJECT_ID,
-        CLIENT_KEY
-      );
+      // web3 = this.createProvider(PROJECT_ID, CLIENT_KEY);
+      const {withdrawAmount, provideLiquidityToContract, getUserPoolBalance} =
+        ethProvider({web3});
       const address = global.loginAccount.publicAddress;
-      const { withdrawAmount, provideLiquidityToContract,getUserPoolBalance } = ethProvider(web3)
       console.log('Global Account:', global.loginAccount);
-      console.log("IsWithdraw: " + withdraw)
-      if(withdraw)
-      {
+      console.log('IsWithdraw: ' + withdraw);
+      if (withdraw) {
         const balance = await getUserPoolBalance();
-        console.log(balance, amount)
-        if(parseInt(balance) < parseInt(amount)) {
-          navigation.navigate('Unsuccessful')
+        console.log(balance, amount);
+        if (parseInt(balance) < parseInt(amount)) {
+          navigation.navigate('Unsuccessful');
           return;
         }
         const status = await withdrawAmount(amount);
-        if(status) {
-          navigation.navigate('SavingsSuccessful', {withdraw: true, amount: amount})
+        if (status) {
+          navigation.navigate('SavingsSuccessful', {
+            withdraw: true,
+            amount: amount,
+          });
+        } else {
+          navigation.navigate('Unsuccessful');
         }
-        else {
-          navigation.navigate('Unsuccessful')
-        }
-      }
-      else
-      {
+      } else {
         const status = await provideLiquidityToContract(amount);
-        if(status) {
-          navigation.navigate('SavingsSuccessful', {withdraw: false, amount: amount})
-        }
-        else {
-          navigation.navigate('Unsuccessful')
+        if (status) {
+          navigation.navigate('SavingsSuccessful', {
+            withdraw: false,
+            amount: amount,
+          });
+        } else {
+          navigation.navigate('Unsuccessful');
         }
       }
-      // if (status) navigation.navigate('Successful');
-      // else navigation.navigate('Unsuccessful');
     } else {
-      authAddress = global.connectAccount.publicAddress;
+      // web3 = this.createConnectProvider(PROJECT_ID, CLIENT_KEY);
+      const {withdrawAmount, provideLiquidityToContract, getUserPoolBalance} =
+        ethProvider({web3});
+      const address = global.connectAccount.publicAddress;
+      console.log(provideLiquidityToContract);
       console.log('Global Account:', global.connectAccount);
-      status = this.signAndSendTransactionConnect(walletAddress, weiVal);
-      if (status) navigation.navigate('Successful');
-      else navigation.navigate('Unsuccessful');
+      console.log('IsWithdraw: ' + withdraw);
+      console.log('Amount: ' + amount);
+      if (withdraw) {
+        const balance = await getUserPoolBalance();
+        console.log(balance, amount);
+        if (parseInt(balance) < parseInt(amount)) {
+          navigation.navigate('Unsuccessful');
+          return;
+        }
+        const status = await withdrawAmount(amount);
+        if (status) {
+          navigation.navigate('SavingsSuccessful', {
+            withdraw: true,
+            amount: amount,
+          });
+        } else {
+          navigation.navigate('Unsuccessful');
+        }
+      } else {
+        console.log('Works Up Until Here');
+        const status = await provideLiquidityToContract(amount);
+        console.log('Status:', status);
+        if (status) {
+          navigation.navigate('SavingsSuccessful', {
+            withdraw: false,
+            amount: amount,
+          });
+        } else {
+          navigation.navigate('Unsuccessful');
+        }
+      }
     }
-
-
   }, []);
 
   return (
@@ -95,7 +124,7 @@ export default function Component({route, navigation}) {
           Return Home
         </Text>
       </TouchableOpacity> */}
-            <View style={{width: '80%', marginTop: '30%', marginLeft: '12%'}}>
+      <View style={{width: '80%', marginTop: '30%', marginLeft: '12%'}}>
         <Video
           source={successVideo}
           style={{width: 300, height: 300}}

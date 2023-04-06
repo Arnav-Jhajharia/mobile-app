@@ -25,14 +25,17 @@ function renderButtons() {
   });
 }
 export default function EnterAmountComponent({navigation, route}) {
-//   let params = route.params;
+  //   let params = route.params;
   let [amount, setAmount] = React.useState(0);
-  let { withdraw } = route.params // True if withdraw, False if deposit 
-//   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0};
-//   console.log(json);
+  let {withdraw, web3} = route.params; // True if withdraw, False if deposit
+  //   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0};
+  //   console.log(json);
+
+  console.log('Web3 not being carried to enterSavings:', web3);
 
   // console.log('Address: ', address);
   // console.log('User Info: ', info);
+  console.log('Withdraw:', withdraw);
 
   function handleButtonPress(button) {
     if (button !== '' && button !== '⌫') {
@@ -77,7 +80,6 @@ export default function EnterAmountComponent({navigation, route}) {
       </View>
       <View
         style={{width: '100%', alignItems: 'center', justifyContent: 'center'}}>
-        
         {buttons.map((row, i) => {
           return (
             <View key={`row-${i}`} style={styles.row}>
@@ -97,10 +99,13 @@ export default function EnterAmountComponent({navigation, route}) {
           );
         })}
         <TouchableOpacity
-          onPress={() => navigation.navigate('SavingsPending', {
-            amount:amount.toString(),
-            withdraw
-          })}
+          onPress={() =>
+            navigation.navigate('SavingsPending', {
+              amount: amount.toString(),
+              withdraw: withdraw,
+              web3: web3,
+            })
+          }
           style={styles.confirmButton}>
           <Text
             style={{

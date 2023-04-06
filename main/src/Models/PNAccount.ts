@@ -2,10 +2,17 @@ export class PNAccount {
   phoneEmail: string;
   name: string;
   publicAddress: string;
-  constructor(phoneEmail: string, name: string, publicAddress: string) {
+  uiud: string;
+  constructor(
+    phoneEmail: string,
+    name: string,
+    publicAddress: string,
+    uiud: string,
+  ) {
     this.phoneEmail = phoneEmail;
     this.name = name;
     this.publicAddress = publicAddress;
+    this.uiud = uiud;
   }
 
   static parseFrom(params: string): PNAccount {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Buffer} from 'buffer';
@@ -16,8 +16,10 @@ import {
 } from 'react-native';
 import BottomNavbar from './screens/navbar';
 import StaticHomeScreen from './screens/loggingIn/home';
+import PreLoad from './screens/loggingIn/load';
 import Login from './screens/loggingIn/login';
 import ChooseConnect from './screens/loggingIn/connect';
+import Name from './screens/loggingIn/name';
 import Countdown from './screens/loggedIn/countdown/countdown';
 import QRPage from './screens/loggedIn/qr/qr';
 import Investments from './screens/loggedIn/investments/investments';
@@ -37,18 +39,29 @@ import SavingsPending from './screens/loggedIn/savings/savingStatus/pending';
 import SavingsSuccessful from './screens/loggedIn/savings/savingStatus/successful';
 // import SavingsUnsuccessful from './screens/loggedIn/savings/savingStatus/unsuccessful';
 
-import FiatAmountComponent from './screens/fiatRamps/components/amount'
-import FiatAggregatorComponent from './screens/fiatRamps/components/aggregator'
-import FiatWidgetComponent from './screens/fiatRamps/components/widget'
+import FiatAmountComponent from './screens/fiatRamps/components/amount';
+import FiatAggregatorComponent from './screens/fiatRamps/components/aggregator';
+import FiatWidgetComponent from './screens/fiatRamps/components/widget';
 
-import SettingsComponent from './screens/settings/settings'
+import SettingsComponent from './screens/settings/settings';
 
 const Stack = createNativeStackNavigator();
+
 const bg = require('./../assets/bg.png');
 const particle = require('./../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
+
 import messaging from '@react-native-firebase/messaging';
-import { requestUserPermission } from './utils/push'
+import {requestUserPermission} from './utils/push';
+
+function PreLaunchLoad({navigation}) {
+  return (
+    <View>
+      <PreLoad navigation={navigation} />
+    </View>
+  );
+}
+
 function Particle({navigation}) {
   return (
     <View>
@@ -65,7 +78,15 @@ function ChooseWallet({navigation}) {
   );
 }
 
-function FiatAmount({navigation}) {
+function EnterName({navigation}) {
+  return (
+    <View>
+      <Name navigation={navigation} />
+    </View>
+  );
+}
+
+function OnRamp({navigation}) {
   return (
     <View>
       <FiatAmountComponent navigation={navigation} />
@@ -81,7 +102,7 @@ function FiatAggregator({navigation}) {
   );
 }
 
-function FiatWidget({navigation}) {
+function WidgetPage({navigation}) {
   return (
     <View>
       <FiatWidgetComponent navigation={navigation} />
@@ -92,13 +113,13 @@ function FiatWidget({navigation}) {
 function Settings({navigation}) {
   return (
     <SafeAreaView style={styles.black}>
-    <ScrollView style={{height: windowHeight * 0.8}}>
-      <View>
-        <SettingsComponent navigation={navigation} />
-      </View>
-    </ScrollView>
-    <BottomNavbar navigation={navigation} selected = "Settings" />
-  </SafeAreaView>
+      <ScrollView style={{height: windowHeight * 0.8}}>
+        <View>
+          <SettingsComponent navigation={navigation} />
+        </View>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} selected="Settings" />
+    </SafeAreaView>
   );
 }
 function LoggedIn({navigation}) {
@@ -173,20 +194,20 @@ function ComingSoon({navigation}) {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "ComingSoon"/>
+      <BottomNavbar navigation={navigation} selected="ComingSoon" />
     </ImageBackground>
   );
 }
 
-function Savings({navigation}) {
+function Savings({navigation, route}) {
   return (
     <SafeAreaView style={styles.black}>
       <ScrollView style={{height: windowHeight * 0.7}}>
         <View>
-          <SavingsComponent navigation={navigation} />
+          <SavingsComponent navigation={navigation} route={route} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "Savings" />
+      <BottomNavbar navigation={navigation} selected="Savings" />
     </SafeAreaView>
   );
 }
@@ -207,7 +228,7 @@ function Payments({navigation}) {
           <PaymentsComponent navigation={navigation} />
         </View>
       </ScrollView>
-      <BottomNavbar navigation={navigation} selected = "Payments" />
+      <BottomNavbar navigation={navigation} selected="Payments" />
     </SafeAreaView>
   );
 }
@@ -266,42 +287,54 @@ function SendMobile({navigation}) {
 }
 
 export default function App({navigation}) {
-useEffect(() => {
-  messaging().onNotificationOpenedApp(remoteMessage => {
-    console.log(
-      'Notification caused app to open from background state:',
-      remoteMessage.notification,
-    );
-  });
-  messaging().onMessage(async remoteMessage => {
-    console.log('notification on foreground state.......', remoteMessage)
-  })
-  requestUserPermission()
 
-  messaging().subscribeToTopic('random')
-      .then(() => console.log('Subscribed to topic!'))
-      .catch(error => console.error('Error subscribing to topic:', error));
+  useEffect(() => {
+    async function preLaunchChecks() {
+      await requestUserPermission();
 
-})
+
+      messaging().onNotificationOpenedApp(remoteMessage => {
+        console.log(
+          'Notification caused app to open from background state:',
+          remoteMessage.notification,
+        );
+      });
+      messaging().onMessage(async remoteMessage => {
+        console.log('notification on foreground state.......', remoteMessage)
+      })
+    
+    
+      messaging().subscribeToTopic('random')
+          .then(() => console.log('Subscribed to topic!'))
+          .catch(error => console.error('Error subscribing to topic:', error));
+    }
+
+    preLaunchChecks();
+  }, []);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ animation: 'none' }}>
-        {/*
+      <Stack.Navigator>
         <Stack.Screen
           name="Home"
-          component={StaticHomeScreen}
+          component={PreLaunchLoad}
           options={{headerShown: false}}
         />
-        */}
+
         <Stack.Screen
-          name="Home"
+          name="LoggedOutHome"
           component={StaticHomeScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
           name="Particle"
           component={Particle}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EnterName"
+          component={EnterName}
           navigation={navigation}
           options={{headerShown: false}}
         />
@@ -403,7 +436,7 @@ useEffect(() => {
           navigation={navigation}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="SavingsPending"
           component={SavingsPending}
           navigation={navigation}
@@ -412,6 +445,18 @@ useEffect(() => {
         <Stack.Screen
           name="SavingsSuccessful"
           component={SavingsSuccessful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="FiatAggregator"
+          component={FiatAggregator}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="WidgetPage"
+          component={WidgetPage}
           navigation={navigation}
           options={{headerShown: false}}
         />
@@ -433,12 +478,12 @@ useEffect(() => {
           navigation={navigation}
           options={{headerShown: false}}
         /> */}
-          <Stack.Screen
-            name="Settings"
-            component={Settings}
-            navigation={navigation}
-            options={{headerShown: false}}
-          />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

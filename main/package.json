@@ -12,7 +12,6 @@
     "postinstall": "jetify && patch-package"
   },
   "dependencies": {
-    "@particle-network/provider": "^0.10.4",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-clipboard/clipboard": "^1.11.1",
     "@react-native-firebase/app": "^17.4.0",
@@ -31,6 +30,7 @@
     "dotenv-cli": "^7.0.0",
     "events": "^1.1.1",
     "https-browserify": "^0.0.1",
+    "ios-deploy": "^1.12.1",
     "localstorage-polyfill": "^1.0.1",
     "metro": "^0.75.0",
     "node-libs-browser": "^2.2.1",
@@ -47,6 +47,7 @@
     "react-native-countdown-component": "^2.7.1",
     "react-native-crypto": "^2.2.0",
     "react-native-crypto-js": "^1.0.0",
+    "react-native-device-info": "^10.5.1",
     "react-native-eject": "^0.2.0",
     "react-native-element-dropdown": "^2.7.1",
     "react-native-elements": "^3.4.3",
@@ -70,6 +71,7 @@
     "react-native-tcp": "^3.3.2",
     "react-native-text-gradient": "^0.1.7",
     "react-native-udp": "^2.7.0",
+    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-native-version": "^4.0.0",
     "react-native-video": "^5.2.1",
