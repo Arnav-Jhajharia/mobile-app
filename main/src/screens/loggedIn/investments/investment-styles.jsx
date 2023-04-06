@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     marginLeft: '10%',
     backgroundColor: '#1E1E1E',
     borderRadius: 7,
-    marginTop: '20%',
     height: 200,
     alignItems: 'center',
     justifyContent: 'center',
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
 
   marketText: {
     color: 'grey',
-    fontFamily: 'VelaSans-Bold',
+    fontFamily: 'EuclidCircularA-Regular',
     textAlign: 'center',
     fontSize: 15,
   },
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
   priceSlippage: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    marginTop: '20%',
+    marginTop: '15%',
     width: '90%',
     marginLeft: '5%',
   },
@@ -120,17 +119,17 @@ const styles = StyleSheet.create({
 
   subText: {
     color: '#868686',
-    fontFamily: 'VelaSans-Medium',
+    fontFamily: 'EuclidCircularA-Medium',
     textAlign: 'left',
     fontSize: 15,
   },
 
   subPrice: {
-    fontFamily: 'VelaSans-Medium',
+    fontFamily: 'EuclidCircularA-SemiBold',
     textAlign: 'left',
     marginTop: 4,
     fontSize: 26,
-    color: '#C4C4C4',
+    color: '#fff',
     marginBottom: 15,
   },
 
@@ -153,7 +152,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#1E1E1E',
     borderRadius: 7,
-    marginTop: '7%',
+    marginTop: '5%',
   },
 
   leverage: {
@@ -241,6 +240,61 @@ const styles = StyleSheet.create({
     color: '#787777',
     fontFamily: 'VelaSans-Medium',
     paddingRight: '5%',
+  },
+
+  coinChart: {
+    width: '90%',
+    marginLeft: '5%',
+    marginTop: '5%',
+  },
+
+  marketInfo: {},
+
+  stockName: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '5%',
+  },
+
+  stockHead: {
+    color: '#F0F0F0',
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 30,
+  },
+
+  marketCap: {
+    backgroundColor: '#585858',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+
+  marketcapText: {
+    color: '#F0F0F0',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+
+  stockPriceContainer: {
+    marginTop: '5%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  stockPrice: {
+    color: '#F0F0F0',
+    fontSize: 35,
+    fontFamily: 'EuclidCircularA-Medium',
+    marginLeft: '10%',
+  },
+
+  coinChart: {
+    marginTop: '10%',
+  },
+
+  chartContainer: {
+    marginTop: '10%',
   },
 });
 

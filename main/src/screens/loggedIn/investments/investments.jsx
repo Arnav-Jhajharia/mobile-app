@@ -17,6 +17,27 @@ import BottomNavbar from '../../navbar';
 import getSpotPrice from './backend/viewFunctions';
 import transactions from './backend/txFunctions';
 
+import BTC from './data';
+
+const screenWidth = Dimensions.get('window').width;
+
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from 'react-native-chart-kit';
+
+// const points = monotoneCubicInterpolation({data, range: 40});
+
+function toDateTime(secs) {
+  var t = new Date(secs); // Epoch
+  console.log(t.toLocaleDateString('en-US'));
+  return t;
+}
+
 red = true;
 class Investments extends React.Component {
   constructor(props) {
@@ -24,11 +45,12 @@ class Investments extends React.Component {
     this.state = {
       price: 'Updating',
       buyPrice: '',
-      btnSelected: 'long',
+      btnSelected: 'overview',
       nBtc: '',
       status: true,
       leverageValue: 1,
       latestBlock: {},
+      data: BTC.prices,
     };
     this.updatePrice = this.updatePrice.bind(this);
   }
@@ -47,12 +69,15 @@ class Investments extends React.Component {
   //   }
   // }
 
-  updatePrice() {
+  async updatePrice() {
     let bitcoinPriceUrl =
       'https://api.coindesk.com/v1/bpi/currentprice/BTC.json';
     let newPrice = 'Unavailable.';
 
-    fetch(bitcoinPriceUrl)
+    let btcUrl =
+      'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365 &interval=daily';
+
+    await fetch(bitcoinPriceUrl)
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
@@ -63,6 +88,15 @@ class Investments extends React.Component {
       })
       .catch(error => {
         console.error(error);
+      });
+
+    await fetch(btcUrl)
+      .then(response => response.json())
+      .then(prices => {
+        // console.log(prices.market_caps[0]);
+        this.setState({
+          data: prices.market_caps,
+        });
       });
   }
 
@@ -76,7 +110,9 @@ class Investments extends React.Component {
 
   componentDidMount() {
     this.updatePrice();
+    // console.log(BTC.image.large);
     // console.log(getSpotPrice('BTC'));
+    // console.log(BTC.prices.map(price => toDateTime(Number(price[0]))));
   }
 
   render(navigation) {
@@ -161,7 +197,96 @@ class Investments extends React.Component {
                     ? {display: 'none'}
                     : styles.longshortContainer
                 }>
-                <View style={styles.marketTrades}>
+                <View style={styles.coinChart}>
+                  <View style={styles.marketInfo}>
+                    <View style={styles.stockName}>
+                      <View style={{flexDirection: 'row', marginLeft: '5%'}}>
+                        <Text style={styles.stockHead}>Bitcoin</Text>
+                      </View>
+                    </View>
+                    <View style={styles.stockPriceContainer}>
+                      <Text style={styles.stockPrice}>
+                        <Text style={{color: 'grey'}}>$</Text>
+                        {this.state.price.toLocaleString()}
+                      </Text>
+                      <View
+                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Icon
+                          name={
+                            BTC.market_data.price_change_percentage_24h.toFixed(
+                              2,
+                            ) > 0
+                              ? 'caretup'
+                              : 'caretdown'
+                          }
+                          type="antdesign"
+                          color={
+                            BTC.market_data.price_change_percentage_24h.toFixed(
+                              2,
+                            ) > 0
+                              ? '#2FBE6A'
+                              : '#E14C4C'
+                          }
+                          size={20}
+                        />
+                        <Text
+                          style={{
+                            color:
+                              BTC.market_data.price_change_percentage_24h.toFixed(
+                                2,
+                              ) > 0
+                                ? '#2FBE6A'
+                                : '#E14C4C',
+                            fontFamily: 'EuclidCircularA-Bold',
+                            fontSize: 20,
+                            marginLeft: '5%',
+                          }}>
+                          {BTC.market_data.price_change_percentage_24h.toFixed(
+                            2,
+                          )}
+                          %
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={styles.chartContainer}>
+                    <LineChart
+                      bezier
+                      data={{
+                        datasets: [
+                          {
+                            data: this.state.data.map(price =>
+                              Number(price[1]),
+                            ),
+                          },
+                        ],
+                      }}
+                      width={screenWidth}
+                      height={200}
+                      withDots={false}
+                      withHorizontalLabels={false}
+                      chartConfig={{
+                        backgroundColor: '#0C0C0C',
+                        backgroundGradientToOpacity: 1,
+                        backgroundGradientFrom: '#0C0C0C',
+                        backgroundGradientTo: '#0C0C0C',
+                        useShadowColorFromDataset: false, // optional
+                        barPercentage: 1,
+                        barRadius: 360,
+                        fillShadowGradientFromOpacity: 0,
+                        fillShadowGradientToOpacity: 0,
+                        strokeWidth: 2,
+                        propsForBackgroundLines: {
+                          strokeWidth: 0,
+                        },
+
+                        color: (opacity = 0) => '#CC9900',
+                      }}
+                      style={{paddingRight: 0, backgroundColor: 'transparent'}}
+                    />
+                  </View>
+                </View>
+                {/* <View style={styles.marketTrades}>
                   <View style={styles.subContents}>
                     <Text style={styles.marketText}>
                       Market Trades Appear Here
@@ -174,7 +299,7 @@ class Investments extends React.Component {
                       Your Positions Appear Here
                     </Text>
                   </View>
-                </View>
+                </View> */}
               </View>
             </View>
             <View
@@ -231,7 +356,7 @@ class Investments extends React.Component {
                           style={{
                             color: 'white',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Bold',
+                            fontFamily: 'EuclidCircularA-Bold',
                           }}>
                           USD
                         </Text>
@@ -258,7 +383,7 @@ class Investments extends React.Component {
                             style={{
                               color: '#ffd700',
                               fontSize: 20,
-                              fontFamily: 'VelaSans-Bold',
+                              fontFamily: 'EuclidCircularA-Bold',
                             }}>
                             BTC
                           </Text>
@@ -302,7 +427,7 @@ class Investments extends React.Component {
                           style={{
                             color: '#ffd700',
                             fontSize: 20,
-                            fontFamily: 'VelaSans-Bold',
+                            fontFamily: 'EuclidCircularA-Bold',
                           }}>
                           BTC
                         </Text>
@@ -324,7 +449,7 @@ class Investments extends React.Component {
                             style={{
                               color: 'white',
                               fontSize: 20,
-                              fontFamily: 'VelaSans-Bold',
+                              fontFamily: 'EuclidCircularA-Bold',
                             }}>
                             USD
                           </Text>
