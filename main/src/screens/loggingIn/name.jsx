@@ -94,7 +94,7 @@ const registerDB = async ({navigation, name}) => {
         console.error('There was an error:', error);
       });
 
-    navigation.navigate('Payments');
+    navigation.push('Payments');
   } else {
     global.connectAccount.name = name;
     const address = global.connectAccount.publicAddress;
@@ -168,7 +168,7 @@ const registerDB = async ({navigation, name}) => {
         console.error('There was an error:', error);
       });
 
-    navigation.navigate('Payments');
+    navigation.push('Payments');
   }
 };
 

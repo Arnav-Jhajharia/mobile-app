@@ -44,15 +44,22 @@ class Investments extends React.Component {
     super(props);
     this.state = {
       price: 'Updating',
-      buyPrice: '',
-      btnSelected: 'overview',
+      buyPrice: 'Updating',
+      marketCap: 'Updating',
+      totalVolume: 'Updating',
+      allTimeHigh: 'Updating',
+      allTimeLow: 'Updating',
+      btnSelected: 'chart',
       nBtc: '',
       status: true,
       leverageValue: 1,
       latestBlock: {},
       data: BTC.prices,
+      chartSelected: '365',
+      coinInfo: {},
+      priceChangePercentage: Number(0),
     };
-    this.updatePrice = this.updatePrice.bind(this);
+    this.updateChart = this.updateChart.bind(this);
   }
 
   // test() {
@@ -69,26 +76,14 @@ class Investments extends React.Component {
   //   }
   // }
 
-  async updatePrice() {
-    let bitcoinPriceUrl =
-      'https://api.coindesk.com/v1/bpi/currentprice/BTC.json';
-    let newPrice = 'Unavailable.';
+  async updateChart(days) {
+    this.setState({
+      chartSelected: days,
+    });
 
-    let btcUrl =
-      'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365 &interval=daily';
+    let btcInfoUrl = `https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
 
-    await fetch(bitcoinPriceUrl)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          price: responseJson.bpi.USD.rate,
-          buyPrice: responseJson.bpi.USD.rate,
-          nBtc: 1.0,
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    let btcUrl = `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${days}`;
 
     await fetch(btcUrl)
       .then(response => response.json())
@@ -97,6 +92,33 @@ class Investments extends React.Component {
         this.setState({
           data: prices.market_caps,
         });
+      });
+
+    await fetch(btcInfoUrl)
+      .then(response => response.json())
+      .then(info => {
+        this.setState({
+          marketCap: info.market_data.market_cap.usd,
+          totalVolume: info.market_data.total_volume.usd,
+          allTimeHigh: info.market_data.ath.usd,
+          allTimeLow: info.market_data.atl.usd,
+          price: info.market_data.current_price.usd.toFixed(3).toString(),
+          buyPrice: info.market_data.current_price.usd.toFixed(3).toString(),
+          nBtc: 1.0,
+          priceChangePercentage:
+            this.state.chartSelected == '1'
+              ? info.market_data.price_change_percentage_24h
+              : this.state.chartSelected == '14'
+              ? info.market_data.price_change_percentage_14d
+              : this.state.chartSelected == '60'
+              ? info.market_data.price_change_percentage_60d
+              : this.state.chartSelected == '180'
+              ? info.market_data.price_change_percentage_200d
+              : info.market_data.price_change_percentage_1y,
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
   }
 
@@ -109,7 +131,7 @@ class Investments extends React.Component {
   };
 
   componentDidMount() {
-    this.updatePrice();
+    this.updateChart('1');
     // console.log(BTC.image.large);
     // console.log(getSpotPrice('BTC'));
     // console.log(BTC.prices.map(price => toDateTime(Number(price[0]))));
@@ -200,7 +222,7 @@ class Investments extends React.Component {
                 <View style={styles.coinChart}>
                   <View style={styles.marketInfo}>
                     <View style={styles.stockName}>
-                      <View style={{flexDirection: 'row', marginLeft: '5%'}}>
+                      <View style={{flexDirection: 'row'}}>
                         <Text style={styles.stockHead}>Bitcoin</Text>
                       </View>
                     </View>
@@ -213,17 +235,13 @@ class Investments extends React.Component {
                         style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Icon
                           name={
-                            BTC.market_data.price_change_percentage_24h.toFixed(
-                              2,
-                            ) > 0
+                            this.state.priceChangePercentage > 0
                               ? 'caretup'
                               : 'caretdown'
                           }
                           type="antdesign"
                           color={
-                            BTC.market_data.price_change_percentage_24h.toFixed(
-                              2,
-                            ) > 0
+                            this.state.priceChangePercentage > 0
                               ? '#2FBE6A'
                               : '#E14C4C'
                           }
@@ -232,26 +250,21 @@ class Investments extends React.Component {
                         <Text
                           style={{
                             color:
-                              BTC.market_data.price_change_percentage_24h.toFixed(
-                                2,
-                              ) > 0
+                              this.state.priceChangePercentage > 0
                                 ? '#2FBE6A'
                                 : '#E14C4C',
                             fontFamily: 'EuclidCircularA-Bold',
                             fontSize: 20,
                             marginLeft: '5%',
                           }}>
-                          {BTC.market_data.price_change_percentage_24h.toFixed(
-                            2,
-                          )}
-                          %
+                          {this.state.priceChangePercentage.toFixed(2)}%
                         </Text>
                       </View>
                     </View>
                   </View>
                   <View style={styles.chartContainer}>
                     <LineChart
-                      bezier
+                      // bezier
                       data={{
                         datasets: [
                           {
@@ -285,21 +298,149 @@ class Investments extends React.Component {
                       style={{paddingRight: 0, backgroundColor: 'transparent'}}
                     />
                   </View>
-                </View>
-                {/* <View style={styles.marketTrades}>
-                  <View style={styles.subContents}>
-                    <Text style={styles.marketText}>
-                      Market Trades Appear Here
-                    </Text>
+                  <View
+                    style={{
+                      justifyContent: 'space-evenly',
+                      flexDirection: 'row',
+                      marginTop: '5%',
+                    }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.updateChart('1');
+                      }}
+                      style={
+                        this.state.chartSelected == '1'
+                          ? styles.goldSelected
+                          : styles.chartComponents
+                      }>
+                      <Text
+                        style={
+                          this.state.chartSelected == '1'
+                            ? styles.navSelectedText
+                            : styles.chartText
+                        }>
+                        1D
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.updateChart('14');
+                      }}
+                      style={
+                        this.state.chartSelected == '14'
+                          ? styles.goldSelected
+                          : styles.chartComponents
+                      }>
+                      <Text
+                        style={
+                          this.state.chartSelected == '14'
+                            ? styles.navSelectedText
+                            : styles.chartText
+                        }>
+                        2W
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.updateChart('60');
+                      }}
+                      style={
+                        this.state.chartSelected == '60'
+                          ? styles.goldSelected
+                          : styles.chartComponents
+                      }>
+                      <Text
+                        style={
+                          this.state.chartSelected == '60'
+                            ? styles.navSelectedText
+                            : styles.chartText
+                        }>
+                        2M
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.updateChart('180');
+                      }}
+                      style={
+                        this.state.chartSelected == '180'
+                          ? styles.goldSelected
+                          : styles.chartComponents
+                      }>
+                      <Text
+                        style={
+                          this.state.chartSelected == '180'
+                            ? styles.navSelectedText
+                            : styles.chartText
+                        }>
+                        6M
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        await this.updateChart('365');
+                      }}
+                      style={
+                        this.state.chartSelected == '365'
+                          ? styles.goldSelected
+                          : styles.chartComponents
+                      }>
+                      <Text
+                        style={
+                          this.state.chartSelected == '365'
+                            ? styles.navSelectedText
+                            : styles.chartText
+                        }>
+                        1Y
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.additionalInfo}>
+                    <View style={styles.column1}>
+                      <View style={{marginTop: 15}}>
+                        <Text style={styles.marketCapInfo}>All Time High</Text>
+                        <Text style={styles.highText}>
+                          ${this.state.allTimeHigh}
+                        </Text>
+                      </View>
+                      <View style={{marginTop: 15}}>
+                        <Text style={styles.marketCapInfo}>Market Cap</Text>
+                        <Text style={styles.marketCapData}>
+                          ${this.state.marketCap.toLocaleString()}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.column2}>
+                      <View style={{marginTop: 15}}>
+                        <Text style={styles.marketCapInfo}>All Time Low</Text>
+                        <Text style={styles.lowText}>~$1</Text>
+                      </View>
+                      <View style={{marginTop: 15}}>
+                        <Text style={styles.marketCapInfo}>Total Volume</Text>
+                        <Text style={styles.marketCapData}>
+                          {this.state.totalVolume.toLocaleString()}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
-                <View style={styles.marketTrades}>
-                  <View style={styles.subContents}>
-                    <Text style={styles.marketText}>
-                      Your Positions Appear Here
-                    </Text>
+                <View style={styles.portfolio}>
+                  <Text style={styles.portfolioText}>Portfolio</Text>
+                  <View style={styles.marketTrades}>
+                    <View style={styles.subContents}>
+                      <Text style={styles.marketText}>
+                        Market Trades Appear Here
+                      </Text>
+                    </View>
                   </View>
-                </View> */}
+                  <View style={styles.positions}>
+                    <View style={styles.subContents}>
+                      <Text style={styles.marketText}>
+                        Your Positions Appear Here
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
             <View
@@ -336,7 +477,7 @@ class Investments extends React.Component {
               <View style={styles.btcUsd}>
                 <View style={styles.btc}>
                   <View style={styles.subContents}>
-                    <Text style={styles.subText}>You Sell</Text>
+                    <Text style={styles.subBtc}>You Sell</Text>
                     {this.state.status ? (
                       <View
                         style={{
@@ -345,7 +486,7 @@ class Investments extends React.Component {
                         }}>
                         <TextInput
                           //    onPress={this.updatePrice()}
-                          style={styles.subPrice}
+                          style={styles.subPriceBtc}
                           placeholderTextColor={'#C4C4C4'}
                           value={this.state.buyPrice}
                           onChangeText={newText =>
@@ -355,8 +496,9 @@ class Investments extends React.Component {
                         <Text
                           style={{
                             color: 'white',
-                            fontSize: 20,
+                            fontSize: 25,
                             fontFamily: 'EuclidCircularA-Bold',
+                            marginTop: '-1%',
                           }}>
                           USD
                         </Text>
@@ -370,7 +512,7 @@ class Investments extends React.Component {
                           }}>
                           <TextInput
                             //    onPress={this.updatePrice()}
-                            style={styles.subPrice}
+                            style={styles.subPriceBtc}
                             placeholderTextColor={'#C4C4C4'}
                             value={this.state.nBtc.toString()}
                             onChangeText={newText =>
@@ -382,8 +524,9 @@ class Investments extends React.Component {
                           <Text
                             style={{
                               color: '#ffd700',
-                              fontSize: 20,
+                              fontSize: 25,
                               fontFamily: 'EuclidCircularA-Bold',
+                              marginTop: '-1%',
                             }}>
                             BTC
                           </Text>
@@ -410,24 +553,25 @@ class Investments extends React.Component {
                     />
                   </TouchableOpacity>
                   <View style={styles.subContents}>
-                    <Text style={styles.subText}>You Receive</Text>
+                    <Text style={styles.subBtc}>You Receive</Text>
                     {this.state.status ? (
                       <View
                         style={{
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <Text style={styles.subPrice}>
+                        <Text style={styles.subPriceBtc}>
                           {(
-                            Number(this.state.buyPrice.replaceAll(',', '')) /
-                            Number(this.state.price.replaceAll(',', ''))
+                            Number(this.state.buyPrice) /
+                            Number(this.state.price)
                           ).toFixed(3)}
                         </Text>
                         <Text
                           style={{
                             color: '#ffd700',
-                            fontSize: 20,
+                            fontSize: 25,
                             fontFamily: 'EuclidCircularA-Bold',
+                            marginTop: '-1%',
                           }}>
                           BTC
                         </Text>
@@ -439,17 +583,17 @@ class Investments extends React.Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                           }}>
-                          <Text style={styles.subPrice}>
+                          <Text style={styles.subPriceBtc}>
                             {(
-                              Number(this.state.nBtc) *
-                              Number(this.state.price.replaceAll(',', ''))
+                              Number(this.state.nBtc) * Number(this.state.price)
                             ).toFixed(3)}
                           </Text>
                           <Text
                             style={{
                               color: 'white',
-                              fontSize: 20,
+                              fontSize: 25,
                               fontFamily: 'EuclidCircularA-Bold',
+                              marginTop: '-1%',
                             }}>
                             USD
                           </Text>

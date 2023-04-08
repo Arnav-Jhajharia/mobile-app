@@ -23,6 +23,7 @@ import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
+  global.mainnet = false;
   // await particleAuth.logout()
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMumbai,

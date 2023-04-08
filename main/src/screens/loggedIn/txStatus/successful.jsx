@@ -59,7 +59,8 @@ export default function Component({navigation, route}) {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('Payments');
+          navigation.push('Payments');
+
           // Alert.alert('Success');
         }}>
         <Text

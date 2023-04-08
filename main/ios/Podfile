@@ -36,6 +36,8 @@ target 'XadeMobile' do
     pod 'ConnectPhantomAdapter', '0.1.47'
     pod 'ConnectCommon', '0.1.47'
 
+    pod 'CryptoSwift', '1.6.0'
+
     pod 'SkeletonView', :git => 'https://github.com/SunZhiC/SkeletonView.git', :branch => 'main'
     pod 'WalletConnectSwift', :git => 'https://github.com/SunZhiC/WalletConnectSwift', :branch => 'master'
   use_react_native!(

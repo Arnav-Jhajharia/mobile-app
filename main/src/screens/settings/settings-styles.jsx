@@ -2,7 +2,6 @@ import {StyleSheet, Dimensions} from 'react-native';
 const width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
-    
   topbar: {
     position: 'absolute',
     top: 0,
@@ -10,11 +9,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#0C0C0C',
   },
-  
+
   logo: {
     fontFamily: 'VelaSans-ExtraBold',
     color: '#fff',
-    fontSize: 25,
+    fontSize: 30,
     marginLeft: '8%',
     marginTop: '2%',
     marginBottom: '2%',
@@ -25,37 +24,91 @@ const styles = StyleSheet.create({
     marginTop: width * 0.2,
     flexDirection: 'row',
     backgroundColor: '#1C1C1E',
-    padding: 15,
+    padding: 20,
     justifyContent: 'space-between',
-    borderRadius: 20,
-    alignItems: 'center'
+    borderRadius: 10,
+    alignItems: 'center',
   },
 
   otherSettings: {
     width: '90%',
-    marginTop: width * 0.1,
+    marginTop: width * 0.05,
     flexDirection: 'column',
     backgroundColor: '#1C1C1E',
     paddingTop: 10,
     paddingBottom: 10,
     // justifyContent: 'space-between',
-    borderRadius: 20,
-    alignItems: 'center'
+    borderRadius: 10,
+    alignItems: 'center',
   },
 
   innerSettings: {
-    paddingLeft: 10, 
-    paddingRight: 20    ,
+    paddingLeft: 10,
+    paddingRight: 20,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-
   },
   actualSetting: {
-
-    width: '85%', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row'
+    width: '80%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft: '3%',
   },
-  settingsText: {fontSize: 18,color: 'white', fontFamily: 'VelaSans-Medium'}
-})
+  settingsText: {
+    fontSize: 20,
+    color: 'white',
+    fontFamily: 'EuclidCircularA-Medium',
+  },
+
+  events: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: '10%',
+    width: '95%',
+  },
+
+  switch: {
+    width: '60%',
+    paddingVertical: 20,
+    borderColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+
+  switchText: {
+    textAlign: 'center',
+    color: '#fff',
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 15,
+  },
+
+  logout: {
+    width: '90%',
+    marginTop: '10%',
+    marginBottom: '15%',
+    paddingVertical: 10,
+    backgroundColor: '#1C1C1E',
+    borderRadius: 10,
+  },
+
+  logoutText: {
+    textAlign: 'center',
+    color: '#E14C4C',
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 20,
+  },
+
+  socialMedia: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: '5%',
+  },
+
+  innerMedia: {
+    marginHorizontal: '4%',
+  },
+});
 
 export default styles;

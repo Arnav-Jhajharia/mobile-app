@@ -40,7 +40,7 @@ export default function Component({navigation}) {
           }}
         />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Payments')}>
+      <TouchableOpacity onPress={() => navigation.push('Payments')}>
         <Text
           style={{
             color: '#fff',
