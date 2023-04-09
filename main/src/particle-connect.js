@@ -31,7 +31,7 @@ createConnectProvider = () => {
 };
 
 setChainInfo = async () => {
-  const chainInfo = ChainInfo.PolygonMumbai;
+  const chainInfo = ChainInfo.PolygonMainnet;
   const result = await particleConnect.setChainInfo(chainInfo);
   console.log(result);
 };
@@ -174,7 +174,7 @@ onClickConnect = async ({navigation, walletype}) => {
     solana_url: null,
   };
   particleConnect.init(
-    ChainInfo.PolygonMumbai,
+    ChainInfo.PolygonMainnet,
     Env.Production,
     metadata,
     rpcUrl,

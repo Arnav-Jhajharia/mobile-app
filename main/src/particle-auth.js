@@ -27,13 +27,13 @@ web3_getAccounts = async () => {
 };
 
 init = async () => {
-  const chainInfo = ChainInfo.PolygonMumbai;
+  const chainInfo = ChainInfo.PolygonMainnet;
   const env = Env.Production;
   particleAuth.init(chainInfo, env);
 };
 
 setChainInfo = async () => {
-  const chainInfo = ChainInfo.PolygonMumbai;
+  const chainInfo = ChainInfo.PolygonMainnet;
   const result = await particleAuth.setChainInfo(chainInfo);
   console.log(result);
 };
