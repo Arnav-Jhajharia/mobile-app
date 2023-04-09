@@ -12,29 +12,36 @@ import {
 } from 'react-native';
 import {Text} from '@rneui/themed';
 import {Icon} from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {PNAccount} from '../../Models/PNAccount';
 
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 
+// import { registerFcmToken } from './../../utils/push' 
+
 import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 
 var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
-  // await particleAuth.logout()
+  
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMumbai,
     particleAuth.Env.Production,
   );
+  // await particleAuth.logout()
   console.log('Device ID:', DeviceInfo.getUniqueIdSync());
 
   console.log('Checking if user is logged in');
   const result = await particleAuth.isLogin();
   console.log(result);
   if (result) {
+
     var account = await particleAuth.getUserInfo();
+    console.log("User account", account);
+    // await AsyncStorage.setItem("address", account.wallets[])
     var name;
     account = JSON.parse(account);
     const email = account.email
@@ -46,6 +53,7 @@ const LoginCheck = async ({navigation}) => {
     // console.log('Account:', account);
     // const name = account.name ? account.name : 'Not Set';
     const address = await particleAuth.getAddress();
+    // await registerFcmToken(address);
     await fetch(
       `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`,
       {

@@ -13,7 +13,7 @@ import {
 import {useState, useMemo, useEffect} from 'react';
 import {Text} from '@rneui/themed';
 import {SelectCountry} from 'react-native-element-dropdown';
-const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7'
+const REMMITEX_CONTRACT = '0x5c34A74caB1Edfc1d73B8Ae725AdDE50bA067d5B'
 
 // import styles from './paymentsStyles'
 // import { Picker, onOpen } from 'react-native-actions-sheet-picker';

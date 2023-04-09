@@ -17,8 +17,17 @@ import Video from 'react-native-video';
 const successVideo = require('./success.mov');
 
 export default function Component({navigation, route}) {
-  // Some routing must be done after Pending state
+  if(route.params.type == 'v2') {
+  fetch(
+    `https://amtowe.api.xade.finance?from=${route.params.walletAddress}&to=${route.params.emailAddress}&amt=${route.params.amount}`)
+                .then((res) => res.text())
+                .then((json) => {
+
+  })
+}
+  
   const hash = route.params;
+  console.log(route.params)
   return (
     <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
       <Text

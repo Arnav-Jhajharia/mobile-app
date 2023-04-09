@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 const DEVICE_WIDTH = Dimensions.get('window').width;
-
 class EventsCarousel extends React.Component {
   scrollRef = React.createRef();
   constructor(props) {
@@ -68,25 +67,23 @@ class EventsCarousel extends React.Component {
         <ScrollView
           horizontal
           pagingEnabled
-          //onMomentumScrollEnd={this.setSelectedIndex}
-          ref={this.scrollRef}>
-          {images.map(image => (
-            // <View>
-            // <Image
-            //   style={styles.backgroundImage}
-            //   source={require(`./img/${'derivex'}.png`)}
-            // //   key={image}
-            // />
-            // <Text style = {{color: 'white'}}>{image.name}</Text>
-            // </View
+          onMomentumScrollEnd={this.setSelectedIndex}
+          ref={this.scrollRef}
+          snapToInterval={DEVICE_WIDTH / 1.6}
+          decelerationRate={0.9}
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{ x: DEVICE_WIDTH / 1.6 }}
+        >
+          {[images[images.length - 1], ...images, images[0]].map((image, index) => (
             <TouchableOpacity
+              key={index}
               style={styles.depWith}
               onPress={() => {
-                image.name == 'DeriveX'
-                  ? this.props.navigation.navigate('Investments')
-                  : image.name == 'SabeX'
-                  ? this.props.navigation.navigate('Savings')
-                  : this.props.navigation.navigate('SendEmail');
+                // image.name == 'DeriveX'
+                //   ? this.props.navigation.navigate('Investments')
+                //   : image.name == 'SabeX'
+                //   ? this.props.navigation.navigate('Savings')
+                //   : this.props.navigation.navigate('SendEmail');
               }}>
               <LinearGradient
                 colors={['#1D2426', '#272727', '#383838']}
@@ -94,11 +91,7 @@ class EventsCarousel extends React.Component {
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
                 style={
-                  image.name == 'DeriveX'
-                    ? styles.derivex
-                    : image.name == 'SabeX'
-                    ? styles.sabex
-                    : styles.remmitex
+                  [styles.remmitex]
                 }>
                 <Image
                   source={{
@@ -106,14 +99,14 @@ class EventsCarousel extends React.Component {
                   }}
                   style={{
                     marginTop: '5%',
-                    width: 165,
-                    height: 165,
+                    width: 130,
+                    height: 130,
                   }}
                 />
 
                 <Text style={styles.amountText}>{image.name}</Text>
                 <Text style={styles.amountText3}>{image.details}</Text>
-                <Text style={styles.amountText2}>Try now</Text>
+                {/* <Text style={styles.amountText2}>Try now</Text> */}
               </LinearGradient>
             </TouchableOpacity>
           ))}
@@ -134,6 +127,7 @@ class EventsCarousel extends React.Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -195,7 +189,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 30,
     borderWidth: 2,
-    borderColor: '#FFC7F9',
+    borderColor: '#CBCBCB',
   },
 
   amountText: {
@@ -210,8 +204,8 @@ const styles = StyleSheet.create({
     fontFamily: 'VelaSans-Bold',
     marginLeft: 20,
     // marginTop: 20,
-    fontSize: 14,
-
+    fontSize: 17,
+    marginRight: 10,
     alignSelf: 'flex-start',
     color: 'grey',
   },

@@ -28,28 +28,36 @@ const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
 const windowHeight = Dimensions.get('window').height;
 // import {signAndSendTransactionConnect} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
+import { registerFcmToken } from '../../../utils/push';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 const images = [
   {
-    name: 'DeriveX',
+    name: 'Quests',
     color: '#C7FFD6',
-    details: 'Trade 5000+ markets',
+    details: 'Get Xade tokens and amazing rewards for free',
     image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125002/Activity_uw71pf.png',
+      'https://res.cloudinary.com/xade-finance/image/upload/v1680888638/gift-dynamic-premium_mol5y6.png',
   },
   {
-    name: 'RemmiteX',
+    name: 'Subscribe',
     color: '#C7FFD6',
-    details: 'Global payments',
+    details: 'To feel premium experience & get exclusive perks',
     image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125075/Arrow_qgmwic.png',
+      'https://res.cloudinary.com/xade-finance/image/upload/v1680888637/crow-dynamic-premium_bwfohj.png',
   },
   {
-    name: 'SabeX',
+    name: 'Contribute',
     color: '#C7FFD6',
-    details: 'Stable savings',
+    details: 'Use Xade app & write a review to win Xade Tokens',
     image:
-      'https://res.cloudinary.com/dcrfpsiiq/image/upload/v1678125032/Wallet_eriqpx.png',
+      'https://res.cloudinary.com/xade-finance/image/upload/v1680888637/megaphone-dynamic-premium_tvtubx.png',
+  },
+  {
+    name: 'Referrals',
+    color: '#C7FFD6',
+    details: 'Invite your friends to Xade and win exclusive rewards',
+    image:
+      'https://res.cloudinary.com/xade-finance/image/upload/v1680888637/notify-heart-dynamic-premium_rtjfgq.png',
   },
   // {},
   // {}
@@ -97,6 +105,15 @@ const PaymentsComponent = ({navigation}) => {
       //   '1000000000000000',
       // );
     }
+
+    async function registration()
+    {
+      console.log('req being sent')
+      await registerFcmToken(authAddress);
+    }
+
+    registration();
+    
 
     fetch(
       `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
@@ -333,10 +350,7 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('EnterSavingsAmount', {
-                withdraw: false,
-                web3: web3,
-              });
+              navigation.navigate('FiatRamps');
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}

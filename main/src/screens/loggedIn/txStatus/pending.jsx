@@ -42,14 +42,9 @@ export default function Component({route, navigation}) {
         console.log('Global Account:', global.loginAccount);
         status = await this.signAndSendTransaction(walletAddress, weiVal);
         console.log('TX1:', status);
-        fetch(
-          `https://amtowe.api.xade.finance?from=${authAddress}&to=${emailAddress}&amt=${amount}`)
-                      .then((res) => res.json())
-                      .then((json) => {
-                        navigation.navigate('Successful')         
-                      })
-        if (status) navigation.navigate('Successful');
-        else navigation.navigate('Unsuccessful');
+
+        if (status) navigation.navigate('Successful', {status, type, emailAddress, walletAddress, amount});
+        else navigation.navigate('Unsuccessful');``
       } else {
         authAddress = global.connectAccount.publicAddress;
         console.log('Global Account:', global.connectAccount);
@@ -58,7 +53,7 @@ export default function Component({route, navigation}) {
           weiVal,
         );
         console.log('TX1:', status);
-        if (status !== false) navigation.navigate('Successful', {status});
+        if (status !== false) navigation.navigate('Successful', {status, type, emailAddress, walletAddress, amount});
         else navigation.navigate('Unsuccessful');
       }
     };

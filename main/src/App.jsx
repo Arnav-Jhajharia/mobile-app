@@ -52,7 +52,8 @@ const particle = require('./../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
 
 import messaging from '@react-native-firebase/messaging';
-import {requestUserPermission} from './utils/push';
+import {requestUserPermission, generateTopic} from './utils/push';
+import { getDeviceToken } from 'react-native-device-info';
 
 function PreLaunchLoad({navigation}) {
   return (
@@ -289,9 +290,10 @@ function SendMobile({navigation}) {
 export default function App({navigation}) {
 
   useEffect(() => {
+    console.log("Global",global.withAuth)
     async function preLaunchChecks() {
       await requestUserPermission();
-
+      await generateTopic();
 
       messaging().onNotificationOpenedApp(remoteMessage => {
         console.log(
@@ -304,9 +306,6 @@ export default function App({navigation}) {
       })
     
     
-      messaging().subscribeToTopic('random')
-          .then(() => console.log('Subscribed to topic!'))
-          .catch(error => console.error('Error subscribing to topic:', error));
     }
 
     preLaunchChecks();
@@ -449,7 +448,7 @@ export default function App({navigation}) {
           options={{headerShown: false}}
         />
          <Stack.Screen
-          name="FiatAggregator"
+          name="FiatRamps"
           component={FiatAggregator}
           navigation={navigation}
           options={{headerShown: false}}
