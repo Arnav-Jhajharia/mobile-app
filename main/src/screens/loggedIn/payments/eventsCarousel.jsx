@@ -67,16 +67,18 @@ class EventsCarousel extends React.Component {
         <ScrollView
           horizontal
           pagingEnabled
-          onMomentumScrollEnd={this.setSelectedIndex}
-          ref={this.scrollRef}
-          snapToInterval={DEVICE_WIDTH / 1.6}
-          decelerationRate={0.9}
-          showsHorizontalScrollIndicator={false}
-          contentOffset={{ x: DEVICE_WIDTH / 1.6 }}
-        >
-          {[images[images.length - 1], ...images, images[0]].map((image, index) => (
+          //onMomentumScrollEnd={this.setSelectedIndex}
+          ref={this.scrollRef}>
+          {images.map(image => (
+            // <View>
+            // <Image
+            //   style={styles.backgroundImage}
+            //   source={require(`./img/${'derivex'}.png`)}
+            // //   key={image}
+            // />
+            // <Text style = {{color: 'white'}}>{image.name}</Text>
+            // </View
             <TouchableOpacity
-              key={index}
               style={styles.depWith}
               onPress={() => {
                 // image.name == 'DeriveX'
@@ -127,6 +129,8 @@ class EventsCarousel extends React.Component {
     );
   }
 }
+
+
 
 
 const styles = StyleSheet.create({

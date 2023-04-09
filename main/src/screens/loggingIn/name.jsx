@@ -82,8 +82,8 @@ const registerDB = async ({navigation, name}) => {
         body: data
       });
     }
-    const url = 'https://notifs.api.xade.finance/registerDevice';
-    const token = await AsyncStorage.getItem('token');
+    // const url = 'https://notifs.api.xade.finance/registerDevice';
+    // const token = await AsyncStorage.getItem('token');
 
     navigation.push('Payments');
   } else {

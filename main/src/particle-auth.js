@@ -52,6 +52,7 @@ login = async () => {
     const name = account.name ? account.name : 'Not Set';
     const userInfo = result.data;
     const address = (await particleAuth.getAddress()).toLowerCase();
+    await AsyncStorage.setItem('address', address);
     const uuid = userInfo.wallets[0].uuid
       ? userInfo.wallets[0].uuid
       : userInfo.uuid;

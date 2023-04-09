@@ -53,6 +53,7 @@ connect = async ({walleType}) => {
       uuid,
     );
     console.log(global.connectAccount);
+    await AsyncStorage.setItem('address', account.publicAddress);
     global.withAuth = false;
     const userInfo = result.data;
     console.log('User Info:', global.connectAccount);
@@ -198,7 +199,7 @@ onClickConnect = async ({navigation, walletype}) => {
     const address = global.connectAccount.publicAddress;
     const email = global.connectAccount.phoneEmail;
     const uuid = global.connectAccount.uiud;
-
+    
     await fetch(
       `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`,
       {
