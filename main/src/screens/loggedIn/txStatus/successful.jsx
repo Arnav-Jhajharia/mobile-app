@@ -17,13 +17,19 @@ import Video from 'react-native-video';
 const successVideo = require('./success.mov');
 
 export default function Component({navigation, route}) {
+  const [isPoints, setIsPoints] = useState(false);
   if(route.params.type == 'v2') {
   fetch(
     `https://amtowe.api.xade.finance?from=${route.params.walletAddress}&to=${route.params.emailAddress}&amt=${route.params.amount}`)
                 .then((res) => res.text())
                 .then((json) => {
-
+    
   })
+}
+
+if(global.mainnet == false)
+{
+  setIsPoints(true);
 }
   
   const hash = route.params;
