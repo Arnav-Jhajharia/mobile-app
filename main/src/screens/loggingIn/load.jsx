@@ -23,10 +23,10 @@ import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
-  global.mainnet = false;
+  global.mainnet = true;
   // await particleAuth.logout()
   particleAuth.init(
-    particleAuth.ChainInfo.PolygonMumbai,
+    particleAuth.ChainInfo.PolygonMainnet,
     particleAuth.Env.Production,
   );
   console.log('Device ID:', DeviceInfo.getUniqueIdSync());
@@ -114,7 +114,7 @@ const LoginCheck = async ({navigation}) => {
               };
 
               particleConnect.init(
-                ChainInfo.PolygonMumbai,
+                ChainInfo.PolygonMainnet,
                 Env.Production,
                 metadata,
                 rpcUrl,

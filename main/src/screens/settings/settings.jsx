@@ -345,7 +345,7 @@ const Component = ({navigation}) => {
                             global.mainnet = true;
                             console.log('Switching To Mainnet');
                             console.log(
-                              await particleConnect.setChainInfoAsync(
+                              await particleAuth.setChainInfoAsync(
                                 particleAuth.ChainInfo.PolygonMainnet,
                               ),
                             );
@@ -362,7 +362,7 @@ const Component = ({navigation}) => {
                             global.mainnet = false;
                             console.log('Switching To Testnet');
                             console.log(
-                              await particleConnect.setChainInfoAsync(
+                              await particleAuth.setChainInfoAsync(
                                 particleAuth.ChainInfo.PolygonMumbai,
                               ),
                             );

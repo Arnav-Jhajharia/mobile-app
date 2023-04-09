@@ -18,17 +18,21 @@ import styles from './payments-styles';
 import {Icon} from 'react-native-elements';
 import {useEffect} from 'react';
 import * as particleAuth from 'react-native-particle-auth';
+import * as particleConnect from 'react-native-particle-connect';
 import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
-import ABI from './XUSD';
+import XUSD_ABI from './XUSD';
+import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
+import {POLYGON_API_KEY} from '@env';
+
+const windowHeight = Dimensions.get('window').height;
+
 let web3;
 const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
-const windowHeight = Dimensions.get('window').height;
-// import {signAndSendTransactionConnect} from '../../particle-connect';
-import {POLYGON_API_KEY} from '@env';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
+const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 const images = [
   {
     name: 'DeriveX',
@@ -55,6 +59,105 @@ const images = [
   // {}
 ];
 const PaymentsComponent = ({navigation}) => {
+  // async function test() {
+  //   if (global.withAuth) {
+  //     authAddress = global.loginAccount.publicAddress;
+  //     console.log('Global Account:', global.loginAccount);
+  //     const result = await particleAuth.setChainInfoAsync(
+  //       particleAuth.ChainInfo.PolygonMainnet,
+  //     );
+  //     console.log(result);
+  //     web3 = this.createProvider();
+  //   } else {
+  //     authAddress = global.connectAccount.publicAddress;
+  //     console.log('Global Account:', global.connectAccount);
+  //     console.log('Global Wallet Type:', global.walletType);
+  //     web3 = this.createConnectProvider();
+  //   }
+  //   const contract = new web3.eth.Contract(ABI, contractAddress);
+  //   const result = await contract.methods.balanceOf(authAddress).call();
+  //   const decimals = await contract.methods.decimals().call();
+  //   const formattedResult = parseInt(result) / 10 ** decimals;
+  //   setBalance(formattedResult);
+  // }
+  // fetch(
+  //   `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${global.loginAccount.publicAddress}&apikey=${POLYGON_API_KEY}`,
+  // )
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     if (data.message != 'NOTOK') {
+  //       //console.log(data.message);
+  //       //         console.log(data);
+  //       const result = data.result;
+  //       let len = result.length;
+  //       let arr = [];
+  //       let date = [];
+  //       for (let i = 0; i < len; i++) {
+  //         let res = result[i];
+  //         let val = res.value;
+  //         const etherValue = web3.utils.fromWei(val, 'ether');
+  //         var pubDate = new Date(res.timeStamp * 1000);
+  //         var weekday = new Array(
+  //           'Sun',
+  //           'Mon',
+  //           'Tue',
+  //           'Wed',
+  //           'Thu',
+  //           'Fri',
+  //           'Sat',
+  //         );
+  //         var monthname = new Array(
+  //           'Jan',
+  //           'Feb',
+  //           'Mar',
+  //           'Apr',
+  //           'May',
+  //           'Jun',
+  //           'Jul',
+  //           'Aug',
+  //           'Sep',
+  //           'Oct',
+  //           'Nov',
+  //           'Dec',
+  //         );
+  //         var formattedDate =
+  //           monthname[pubDate.getMonth()] +
+  //           ' ' +
+  //           pubDate.getDate() +
+  //           ', ' +
+  //           pubDate.getFullYear();
+  //         const truth =
+  //           REMMITEX_CONTRACT.toLowerCase() == res.to
+  //             ? 2
+  //             : authAddress.toString().toLowerCase() == res.to
+  //             ? 1
+  //             : 0;
+  //         const json = {
+  //           truth: truth, // true while accepting
+  //           to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
+  //           from:
+  //             res.from == SABEX_LP.toLowerCase()
+  //               ? 'SabeX Withdrawal'
+  //               : res.from,
+  //           value: etherValue,
+  //           date: formattedDate,
+  //           hash: res.hash,
+  //         };
+  //         date.push(formattedDate);
+  //         arr.push(json);
+  //       }
+  //       setDates([...new Set(date)].reverse());
+  //       setState(arr.reverse());
+  //       // console.log(dates);
+  //       console.log(state);
+  //     } else {
+  //       setState([]);
+  //       setDates([]);
+  //       return;
+  //     }
+  //   });
+  // test();
+
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0, hash: ''},
   ]);
@@ -62,140 +165,243 @@ const PaymentsComponent = ({navigation}) => {
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
   const [transactionVisible, setTransactionVisible] = useState(false);
-  const [notificationVisible, setNotificiationsVisible] = useState(false);
 
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
 
-    const test = async (web3, address) => {
-      const contract = new web3.eth.Contract(ABI, contractAddress);
-
-      async function getTokenBalance() {
-        let result = await contract.methods.balanceOf(address).call();
-        const formattedResult = web3.utils.fromWei(result, 'ether');
-        console.log('Balance:', formattedResult);
-        setBalance(formattedResult);
+    const getBalance = async (web3, address) => {
+      if (global.mainnet) {
+        if (global.withAuth) {
+          await particleAuth.setChainInfoAsync(
+            particleAuth.ChainInfo.PolygonMainnet,
+          );
+        } else {
+          await particleConnect.setChainInfoAsync(
+            particleConnect.ChainInfo.PolygonMainnet,
+          );
+        }
+        const contract = new web3.eth.Contract(USDC_ABI, usdcAddress);
+        async function getTokenBalance() {
+          let result = await contract.methods.balanceOf(address).call();
+          const decimals = await contract.methods.decimals().call();
+          const formattedResult = parseInt(result) / 10 ** decimals;
+          console.log('Balance:', formattedResult);
+          setBalance(formattedResult.toString());
+        }
+        getTokenBalance();
+      } else {
+        if (global.withAuth) {
+          await particleAuth.setChainInfoAsync(
+            particleAuth.ChainInfo.PolygonMumbai,
+          );
+        } else {
+          await particleConnect.setChainInfoAsync(
+            particleConnect.ChainInfo.PolygonMumbai,
+          );
+        }
+        const contract = new web3.eth.Contract(XUSD_ABI, contractAddress);
+        async function getTokenBalance() {
+          let result = await contract.methods.balanceOf(address).call();
+          const formattedResult = web3.utils.fromWei(result, 'ether');
+          console.log('Balance:', formattedResult);
+          setBalance(formattedResult.toString());
+        }
+        getTokenBalance();
       }
-
-      getTokenBalance();
     };
 
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
       web3 = this.createProvider();
-      test(web3, authAddress);
+      getBalance(web3, authAddress);
       //  console.log(web3.eth.getAccounts());
     } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
       console.log('Global Wallet Type:', global.walletType);
       web3 = this.createConnectProvider();
-      test(web3, authAddress);
+      getBalance(web3, authAddress);
       // this.signAndSendTransactionConnect(
       //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
       //   '1000000000000000',
       // );
     }
 
-    fetch(
-      `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
-    )
-      .then(response => response.json())
-      .then(data => {
-        if (data.message != 'NOTOK') {
-          //console.log(data.message);
-          //         console.log(data);
-          const result = data.result;
-          //        console.log('Arnav:', result);
-          let len = result.length;
+    if (global.mainnet) {
+      fetch(
+        `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+      )
+        .then(response => response.json())
+        .then(data => {
+          if (data.message != 'NOTOK') {
+            //console.log(data.message);
+            //         console.log(data);
+            const result = data.result;
+            //        console.log('Arnav:', result);
+            let len = result.length;
 
-          let arr = [];
-          let date = [];
-          for (let i = 0; i < len; i++) {
-            let res = result[i];
-            let val = res.value;
-            const etherValue = web3.utils.fromWei(val, 'ether');
-            var pubDate = new Date(res.timeStamp * 1000);
-            var weekday = new Array(
-              'Sun',
-              'Mon',
-              'Tue',
-              'Wed',
-              'Thu',
-              'Fri',
-              'Sat',
-            );
+            let arr = [];
+            let date = [];
+            for (let i = 0; i < len; i++) {
+              let res = result[i];
+              let val = res.value;
+              const decimals = 6;
+              const etherValue = parseInt(val) / 10 ** decimals;
+              var pubDate = new Date(res.timeStamp * 1000);
+              var weekday = new Array(
+                'Sun',
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+              );
 
-            var monthname = new Array(
-              'Jan',
-              'Feb',
-              'Mar',
-              'Apr',
-              'May',
-              'Jun',
-              'Jul',
-              'Aug',
-              'Sep',
-              'Oct',
-              'Nov',
-              'Dec',
-            );
+              var monthname = new Array(
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+              );
 
-            var formattedDate =
-              monthname[pubDate.getMonth()] +
-              ' ' +
-              pubDate.getDate() +
-              ', ' +
-              pubDate.getFullYear();
-            const truth =
-              REMMITEX_CONTRACT.toLowerCase() == res.to
-                ? 2
-                : authAddress.toString().toLowerCase() == res.to
-                ? 1
-                : 0;
-            const json = {
-              truth: truth, // true while accepting
-              to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
-              from:
-                res.from == SABEX_LP.toLowerCase()
-                  ? 'SabeX Withdrawal'
-                  : res.from,
-              value: etherValue,
-              date: formattedDate,
-              hash: res.hash,
-            };
-            date.push(formattedDate);
-            // console.log(date);
-            // console.log(json);
-            arr.push(json);
-            // console.log(authAddress, res.to, json.truth);
+              var formattedDate =
+                monthname[pubDate.getMonth()] +
+                ' ' +
+                pubDate.getDate() +
+                ', ' +
+                pubDate.getFullYear();
+              const truth =
+                REMMITEX_CONTRACT.toLowerCase() == res.to
+                  ? 2
+                  : authAddress.toString().toLowerCase() == res.to
+                  ? 1
+                  : 0;
+              const json = {
+                truth: truth, // true while accepting
+                to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
+                from:
+                  res.from == SABEX_LP.toLowerCase()
+                    ? 'SabeX Withdrawal'
+                    : res.from,
+                value: etherValue,
+                date: formattedDate,
+                hash: res.hash,
+              };
+              date.push(formattedDate);
+              // console.log(date);
+              // console.log(json);
+              arr.push(json);
+              // console.log(authAddress, res.to, json.truth);
+            }
+            //    console.log(json);
+            setDates([...new Set(date)].reverse());
+            setState(arr.reverse());
+            // console.log(dates);
+            // console.log(state);
+          } else {
+            setState([]);
+            setDates([]);
+            return;
           }
-          //    console.log(json);
-          setDates([...new Set(date)].reverse());
-          setState(arr.reverse());
-          // console.log(dates);
-          // console.log(state);
-        } else {
-          setState([]);
-          setDates([]);
-          return;
-        }
-      });
+        });
+    } else {
+      fetch(
+        `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+      )
+        .then(response => response.json())
+        .then(data => {
+          if (data.message != 'NOTOK') {
+            //console.log(data.message);
+            //         console.log(data);
+            const result = data.result;
+            //        console.log('Arnav:', result);
+            let len = result.length;
 
-    // fetch(
-    //   `https://api-testnet.polygonscan.com/api?module=account&action=tokenBalance&contractaddress=${contractAddress}&address=${authAddress}&tag=latest&apikey=${POLYGON_API_KEY}`,
-    // )
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     const balance = data.result;
-    //     const etherValue = Web3.utils.fromWei(balance, 'ether');
-    //     //  setBalance(etherValue);
-    //     //     console.log(etherValue);
-    //   });
+            let arr = [];
+            let date = [];
+            for (let i = 0; i < len; i++) {
+              let res = result[i];
+              let val = res.value;
+              const etherValue = web3.utils.fromWei(val, 'ether');
+              var pubDate = new Date(res.timeStamp * 1000);
+              var weekday = new Array(
+                'Sun',
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+              );
+
+              var monthname = new Array(
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+              );
+
+              var formattedDate =
+                monthname[pubDate.getMonth()] +
+                ' ' +
+                pubDate.getDate() +
+                ', ' +
+                pubDate.getFullYear();
+              const truth =
+                REMMITEX_CONTRACT.toLowerCase() == res.to
+                  ? 2
+                  : authAddress.toString().toLowerCase() == res.to
+                  ? 1
+                  : 0;
+              const json = {
+                truth: truth, // true while accepting
+                to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
+                from:
+                  res.from == SABEX_LP.toLowerCase()
+                    ? 'SabeX Withdrawal'
+                    : res.from,
+                value: etherValue,
+                date: formattedDate,
+                hash: res.hash,
+              };
+              date.push(formattedDate);
+              // console.log(date);
+              // console.log(json);
+              arr.push(json);
+              // console.log(authAddress, res.to, json.truth);
+            }
+            //    console.log(json);
+            setDates([...new Set(date)].reverse());
+            setState(arr.reverse());
+            // console.log(dates);
+            // console.log(state);
+          } else {
+            setState([]);
+            setDates([]);
+            return;
+          }
+        });
+    }
   }, []);
-  const t = true; // it means to send]
-  // console.log('Address: ', address);
+  const t = true;
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
@@ -275,16 +481,16 @@ const PaymentsComponent = ({navigation}) => {
                 fontFamily: 'Benzin-Medium',
               }}>
               {balance.split('.')[0]}
-            </Text>
-            <Text
-              style={{
-                color: '#6D797D',
-                fontSize: 35,
-                fontFamily: 'Benzin-Medium',
-                marginBottom: 5,
-              }}>
-              {'.'}
-              {balance.split('.')[1] ? balance.split('.')[1] : '00'}
+              <Text
+                style={{
+                  color: '#6D797D',
+                  fontSize: 35,
+                  fontFamily: 'Benzin-Medium',
+                  marginBottom: 5,
+                }}>
+                {'.'}
+                {balance.split('.')[1] ? balance.split('.')[1] : '00'}
+              </Text>
             </Text>
           </View>
           <Text
