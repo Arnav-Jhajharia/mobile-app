@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-  black: {
+  black: { 
     backgroundColor: '#0C0C0C',
     width: '100%',
     height: '100%',
@@ -71,20 +71,9 @@ const styles = StyleSheet.create({
     fontFamily: 'VelaSans-ExtraBold',
   },
 
-  marketTrades: {
-    width: '80%',
-    marginLeft: '10%',
-    backgroundColor: '#1E1E1E',
-    borderRadius: 7,
-    marginTop: '20%',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   marketText: {
     color: 'grey',
-    fontFamily: 'VelaSans-Bold',
+    fontFamily: 'EuclidCircularA-Regular',
     textAlign: 'center',
     fontSize: 15,
   },
@@ -92,7 +81,7 @@ const styles = StyleSheet.create({
   priceSlippage: {
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    marginTop: '20%',
+    marginTop: '15%',
     width: '90%',
     marginLeft: '5%',
   },
@@ -120,17 +109,33 @@ const styles = StyleSheet.create({
 
   subText: {
     color: '#868686',
-    fontFamily: 'VelaSans-Medium',
+    fontFamily: 'EuclidCircularA-Medium',
     textAlign: 'left',
     fontSize: 15,
   },
 
+  subBtc: {
+    color: '#868686',
+    fontFamily: 'EuclidCircularA-Medium',
+    textAlign: 'left',
+    fontSize: 17.5,
+  },
+
   subPrice: {
-    fontFamily: 'VelaSans-Medium',
+    fontFamily: 'EuclidCircularA-SemiBold',
     textAlign: 'left',
     marginTop: 4,
     fontSize: 26,
-    color: '#C4C4C4',
+    color: '#fff',
+    marginBottom: 15,
+  },
+
+  subPriceBtc: {
+    fontFamily: 'EuclidCircularA-SemiBold',
+    textAlign: 'left',
+    marginTop: 4,
+    fontSize: 30,
+    color: '#fff',
     marginBottom: 15,
   },
 
@@ -146,6 +151,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#1E1E1E',
     borderRadius: 7,
+    padding: '1%',
     flex: 1,
   },
 
@@ -153,13 +159,14 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#1E1E1E',
     borderRadius: 7,
-    marginTop: '7%',
+    marginTop: '5%',
+    padding: '1%',
   },
 
   leverage: {
     width: '85%',
     marginLeft: '7.5%',
-    marginTop: '10%',
+    marginTop: '5%',
   },
 
   leverageText: {
@@ -179,7 +186,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFF',
     fontFamily: 'VelaSans-ExtraBold',
-    marginTop: '7%',
+    marginTop: '3%',
     fontSize: 15,
   },
 
@@ -228,7 +235,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontFamily: 'VelaSans-ExtraBold',
     fontSize: 20,
-    marginBottom: '10%',
+    marginBottom: '5%',
   },
 
   orderDescription: {
@@ -241,6 +248,139 @@ const styles = StyleSheet.create({
     color: '#787777',
     fontFamily: 'VelaSans-Medium',
     paddingRight: '5%',
+  },
+
+  coinChart: {
+    width: '90%',
+    marginLeft: '5%',
+  },
+
+  marketInfo: {},
+
+  stockName: {
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '5%',
+  },
+
+  stockHead: {
+    color: '#F0F0F0',
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 30,
+  },
+
+  stockPriceContainer: {
+    marginTop: '2%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  stockPrice: {
+    color: '#F0F0F0',
+    fontSize: 40,
+    fontFamily: 'EuclidCircularA-Medium',
+    marginLeft: '5%',
+  },
+
+  coinChart: {
+    marginTop: '10%',
+  },
+
+  chartContainer: {
+    marginTop: '10%',
+  },
+
+  goldSelected: {
+    backgroundColor: '#CC9900',
+    borderRadius: 50,
+    paddingHorizontal: 25,
+    paddingVertical: 7,
+  },
+
+  chartComponents: {
+    borderRadius: 50,
+    paddingHorizontal: 25,
+    paddingVertical: 7,
+  },
+
+  chartText: {
+    color: '#747474',
+    fontFamily: 'VelaSans-ExtraBold',
+  },
+
+  additionalInfo: {
+    width: '90%',
+    marginLeft: '5%',
+    marginTop: '2%',
+    flexDirection: 'row',
+  },
+
+  column1: {
+    flexDirection: 'column',
+  },
+
+  column2: {
+    flexDirection: 'column',
+    marginLeft: '3%',
+  },
+
+  marketCapInfo: {
+    fontFamily: 'EuclidCircularA-Medium',
+    color: '#999',
+    fontSize: 15,
+  },
+
+  marketCapData: {
+    fontFamily: 'EuclidCircularA-Medium',
+    color: '#FFFFFF',
+    fontSize: 25,
+  },
+
+  highText: {
+    fontFamily: 'EuclidCircularA-Medium',
+    color: '#2FBE6A',
+    fontSize: 25,
+  },
+
+  lowText: {
+    fontFamily: 'EuclidCircularA-Medium',
+    color: '#E14C4C',
+    fontSize: 25,
+  },
+
+  portfolio: {
+    marginTop: '20%',
+    marginBottom: '20%',
+  },
+
+  portfolioText: {
+    color: '#fff',
+    fontFamily: 'EuclidCircularA-Medium',
+    fontSize: 30,
+    marginLeft: '5%',
+  },
+
+  marketTrades: {
+    width: '90%',
+    marginLeft: '5%',
+    backgroundColor: '#1E1E1E',
+    borderRadius: 7,
+    height: 270,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '10%',
+  },
+
+  positions: {
+    marginTop: '10%',
+    width: '90%',
+    marginLeft: '5%',
+    backgroundColor: '#1E1E1E',
+    borderRadius: 7,
+    height: 270,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

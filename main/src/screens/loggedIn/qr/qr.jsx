@@ -73,11 +73,11 @@ function QRCode() {
           <Text style={styles.name}>{String(info)}</Text>
           <TouchableHighlight
             onPress={() => {
-              Clipboard.setString(String(address));
+              Clipboard.setString(String(address).toLowerCase());
               Alert.alert('Copied Address To Clipboard');
             }}>
             <Text style={styles.address}>
-              {String(address).substring(0, 35)}...
+              {String(address).toLowerCase().substring(0, 35)}...
             </Text>
           </TouchableHighlight>
         </View>

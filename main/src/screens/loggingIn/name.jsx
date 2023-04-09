@@ -85,7 +85,7 @@ const registerDB = async ({navigation, name}) => {
     const url = 'https://notifs.api.xade.finance/registerDevice';
     const token = await AsyncStorage.getItem('token');
 
-    navigation.navigate('Payments');
+    navigation.push('Payments');
   } else {
     global.connectAccount.name = name;
     const address = global.connectAccount.publicAddress;
@@ -172,7 +172,7 @@ const registerDB = async ({navigation, name}) => {
         console.error('There was an error:', error);
       });
 
-    navigation.navigate('Payments');
+    navigation.push('Payments');
   }
 };
 
