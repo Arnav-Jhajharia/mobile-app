@@ -30,6 +30,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './settings-styles';
 import {Icon} from 'react-native-elements';
 import {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {height, width} = Dimensions.get('window');
 
 // import {EventsCarousel} from './eventsCarousel';
@@ -343,6 +344,7 @@ const Component = ({navigation}) => {
                           style={modalStyles.button}
                           onPress={async () => {
                             global.mainnet = true;
+                            await AsyncStorage.setItem('mainnet', JSON.stringify(true))
                             console.log('Switching To Mainnet');
                             console.log(
                               await particleAuth.setChainInfoAsync(
@@ -360,6 +362,7 @@ const Component = ({navigation}) => {
                           style={modalStyles.buttonAlt}
                           onPress={async () => {
                             global.mainnet = false;
+                            await AsyncStorage.setItem('mainnet', JSON.stringify(false))
                             console.log('Switching To Testnet');
                             console.log(
                               await particleAuth.setChainInfoAsync(

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-elements';
 import Video from 'react-native-video';
 import {signAndSendTransactionConnect} from '../../../particle-connect';
@@ -11,9 +11,9 @@ const Web3 = require('web3');
 
 let web3;
 const successVideo = require('./pending.mov');
-
+const amount = '0.001'
 export default function Component({route, navigation}) {
-  const {amount, walletAddress, emailAddress, mobileNumber, type} =
+  const { walletAddress, emailAddress, mobileNumber, type} =
     route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {

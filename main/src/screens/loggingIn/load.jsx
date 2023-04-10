@@ -8,7 +8,7 @@ import {
   View,
   Dimensions,
   Button,
-  ActivityIndicator,
+  ActivitusdcyIndicator,
 } from 'react-native';
 import {Text} from '@rneui/themed';
 import {Icon} from 'react-native-elements';
@@ -27,7 +27,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
-  global.mainnet = true;
+  // global.mainnet = true;
+  const mainnet = await AsyncStorage.getItem('mainnet')
+  if(!mainnet) // null 
+    await AsyncStorage.setItem('mainnet', JSON.stringify(true))
   // await particleAuth.logout()
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMainnet,

@@ -14,6 +14,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+
 import BottomNavbar from './screens/navbar';
 import StaticHomeScreen from './screens/loggingIn/home';
 import PreLoad from './screens/loggingIn/load';

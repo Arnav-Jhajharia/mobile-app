@@ -22,17 +22,18 @@ import * as particleConnect from 'react-native-particle-connect';
 import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
-import {POLYGON_API_KEY} from '@env';
+// import {POLYGON_API_KEY} from '@env';
 
-const windowHeight = Dimensions.get('window').height;
+// const windowHeight = Dimensions.get('window').height;
 
 let web3;
 const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
 const windowHeight = Dimensions.get('window').height;
-// import {signAndSendTransactionConnect} from '../../particle-connect';
+// import {signAndSendTransactionConnecumbait} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
 import { registerFcmToken } from '../../../utils/push';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
@@ -179,9 +180,12 @@ const PaymentsComponent = ({navigation}) => {
 
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
-
+    
     const getBalance = async (web3, address) => {
-      if (global.mainnet) {
+      const mainnetJSON = await AsyncStorage.getItem('mainnet')
+      const mainnet = JSON.parse(mainnetJSON)
+      console.log("Mainnet: " + mainnet)
+      if (mainnet) {
         if (global.withAuth) {
           await particleAuth.setChainInfoAsync(
             particleAuth.ChainInfo.PolygonMainnet,
