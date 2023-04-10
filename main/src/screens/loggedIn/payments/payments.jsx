@@ -177,15 +177,18 @@ const PaymentsComponent = ({navigation}) => {
   const [address, setAddress] = useState('0x');
   const [balance, setBalance] = useState('0');
   const [transactionVisible, setTransactionVisible] = useState(false);
-
+  const [mainnet, setMainnet] = useState(false);
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
     
     const getBalance = async (web3, address) => {
       const mainnetJSON = await AsyncStorage.getItem('mainnet')
-      const mainnet = JSON.parse(mainnetJSON)
-      console.log("Mainnet: " + mainnet)
-      if (mainnet) {
+      const _mainnet = JSON.parse(mainnetJSON)
+      const _address = await AsyncStorage.getItem('address')
+      setMainnet(_mainnet);
+      setAddress(_address);
+      console.log("Mainnet: " + _mainnet)
+      if (_mainnet) {
         if (global.withAuth) {
           await particleAuth.setChainInfoAsync(
             particleAuth.ChainInfo.PolygonMainnet,
@@ -261,7 +264,7 @@ const PaymentsComponent = ({navigation}) => {
     registration();
     
 
-    if (global.mainnet) {
+    if (mainnet) {
       fetch(
         `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
       )
@@ -626,7 +629,7 @@ const PaymentsComponent = ({navigation}) => {
           {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         {/* <View style = {{width: '90%', height: '10%'}}> */}
-        <EventsCarousel images={images} navigation={navigation} />
+        <EventsCarousel images={images} navigation={navigation} address={address} />
         {/* </View> */}
       </View>
       <View style={styles.transactionContainer}>

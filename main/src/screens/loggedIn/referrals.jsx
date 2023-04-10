@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight,Alert } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 const ReferralPage = ({  }) => {
@@ -12,7 +12,7 @@ const [address, setAddress] = useState('0x');
     {
         const _address = await AsyncStorage.getItem('address')
         setAddress(_address)
-        const points = await addPoints(address, 0)
+        const points = await addPoints(address, "0")
         setNumPoints(points)
     }
     getFunction()
@@ -26,9 +26,7 @@ const [address, setAddress] = useState('0x');
             onPress={() => {
               Clipboard.setString(
                 `
-                I was using Obvious and thought you would really enjoy the app too.
-
-                It is an easy way to track your crypto assets across chains and can do cross-chain transactions in a single click!
+                Join the Xade revolution with the DeFi powered non custodial decentralised bank and help us both win Xade points by joining the link
 
                 Download App: https://notifs.api.xade.finance/refer/${address} 
                 `
@@ -79,10 +77,11 @@ const addPoints = async (userId, transactionAmount) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId, transactionAmount })
+        body: JSON.stringify({ userId:userId.toLowerCase(), transactionAmount })
       });
   
       const data = await response.json();
+      console.log(data)
       if(data.points > 0)
       return data.points;
       else 
