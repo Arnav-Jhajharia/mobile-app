@@ -14,6 +14,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
+
 import BottomNavbar from './screens/navbar';
 import StaticHomeScreen from './screens/loggingIn/home';
 import PreLoad from './screens/loggingIn/load';
@@ -52,7 +53,8 @@ const particle = require('./../assets/particle.jpg');
 const windowHeight = Dimensions.get('window').height;
 
 import messaging from '@react-native-firebase/messaging';
-import {requestUserPermission} from './utils/push';
+import {requestUserPermission, generateTopic} from './utils/push';
+import { getDeviceToken } from 'react-native-device-info';
 
 function PreLaunchLoad({navigation}) {
   return (
@@ -86,7 +88,7 @@ function EnterName({navigation}) {
   );
 }
 
-function FiatAmount({navigation}) {
+function OnRamp({navigation}) {
   return (
     <View>
       <FiatAmountComponent navigation={navigation} />
@@ -102,7 +104,7 @@ function FiatAggregator({navigation}) {
   );
 }
 
-function FiatWidget({navigation}) {
+function WidgetPage({navigation}) {
   return (
     <View>
       <FiatWidgetComponent navigation={navigation} />
@@ -287,9 +289,12 @@ function SendMobile({navigation}) {
 }
 
 export default function App({navigation}) {
+
   useEffect(() => {
+    console.log("Global",global.withAuth)
     async function preLaunchChecks() {
       await requestUserPermission();
+      await generateTopic();
 
       messaging().onNotificationOpenedApp(remoteMessage => {
         console.log(
@@ -298,11 +303,10 @@ export default function App({navigation}) {
         );
       });
       messaging().onMessage(async remoteMessage => {
-        console.log(
-          'notification on foreground state.......',
-          remoteMessage.notification,
-        );
-      });
+        console.log('notification on foreground state.......', remoteMessage)
+      })
+    
+    
     }
 
     preLaunchChecks();
@@ -441,6 +445,18 @@ export default function App({navigation}) {
         <Stack.Screen
           name="SavingsSuccessful"
           component={SavingsSuccessful}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="FiatRamps"
+          component={FiatAggregator}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="WidgetPage"
+          component={WidgetPage}
           navigation={navigation}
           options={{headerShown: false}}
         />

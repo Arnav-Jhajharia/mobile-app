@@ -22,15 +22,20 @@ import * as particleConnect from 'react-native-particle-connect';
 import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
-import {POLYGON_API_KEY} from '@env';
+// import {POLYGON_API_KEY} from '@env';
 
-const windowHeight = Dimensions.get('window').height;
+// const windowHeight = Dimensions.get('window').height;
 
 let web3;
 const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
+const windowHeight = Dimensions.get('window').height;
+// import {signAndSendTransactionConnecumbait} from '../../particle-connect';
+import {POLYGON_API_KEY} from '@env';
+import { registerFcmToken } from '../../../utils/push';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 const images = [
@@ -175,9 +180,12 @@ const PaymentsComponent = ({navigation}) => {
 
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
-
+    
     const getBalance = async (web3, address) => {
-      if (global.mainnet) {
+      const mainnetJSON = await AsyncStorage.getItem('mainnet')
+      const mainnet = JSON.parse(mainnetJSON)
+      console.log("Mainnet: " + mainnet)
+      if (mainnet) {
         if (global.withAuth) {
           await particleAuth.setChainInfoAsync(
             particleAuth.ChainInfo.PolygonMainnet,
@@ -234,6 +242,24 @@ const PaymentsComponent = ({navigation}) => {
       //   '1000000000000000',
       // );
     }
+
+    async function registration()
+    {
+      console.log('req being sent')
+      await registerFcmToken(authAddress);
+    }
+
+    registration();
+    
+
+    async function registration()
+    {
+      console.log('req being sent')
+      await registerFcmToken(authAddress);
+    }
+
+    registration();
+    
 
     if (global.mainnet) {
       fetch(
@@ -546,10 +572,7 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('EnterSavingsAmount', {
-                withdraw: false,
-                web3: web3,
-              });
+              navigation.navigate('FiatRamps');
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}

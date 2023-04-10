@@ -8,6 +8,7 @@ import {
   WalletType,
 } from 'react-native-particle-connect';
 import {ChainInfo} from 'react-native-particle-connect';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Web3 from 'web3';
 import {ParticleConnectProvider} from 'react-native-particle-connect';
@@ -52,9 +53,61 @@ connect = async ({walleType}) => {
       uuid,
     );
     console.log(global.connectAccount);
+    await AsyncStorage.setItem('address', account.publicAddress);
     global.withAuth = false;
     const userInfo = result.data;
     console.log('User Info:', global.connectAccount);
+// <<<<<<< HEAD
+    // const uuid = userInfo.publicAddress;
+    // fetch('https://mongo.api.xade.finance/polygon', {
+    //   method: 'POST',
+    //   body: `address:${global.connectAccount.publicAddress.toLowerCase()}||${uuid}`,
+    // });
+    // const url = "https://notifs.api.xade.finance/registerDevice";
+    // const token = await AsyncStorage.getItem('token')
+    // const notifsdata = { 
+    // walletAddress: global.connectAccount.publicAddress.toLowerCase(),
+    // deviceToken: token
+    // };
+    // console.log('req being sent')
+    // fetch(url, {
+    // method: "POST",
+    // headers: {
+    //   "Content-Type": "application/json"
+    // },
+    // body: JSON.stringify(notifsdata)
+    // })
+    // .then(response => {
+    // if (!response.ok) {
+    //   console.log(response)
+    //   throw new Error("Network response was not ok");
+    // }
+    // // console.log(response.json());
+    // return response.json();
+    // })
+    // .then(data => {
+    // console.log(data);
+    // })
+    // .catch(error => {
+    // console.error("There was an error:", error);
+    // });
+    // const login_type = '';
+    // const object = {
+    //   email: walleType,
+    //   name: walleType,
+    //   profileImage: '',
+    //   verifier: '',
+    //   verifierId: '',
+    //   typeOfLogin: '',
+    //   id: uuid,
+    // };
+    // console.log(object);
+    // const json = JSON.stringify(object || {}, null, 2);
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
+    // xhr.send(json);
+    // console.log(json);
+// =======
     //   fetch('https://mongo.api.xade.finance/polygon', {
     //     method: 'POST',
     //     body: `address:${global.connectAccount.publicAddress.toLowerCase()}||${uuid}`,
@@ -75,6 +128,7 @@ connect = async ({walleType}) => {
     //   xhr.open('POST', 'https://mongo.api.xade.finance/polygon');
     //   xhr.send(json);
     //   console.log(json); }
+// >>>>>>> d31a09b  1fd785f39612a6e0944d02705783ce0fd
   } else {
     const error = result.data;
     console.log('Error:', error);
@@ -145,7 +199,7 @@ onClickConnect = async ({navigation, walletype}) => {
     const address = global.connectAccount.publicAddress;
     const email = global.connectAccount.phoneEmail;
     const uuid = global.connectAccount.uiud;
-
+    
     await fetch(
       `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`,
       {

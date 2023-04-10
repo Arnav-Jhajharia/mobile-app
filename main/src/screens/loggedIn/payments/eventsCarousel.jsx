@@ -128,6 +128,9 @@ class EventsCarousel extends React.Component {
   }
 }
 
+
+
+
 const styles = StyleSheet.create({
   backgroundImage: {
     // height: "100%",

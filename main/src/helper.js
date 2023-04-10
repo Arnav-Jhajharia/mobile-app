@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BigNumber from 'bignumber.js';
 import {Buffer} from 'buffer';
 import {EvmService} from './NetService/EvmService';
@@ -34,7 +35,9 @@ import {EvmService} from './NetService/EvmService';
 // }
 
 export async function getEvmTokenTransaction(sender, receiver, amount) {
-  const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
+  const mainnetJSON = await AsyncStorage.getItem('mainnet')
+  const mainnet = JSON.parse(mainnetJSON)
+  const contractAddress = (mainnet)?'0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174':'0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 
   console.log(`sender = ${sender}, receiver = ${receiver}, amount = ${amount}`);
   const data = await EvmService.erc20Transfer(
