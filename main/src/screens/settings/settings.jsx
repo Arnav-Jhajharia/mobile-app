@@ -173,7 +173,7 @@ const Component = ({navigation}) => {
         <View style={[styles.otherSettings, {marginTop: 50, marginBottom: 20}]}>
           <TouchableOpacity
             style={styles.innerSettings}
-            onPress={() => Linking.openURL('mailto:developmet@xade.finance')}>
+            onPress={() => Linking.openURL('mailto:development@xade.finance')}>
             <Image
               style={{width: 40, height: 40, borderRadius: 10}}
               source={require('./contact.png')}

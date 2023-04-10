@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 const DEVICE_WIDTH = Dimensions.get('window').width;
+import Clipboard from '@react-native-clipboard/clipboard';
 class EventsCarousel extends React.Component {
   scrollRef = React.createRef();
   constructor(props) {
@@ -81,11 +82,16 @@ class EventsCarousel extends React.Component {
             <TouchableOpacity
               style={styles.depWith}
               onPress={() => {
-                // image.name == 'DeriveX'
-                //   ? this.props.navigation.navigate('Investments')
-                //   : image.name == 'SabeX'
-                //   ? this.props.navigation.navigate('Savings')
-                //   : this.props.navigation.navigate('SendEmail');
+                image.name == 'Referrals'
+                  ?  
+              Clipboard.setString(
+                `
+                Join the Xade revolution with the DeFi powered non custodial decentralised bank and help us both win Xade points by joining the link
+
+                Download App: https://notifs.api.xade.finance/refer/${this.props.address} 
+                `
+              )
+                : ""
               }}>
               <LinearGradient
                 colors={['#1D2426', '#272727', '#383838']}

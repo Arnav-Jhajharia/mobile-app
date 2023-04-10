@@ -14,7 +14,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-
+import Referrals from "./screens/loggedIn/referrals"
 import BottomNavbar from './screens/navbar';
 import StaticHomeScreen from './screens/loggingIn/home';
 import PreLoad from './screens/loggingIn/load';
@@ -457,6 +457,12 @@ export default function App({navigation}) {
         <Stack.Screen
           name="WidgetPage"
           component={WidgetPage}
+          navigation={navigation}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name="Referrals"
+          component={Referrals}
           navigation={navigation}
           options={{headerShown: false}}
         />

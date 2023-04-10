@@ -18,6 +18,7 @@ import ethProvider from './integration/ethProvider';
 import createProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {POLYGON_API_KEY, SABEX_LP} from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { PROJECT_ID, CLIENT_KEY } from 'react-native-dotenv'
 
 let web3;
@@ -27,6 +28,7 @@ const Savings = ({navigation}) => {
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0},
   ]);
+  const [mainnet, setMainnet] = React.useState(false);
 
   var monthname = new Array(
     'January',
@@ -63,10 +65,20 @@ const Savings = ({navigation}) => {
 
   const {getUserPoolBalance} = ethProvider({web3});
   const [balance, setBalance] = useState('0.00');
-  useEffect(async () => {
+  useEffect(() => {
+    async function allLogic() {
+    const mainnetJSON = await AsyncStorage.getItem('mainnet')
+    const _mainnet = JSON.parse(mainnetJSON)
+    console.log("Mainnet",_mainnet)
+    setMainnet(_mainnet)
+
+    if(_mainnet == false)
+    {
     const balance = await getUserPoolBalance();
     console.log(balance);
+
     setBalance(balance);
+    
 
     fetch(
       `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
@@ -140,6 +152,11 @@ const Savings = ({navigation}) => {
           return;
         }
       });
+    }
+    
+    }
+    console.log('this is right')
+    allLogic();
   }, []);
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
@@ -196,12 +213,15 @@ const Savings = ({navigation}) => {
           }}>
           <TouchableOpacity
             style={styles.depWith}
-            onPress={() =>
+            onPress={() => {
+              if(!mainnet)
               navigation.navigate('EnterSavingsAmount', {
                 withdraw: false,
                 web3: web3,
               })
-            }>
+              else
+              navigation.navigate('ComingSoon')
+            }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
               useAngle
@@ -224,11 +244,15 @@ const Savings = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
+              if(!mainnet) {
               console.log(web3);
               navigation.navigate('EnterSavingsAmount', {
                 withdraw: true,
                 web3: web3,
               });
+            }
+              else
+              navigation.navigate('ComingSoon')
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
