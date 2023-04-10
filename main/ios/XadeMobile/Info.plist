@@ -57,7 +57,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We use the camera to scan QRs for public addresses</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access in order to open photos of QRs</string>
 	<key>UIAppFonts</key>
@@ -65,7 +65,6 @@
 		<string>VelaSans-Medium.otf</string>
 		<string>LemonMilk-Bold.otf</string>
 		<string>LemonMilk-Regular.otf</string>
-		<string>Inter.ttf</string>
 		<string>VelaSans-Bold.otf</string>
 		<string>VelaSans-ExtraBold.otf</string>
 		<string>VelaSans-ExtraLight.otf</string>
@@ -90,11 +89,12 @@
 		<string>Fontisto.ttf</string>
 		<string>NeueMachina-UltraBold.otf</string>
 		<string>NeueMontreal-Bold.otf</string>
-		<string>EulidCircular-Regular.ttf</string>
 		<string>Benzin-Medium.otf</string>
-		<string>EuclidCircular-Bold.ttf</string>
-		<string>EuclidCircular-SemiBold.ttf</string>
-		<string>EuclidCircular-Medium.ttf</string>
+		<string>EuclidCircular-Bold.otf</string>
+		<string>EuclidCircular-Medium.otf</string>
+		<string>EuclidCircular-SemiBold.otf</string>
+		<string>EulidCircular-Regular.otf</string>
+		<string>Inter-Regular.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

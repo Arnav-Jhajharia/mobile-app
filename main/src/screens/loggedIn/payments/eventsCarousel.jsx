@@ -98,9 +98,7 @@ class EventsCarousel extends React.Component {
                 useAngle
                 angle={45}
                 angleCenter={{x: 0.5, y: 0.5}}
-                style={
-                  [styles.remmitex]
-                }>
+                style={[styles.remmitex]}>
                 <Image
                   source={{
                     uri: image.image,
@@ -163,7 +161,7 @@ const styles = StyleSheet.create({
   },
 
   depWith: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     width: DEVICE_WIDTH / 1.6,
     // borderRadius: 20,
     marginRight: 30,
