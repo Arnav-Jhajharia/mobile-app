@@ -662,7 +662,7 @@ const PaymentsComponent = ({navigation}) => {
             Alert.alert('Modal has been closed.');
             setTransactionVisible(!transactionVisible);
           }}>
-          <View style={{backgroundColor: '#0C0C0C'}}>
+          <View style={{backgroundColor: '#0C0C0C', height: '100%'}}>
             <ScrollView>
               <View
                 style={{
