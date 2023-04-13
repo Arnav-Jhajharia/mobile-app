@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-particle-connect/src/provider/index.ts b/node_modules/react-native-particle-connect/src/provider/index.ts
+index bb8f6fd..ae48954 100644
+--- a/node_modules/react-native-particle-connect/src/provider/index.ts
++++ b/node_modules/react-native-particle-connect/src/provider/index.ts
+@@ -10,7 +10,6 @@ class ParticleConnectProvider {
+   private events = new EventEmitter();
+ 
+   constructor(private options: ParticleConnectOptions) {
+-    console.log(this.options, particleConnect);
+     this.events.setMaxListeners(100);
+   }
+ 

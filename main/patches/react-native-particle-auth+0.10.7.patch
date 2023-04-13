@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-particle-auth/src/provider/index.ts b/node_modules/react-native-particle-auth/src/provider/index.ts
+index 3f53861..ca54320 100644
+--- a/node_modules/react-native-particle-auth/src/provider/index.ts
++++ b/node_modules/react-native-particle-auth/src/provider/index.ts
+@@ -10,7 +10,6 @@ class ParticleProvider {
+   private events = new EventEmitter();
+ 
+   constructor(private options: ParticleOptions) {
+-    console.log(this.options, particleAuth);
+     this.events.setMaxListeners(100);
+   }
+ 

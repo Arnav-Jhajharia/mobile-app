@@ -11,10 +11,9 @@ const Web3 = require('web3');
 
 let web3;
 const successVideo = require('./pending.mov');
-const amount = '0.001'
+const amount = '0.01';
 export default function Component({route, navigation}) {
-  const { walletAddress, emailAddress, mobileNumber, type} =
-    route.params;
+  const {walletAddress, emailAddress, mobileNumber, type} = route.params;
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
     if (global.withAuth) {
@@ -44,9 +43,16 @@ export default function Component({route, navigation}) {
         status = await this.signAndSendTransaction(walletAddress, weiVal);
         console.log('TX1:', status);
 
-        if (status) navigation.navigate('Successful', {status, type, emailAddress, walletAddress, amount});
-        else navigation.navigate('Unsuccessful');``
-
+        if (status)
+          navigation.navigate('Successful', {
+            status,
+            type,
+            emailAddress,
+            walletAddress,
+            amount,
+          });
+        else navigation.navigate('Unsuccessful');
+        ``;
       } else {
         authAddress = global.connectAccount.publicAddress;
         console.log('Global Account:', global.connectAccount);
@@ -55,7 +61,14 @@ export default function Component({route, navigation}) {
           weiVal,
         );
         console.log('TX1:', status);
-        if (status !== false) navigation.navigate('Successful', {status, type, emailAddress, walletAddress, amount});
+        if (status !== false)
+          navigation.navigate('Successful', {
+            status,
+            type,
+            emailAddress,
+            walletAddress,
+            amount,
+          });
         else navigation.navigate('Unsuccessful');
       }
     };

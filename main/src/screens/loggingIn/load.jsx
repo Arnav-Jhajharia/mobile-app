@@ -18,7 +18,7 @@ import {PNAccount} from '../../Models/PNAccount';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 
-// import { registerFcmToken } from './../../utils/push' 
+// import { registerFcmToken } from './../../utils/push'
 
 import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 
@@ -28,9 +28,10 @@ var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
   // global.mainnet = true;
-  const mainnet = await AsyncStorage.getItem('mainnet')
-  if(!mainnet) // null 
-    await AsyncStorage.setItem('mainnet', JSON.stringify(true))
+  const mainnet = await AsyncStorage.getItem('mainnet');
+  if (!mainnet)
+    // null
+    await AsyncStorage.setItem('mainnet', JSON.stringify(true));
   // await particleAuth.logout()
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMainnet,
@@ -43,9 +44,8 @@ const LoginCheck = async ({navigation}) => {
   const result = await particleAuth.isLogin();
   console.log(result);
   if (result) {
-
     var account = await particleAuth.getUserInfo();
-    console.log("User account", account);
+    console.log('User account', account);
     // await AsyncStorage.setItem("address", account.wallets[])
     var name;
     account = JSON.parse(account);
@@ -174,12 +174,16 @@ const LoginCheck = async ({navigation}) => {
 };
 
 const PreLoad = ({navigation}) => {
-  useEffect(() => {
-    async function preLoadLog() {
-      await LoginCheck({navigation});
-    }
-    preLoadLog();
-  }, []);
+  // useEffect(() => {
+  //   async function preLoadLog() {
+  //     // await LoginCheck({navigation});
+  //   }
+  //   // preLoadLog();
+  //   console.log('Atleast This Works');
+  // }, []);
+
+  console.log('Atleast This Works');
+
   return (
     <View style={styles.black}>
       <Text style={styles.logo}>XADE</Text>
