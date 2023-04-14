@@ -49,7 +49,7 @@ class Investments extends React.Component {
       totalVolume: 'Updating',
       allTimeHigh: 'Updating',
       allTimeLow: 'Updating',
-      btnSelected: 'chart',
+      btnSelected: 'long',
       nBtc: '',
       status: true,
       leverageValue: 1,

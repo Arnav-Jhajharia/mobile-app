@@ -43,27 +43,28 @@ const registerDB = async ({navigation, name}) => {
         id: uuid,
       };
 
-            
-      fetch(`https://amtsend.api.xade.finance?email=${email.toLowerCase()}&address=${address.toLowerCase()}`)
-      .then(response => 
-        response.text())
-      .then(data => console.log(data))
-      
+      fetch(
+        `https://amtsend.api.xade.finance?email=${email.toLowerCase()}&address=${address.toLowerCase()}`,
+      )
+        .then(response => response.text())
+        .then(data => console.log(data));
+
       const json = JSON.stringify(object || {}, null, 2);
       console.log('Request Being Sent:', json);
-      
+
       fetch('https://mongo.api.xade.finance/polygon', {
         method: 'POST',
         body: json,
         headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(response => {
-        console.log('Sent:', response.text());
-      }).catch(error => {
-        console.error(error);
-      });
-      
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          console.log('Sent:', response.text());
+        })
+        .catch(error => {
+          console.error(error);
+        });
     } else {
       let secret = '';
       let characters =
@@ -79,7 +80,7 @@ const registerDB = async ({navigation, name}) => {
       let data = `{"phone":"${phone}","id":"${secret}"}`;
       fetch('https://mongo.api.xade.finance/polygon', {
         method: 'POST',
-        body: data
+        body: data,
       });
     }
     // const url = 'https://notifs.api.xade.finance/registerDevice';
@@ -108,23 +109,23 @@ const registerDB = async ({navigation, name}) => {
         typeOfLogin: '',
         id: uuid,
       };
-      
+
       const json = JSON.stringify(object || {}, null, 2);
       console.log('Request Being Sent:', json);
-      
+
       fetch('https://mongo.api.xade.finance/polygon', {
         method: 'POST',
         body: json,
         headers: {
-          'Content-Type': 'application/json'
-        }
-
-      }).then(response => {
-        console.log('Sent:', response.text());
-      }).catch(error => {
-        console.error(error);
-      });
-
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          console.log('Sent:', response.text());
+        })
+        .catch(error => {
+          console.error(error);
+        });
     } else {
       let secret = '';
       let characters =
@@ -139,9 +140,9 @@ const registerDB = async ({navigation, name}) => {
       let phone = email.replace('+', '');
       let data = `{"phone":"${phone}","id":"${secret}"}`;
       fetch('https://mongo.api.xade.finance/polygon', {
-  method: 'POST',
-  body: data
-});
+        method: 'POST',
+        body: data,
+      });
     }
     const url = 'https://notifs.api.xade.finance/registerDevice';
     const token = await AsyncStorage.getItem('token');

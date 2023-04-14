@@ -1,5 +1,6 @@
 import contracts from './constants';
 import ClearingHouseABI from '../ABIs/ClearingHouse';
+import UsdcABI from '../ABIs/USDC';
 import {displayPositions, getPositionDetails} from './viewFunctions';
 import {
   createProvider,
@@ -14,7 +15,9 @@ import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 import {PARTICLE_USERNAME, PARTICLE_PASSWORD} from '@env';
 
-const clearingHouseAddress = '0x32c4a63437969247C95440020EA04a1e1890A1c6';
+import {EvmService} from '../../../../NetService/EvmService';
+
+const clearingHouseAddress = '0x602969FFAddA7d74f5da69B817688E984Ba4EBbD';
 const usdcAddress = '0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747'; //USDC on Mumbai testnet
 
 const Web3 = require('web3');
@@ -43,6 +46,8 @@ const transactions = () => {
     clearingHouseAddress,
   );
 
+  const usdc = new web3.eth.Contract(UsdcABI, usdcAddress);
+
   const openPosition = async (
     amm, // BTC
     sidei, // Long/Short
@@ -51,7 +56,7 @@ const transactions = () => {
     baseAssetAmountLimiti,
     navigation, // BTC Price
   ) => {
-    const Amm = getAmmAddress(amm);
+    const Amm = getAmmAddress(amm).toLowerCase();
 
     const quoteAssetAmount = [
       web3.utils
@@ -67,8 +72,6 @@ const transactions = () => {
 
     const side = Number(sidei);
 
-    // const side = 'BUY';
-
     const baseAssetAmountLimit = [
       web3.utils
         .toBN(web3.utils.toWei(baseAssetAmountLimiti.replace(',', ''), 'ether'))
@@ -82,6 +85,12 @@ const transactions = () => {
     console.log('Side:', side.toString());
 
     try {
+      const data = await EvmService.erc20Approve(
+        usdcAddress,
+        authAddress,
+        web3.utils.toWei('10'),
+      );
+
       const txString = await clearingHouse.methods
         .openPosition(
           Amm,
@@ -90,8 +99,16 @@ const transactions = () => {
           leverage,
           baseAssetAmountLimit,
         )
-        .send({from: authAddress, contractAddress: clearingHouseAddress});
-      console.log('String:', txString);
+        .call({
+          from: authAddress,
+          data: data,
+        });
+
+      // const txString = await clearingHouse.methods.getSpotPrice(Amm).call();
+
+      console.log('String:', data);
+
+      console.log('Transaction:', txString);
 
       // navigation.navigate('Successful', txString);
     } catch (error) {
@@ -101,14 +118,14 @@ const transactions = () => {
     }
 
     // try {
-    //   const txString = await clearingHouse.methods.openPosition(
-    //     Amm,
-    //     side,
-    //     quoteAssetAmount,
-    //     leverage,
-    //     baseAssetAmountLimit,
-    //   );
-    //   console.log('String:', txString);
+    // const txString = await clearingHouse.methods.openPosition(
+    //   Amm,
+    //   side,
+    //   quoteAssetAmount,
+    //   leverage,
+    //   baseAssetAmountLimit,
+    // );
+    // console.log('String:', txString);
 
     // const txHash = txString.send({
     //   from: authAddress,
@@ -167,7 +184,7 @@ const transactions = () => {
     // }
 
     // Retrieve position details for display
-    // displayPositions(Amm);
+    displayPositions(Amm);
   };
 
   /**

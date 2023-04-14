@@ -33,8 +33,17 @@ const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
 
-// import {ChainId} from '@biconomy-sdk-dev/core-types';
-// import SmartAccount from '@biconomy-sdk-dev/smart-account';
+import {ChainId} from '@biconomy/core-types';
+import SmartAccount from '@biconomy/smart-account';
+
+// Import the crypto getRandomValues shim (**BEFORE** the shims)
+import 'react-native-get-random-values';
+
+// Import the the ethers shims (**BEFORE** ethers)
+import '@ethersproject/shims';
+
+// Import the ethers library
+import {ethers} from 'ethers';
 
 // const windowHeight = Dimensions.get('window').height;
 
@@ -101,30 +110,30 @@ const PaymentsComponent = ({navigation}) => {
       //   ],
       // };
 
-      // let options = {
-      //   activeNetworkId: ChainId.POLYGON_MAINNET,
-      //   supportedNetworksIds: [ChainId.POLYGON_MAINNET],
+      let options = {
+        activeNetworkId: ChainId.POLYGON_MAINNET,
+        supportedNetworksIds: [ChainId.POLYGON_MAINNET],
 
-      //   networkConfig: [
-      //     {
-      //       chainId: ChainId.POLYGON_MAINNET,
-      //       dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
-      //       // providerUrl: '',
-      //     },
-      //   ],
-      // };
+        networkConfig: [
+          {
+            chainId: ChainId.POLYGON_MAINNET,
+            dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
+            // providerUrl: '',
+          },
+        ],
+      };
 
-      // console.log('Not Working');
+      console.log('Not Working');
 
-      // try {
-      //   const provider = this.createProvider();
-      //   let smartAccount = new SmartAccount(provider, options);
-      //   smartAccount = await smartAccount.init();
-      //   const address = smartAccount.address;
-      //   console.log('address ', address);
-      // } catch (err) {
-      //   console.log('Error:', err);
-      // }
+      try {
+        const provider = this.getOnlyProvider();
+        let smartAccount = new SmartAccount(provider, options);
+        smartAccount = await smartAccount.init();
+        const address = smartAccount.address;
+        console.log('address ', address);
+      } catch (err) {
+        console.log('Error:', err);
+      }
 
       console.log('Working');
 

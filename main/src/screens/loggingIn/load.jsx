@@ -71,7 +71,7 @@ const LoginCheck = async ({navigation}) => {
         console.log(response);
         if (response.status == 200) {
           return response.text();
-        } else return 0;
+        } else return '';
       })
       .then(data => {
         name = data;
@@ -99,7 +99,7 @@ const LoginCheck = async ({navigation}) => {
           console.log('Not Logged In');
           navigation.navigate('LoggedOutHome');
           console.log('Navigating To Home');
-          return 0;
+          return '';
         }
       })
       .then(async data => {
@@ -114,7 +114,7 @@ const LoginCheck = async ({navigation}) => {
           .then(response => {
             if (response.status == 200) {
               return response.text();
-            } else return 0;
+            } else return '';
           })
           .then(conname => {
             async function checkConnect() {
@@ -174,16 +174,12 @@ const LoginCheck = async ({navigation}) => {
 };
 
 const PreLoad = ({navigation}) => {
-  // useEffect(() => {
-  //   async function preLoadLog() {
-  //     // await LoginCheck({navigation});
-  //   }
-  //   // preLoadLog();
-  //   console.log('Atleast This Works');
-  // }, []);
-
-  console.log('Atleast This Works');
-
+  useEffect(() => {
+    async function preLoadLog() {
+      await LoginCheck({navigation});
+    }
+    preLoadLog();
+  }, []);
   return (
     <View style={styles.black}>
       <Text style={styles.logo}>XADE</Text>
