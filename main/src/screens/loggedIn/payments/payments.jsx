@@ -28,7 +28,7 @@ import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
 // import {POLYGON_API_KEY} from '@env';
-
+import transferXUSD from './remmitex';
 const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
@@ -98,18 +98,7 @@ const PaymentsComponent = ({navigation}) => {
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
 
-    const getBalance = async (web3, address) => {
-      // let options = {
-      //   activeNetworkId: ChainId.POLYGON_MAINNET,
-      //   supportedNetworksIds: [ChainId.POLYGON_MAINNET],
-      //   networkConfig: [
-      //     {
-      //       chainId: ChainId.POLYGON_MAINNET,
-      //       dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
-      //     },
-      //   ],
-      // };
-
+    const getBalance = async (web3, authAddress) => {
       let options = {
         activeNetworkId: ChainId.POLYGON_MAINNET,
         supportedNetworksIds: [ChainId.POLYGON_MAINNET],
@@ -118,7 +107,6 @@ const PaymentsComponent = ({navigation}) => {
           {
             chainId: ChainId.POLYGON_MAINNET,
             dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
-            // providerUrl: '',
           },
         ],
       };
@@ -126,14 +114,62 @@ const PaymentsComponent = ({navigation}) => {
       console.log('Not Working');
 
       try {
-        const provider = this.getOnlyProvider();
+        const particleProvider = this.getOnlyProvider();
+        const provider = new ethers.providers.Web3Provider(
+          particleProvider,
+          'any',
+        );
         let smartAccount = new SmartAccount(provider, options);
         smartAccount = await smartAccount.init();
-        const address = smartAccount.address;
-        console.log('address ', address);
-      } catch (err) {
-        console.log('Error:', err);
+        await transferXUSD(smartAccount);
+      } catch (error) {
+        console.log('Error:', error);
       }
+
+      // try {
+      // const particleProvider = this.getOnlyProvider();
+      // const provider = new ethers.providers.Web3Provider(
+      //   particleProvider,
+      //   'any',
+      // );
+
+      //   let smartAccount = new SmartAccount(provider, options);
+      //   smartAccount = await smartAccount.init();
+
+      //   const erc20Interface = new ethers.utils.Interface([
+      //     'function transfer(address _to, uint256 _value)',
+      //   ]);
+
+      //   const data = erc20Interface.encodeFunctionData('transfer', [
+      //     '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+      //     Number('0.01') * 10 ** 6,
+      //   ]);
+
+      //   const tx = {
+      //     to: usdcAddress,
+      //     data: data,
+      //     value: Number('0.01') * 10 ** 6,
+      //   };
+
+      //   const feeQuotes = await smartAccount.getFeeQuotes({transaction: tx});
+
+      //   const transaction = await smartAccount.createUserPaidTransaction({
+      //     transaction: tx,
+      //     feeQuote: feeQuotes[1], // say user chooses USDC from above
+      //   });
+
+      //   console.log(Number('0.01') * 10 ** 6);
+
+      //   console.log(JSON.stringify(transaction));
+
+      //   const txId = await smartAccount.sendUserPaidTransaction({
+      //     tx: transaction,
+      //   });
+
+      //   console.log(txId);
+      // } catch (err) {
+      //   console.log('Error:', err);
+      // }
 
       console.log('Working');
 
@@ -151,8 +187,9 @@ const PaymentsComponent = ({navigation}) => {
           );
         }
         const contract = new web3.eth.Contract(USDC_ABI, usdcAddress);
+
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(address).call();
+          let result = await contract.methods.balanceOf(authAddress).call();
           const decimals = await contract.methods.decimals().call();
           const formattedResult = parseInt(result) / 10 ** decimals;
           console.log('Balance:', formattedResult);
@@ -357,7 +394,7 @@ const PaymentsComponent = ({navigation}) => {
         }
         const contract = new web3.eth.Contract(XUSD_ABI, contractAddress);
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(address).call();
+          let result = await contract.methods.balanceOf(authAddress).call();
           const formattedResult = web3.utils.fromWei(result, 'ether');
           console.log('Balance:', formattedResult);
           setBalance(formattedResult.toString());
@@ -644,7 +681,10 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('SendEmail');
+              navigation.navigate('EnterAmount', {
+                type: 'wallet',
+                walletAddress: '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+              });
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}

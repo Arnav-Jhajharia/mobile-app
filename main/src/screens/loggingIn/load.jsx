@@ -147,10 +147,6 @@ const LoginCheck = async ({navigation}) => {
               ];
 
               for (let i = 0; i < types.length; i++) {
-                console.log(types[i]);
-                console.log(
-                  await particleConnect.isConnected(types[i], address),
-                );
                 if (await particleConnect.isConnected(types[i], address)) {
                   global.connectAccount = new PNAccount(
                     types[i],
@@ -158,12 +154,12 @@ const LoginCheck = async ({navigation}) => {
                     address,
                     uuid,
                   );
+                  await particleConnect.reconnectIfNeeded(types[i], address);
                   global.withAuth = false;
                   global.walletType = types[i];
                   console.log('Logged In:', global.connectAccount);
                   navigation.navigate('Payments');
                   console.log('Navigating To Payments');
-                  await particleConnect.reconnectIfNeeded(types[i], address);
                 }
               }
             }
