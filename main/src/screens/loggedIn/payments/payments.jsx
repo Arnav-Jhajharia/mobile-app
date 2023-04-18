@@ -33,7 +33,7 @@ const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
 
-import {ChainId} from '@biconomy/core-types';
+import {IPaymaster, ChainId} from '@biconomy/core-types';
 import SmartAccount from '@biconomy/smart-account';
 
 // Import the crypto getRandomValues shim (**BEFORE** the shims)
@@ -106,7 +106,7 @@ const PaymentsComponent = ({navigation}) => {
         networkConfig: [
           {
             chainId: ChainId.POLYGON_MAINNET,
-            dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
+            dappAPIKey: '1rQXLL5II.b15564c7-9018-49ed-acdf-cbc105485d27',
           },
         ],
       };
@@ -193,7 +193,7 @@ const PaymentsComponent = ({navigation}) => {
           const decimals = await contract.methods.decimals().call();
           const formattedResult = parseInt(result) / 10 ** decimals;
           console.log('Balance:', formattedResult);
-          setBalance(formattedResult.toString());
+          setBalance(formattedResult.toFixed(3).toString());
         }
         await getTokenBalance();
 
@@ -421,7 +421,9 @@ const PaymentsComponent = ({navigation}) => {
                   let res = result[i];
                   let val = res.value;
                   const decimals = 6;
-                  const etherValue = parseInt(val) / 10 ** decimals;
+                  const etherValue = (parseInt(val) / 10 ** decimals).toFixed(
+                    3,
+                  );
                   var pubDate = new Date(res.timeStamp * 1000);
                   var weekday = new Array(
                     'Sun',
@@ -683,7 +685,7 @@ const PaymentsComponent = ({navigation}) => {
             onPress={() => {
               navigation.navigate('EnterAmount', {
                 type: 'wallet',
-                walletAddress: '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+                walletAddress: '0x5a8f38beb51396923b3297e3e79951e2eb2eb0b4',
               });
             }}>
             <LinearGradient

@@ -18,7 +18,7 @@ import {PARTICLE_USERNAME, PARTICLE_PASSWORD} from '@env';
 import {EvmService} from '../../../../NetService/EvmService';
 
 const clearingHouseAddress = '0x602969FFAddA7d74f5da69B817688E984Ba4EBbD';
-const usdcAddress = '0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747'; //USDC on Mumbai testnet
+const usdcAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9'; //USDC on Mumbai testnet
 
 const Web3 = require('web3');
 let web3;
@@ -85,12 +85,6 @@ const transactions = () => {
     console.log('Side:', side.toString());
 
     try {
-      const data = await EvmService.erc20Approve(
-        usdcAddress,
-        authAddress,
-        web3.utils.toWei('10'),
-      );
-
       const txString = await clearingHouse.methods
         .openPosition(
           Amm,
@@ -101,14 +95,26 @@ const transactions = () => {
         )
         .call({
           from: authAddress,
-          data: data,
         });
+
+      // const data = await usdc.methods
+      //   .approve(
+      //     clearingHouseAddress,
+      //     web3.utils
+      //       .toBN(web3.utils.toWei('10'.replace(',', ''), 'ether'))
+      //       .toString(),
+      //   )
+      //   .send({from: authAddress});
+
+      console.log(
+        await usdc.methods.allowance(authAddress, clearingHouseAddress).call(),
+      );
 
       // const txString = await clearingHouse.methods.getSpotPrice(Amm).call();
 
-      console.log('String:', data);
+      // console.log('String:', data);
 
-      console.log('Transaction:', txString);
+      // console.log('Transaction:', txString);
 
       // navigation.navigate('Successful', txString);
     } catch (error) {

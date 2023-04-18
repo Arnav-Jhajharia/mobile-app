@@ -114,8 +114,6 @@
 //   console.log('APPROVE WORKS');
 // }
 
-import {ChainId} from '@biconomy/core-types';
-import SmartAccount from '@biconomy/smart-account';
 import getOnlyProvider from '../../../particle-auth';
 import usdcAbi from './USDC';
 
@@ -128,28 +126,19 @@ import '@ethersproject/shims';
 // Import the ethers library
 import {ethers} from 'ethers';
 
-let options = {
-  activeNetworkId: ChainId.POLYGON_MAINNET,
-  supportedNetworksIds: [ChainId.POLYGON_MAINNET],
-
-  networkConfig: [
-    {
-      chainId: ChainId.POLYGON_MAINNET,
-      dappAPIKey: 'fHIUwHIg_.29bc814b-2915-4fad-ad08-bf049b1cada6',
-    },
-  ],
-};
-
 export default async function transferXUSD(smartAccount) {
-  const tokenAddress = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';
   const contractAddress = '0x650974DF6A3F6500DD531099c806Da2737f81d07';
+  const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 
   const decimals = 6;
-  const amount = ethers.utils.parseUnits('0.01', 6);
 
-  console.log(amount);
+  const approvedAmount = ethers.utils.parseUnits('0.1', 18);
 
-  const erc20Interface = new ethers.utils.Interface([
+  const amount = ethers.utils.parseUnits('0.01', decimals);
+
+  const fee = ethers.utils.parseUnits('0.0001', decimals);
+
+  const contractInterface = new ethers.utils.Interface([
     {inputs: [], stateMutability: 'nonpayable', type: 'constructor'},
     {
       inputs: [],
@@ -178,22 +167,43 @@ export default async function transferXUSD(smartAccount) {
     },
   ]);
 
-  const recipient = '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279';
+  const usdcAbi = new ethers.utils.Interface([
+    'function approve(address _spender, uint256 _value)',
+  ]);
 
-  const usdcInterface = new ethers.utils.Interface(usdcAbi);
+  const recipient = '0xb0ff54808427d753F51B359c0ffc177242Fb4804';
 
-  const data = erc20Interface.encodeFunctionData('transfer', [
+  const approveData = usdcAbi.encodeFunctionData('approve', [
+    contractAddress,
+    approvedAmount,
+  ]);
+
+  const tx = {
+    to: usdcAddress,
+    data: approveData,
+  };
+  // send approve transaction
+
+  const data = contractInterface.encodeFunctionData('transfer', [
     recipient,
     amount,
-    '0',
+    fee,
   ]);
 
   const tx1 = {
     to: contractAddress,
-    data,
+    data: data,
   };
 
-  // const txResponse = await smartAccount.sendTransaction({transaction: tx1});
-
-  // console.log(txResponse);
+  try {
+    // const approval = await smartAccount.sendTransaction({transaction: tx});
+    // console.log('Tx Response', approval);
+    // const txResponse = await smartAccount.sendTransaction({transaction: tx1});
+    // console.log('userOp hash', txResponse);
+  } catch (err) {
+    console.log(err);
+  }
+  // // If you do not subscribe to listener, one can also get the receipt like shown below
+  // const txReciept = await txResponse.wait();
+  // console.log('Tx hash', txReciept.transactionHash);
 }
