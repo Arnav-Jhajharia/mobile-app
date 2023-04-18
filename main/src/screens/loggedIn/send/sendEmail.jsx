@@ -60,12 +60,14 @@ const SendEmailComponent = ({navigation}) => {
   //       address: text,
   //     })
   //   : ''
-
+  const [submitText, setSubmitText] = useState('Continue')
   const [country, setCountry] = useState('1');
   const [text, setText] = useState('');
   const handleSubmit = () => {
+    setSubmitText('Pending...')
     if (country == 1) { // Email
       // if(!country.includes('@')) return;
+      
       fetch(`https://emailfind.api.xade.finance/polygon?email=${text}`, {
         method: 'GET',
       })
@@ -97,6 +99,7 @@ const SendEmailComponent = ({navigation}) => {
         walletAddress: text,
       });
     } else console.log('How did we get here?');
+    
   };
   return (
     <SafeAreaView
@@ -177,7 +180,7 @@ const SendEmailComponent = ({navigation}) => {
       <TouchableOpacity style={styles.confirmButton} onPress={handleSubmit}>
         <Text
           style={{color: 'white', fontFamily: 'VelaSans-Medium', fontSize: 18}}>
-          Continue
+          {submitText}
         </Text>
       </TouchableOpacity>
     </SafeAreaView>

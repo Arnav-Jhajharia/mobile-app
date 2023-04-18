@@ -70,6 +70,25 @@ const images = [
   // {},
   // {}
 ];
+
+async function getUser(address) {
+  const url = `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`;
+
+  try {
+    const response = await fetch(url, { method: 'GET' });
+
+    if (response.status === 200) {
+      const data = await response.text();
+      return data;
+    } else {
+      return address;
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return 'no';
+  }
+}
+
 const PaymentsComponent = ({navigation}) => {
   // async function test() {
   //   if (global.withAuth) {
@@ -355,7 +374,7 @@ const PaymentsComponent = ({navigation}) => {
         `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
       )
         .then(response => response.json())
-        .then(data => {
+        .then(async data => {
           if (data.message != 'NOTOK') {
             //console.log(data.message);
             //         console.log(data);
@@ -407,7 +426,22 @@ const PaymentsComponent = ({navigation}) => {
                   : authAddress.toString().toLowerCase() == res.to
                   ? 1
                   : 0;
+                const _disp = await getUser(res.to)
+                console.log("User", _disp)
+                let display = 'mygod';
+                if(truth == 2) 
+                {
+                  display = 'Pending'
+                }
+                else if(truth == 1)
+                {
+                  display = await getUser(res.from)
+                }
+                else {
+                  display = await getUser(res.to)
+                }
               const json = {
+                display: display,
                 truth: truth, // true while accepting
                 to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
                 from:
@@ -441,64 +475,7 @@ const PaymentsComponent = ({navigation}) => {
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
-        <View style={styles.topbar}>
-          <Text style={styles.logo}>Payments</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-            <Icon
-              // style={styles.tup}
-              name={'settings'}
-              size={30}
-              color={'#fff'}
-              type="material"
-              // style = {{marginRight: '1%'}}
-            />
-          </TouchableOpacity>
-          {/* <Modal
-            animationType="fade"
-            visible={notificationVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-              setNotificiationsVisible(!notificationVisible);
-            }}>
-            <View style={{height: windowHeight, backgroundColor: '#0C0C0C'}}>
-              <ScrollView>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '90%',
-                    marginTop: '15%',
-                    marginLeft: '5%',
-                  }}>
-                  <Text
-                    style={{
-                      color: '#F0F0F0',
-                      fontSize: 25,
-                      fontFamily: 'EuclidCircularA-Medium',
-                    }}>
-                    Notifications
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() =>
-                      setNotificiationsVisible(!notificationVisible)
-                    }>
-                    <Icon
-                      name={'keyboard-backspace'}
-                      size={30}
-                      color={'#f0f0f0'}
-                      type="materialicons"
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{marginTop: '50%'}}>
-                  <Text style={styles.noTransaction}>
-                    Your Notifications Appear Here
-                  </Text>
-                </View>
-              </ScrollView>
-            </View>
-          </Modal> */}
-        </View>
+       
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
             <Text
@@ -770,18 +747,13 @@ const PaymentsComponent = ({navigation}) => {
                                         `https://mumbai.polygonscan.com/tx/${json.hash}`,
                                       );
                                     }}>
-                                    <Text
-                                      style={{
-                                        color: 'white',
-                                        fontFamily: 'VelaSans-Bold',
-                                        fontSize: 15,
-                                      }}>
-                                      {(json.truth ? json.from : json.to).slice(
-                                        0,
-                                        16,
-                                      )}
-                                      ...
-                                    </Text>
+                            
+                                          <Text
+                        style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
+                        {json.display.slice(0, 20)}
+                      </Text>
+                                      
+                                   
                                   </TouchableHighlight>
 
                                   <Text
@@ -848,13 +820,9 @@ const PaymentsComponent = ({navigation}) => {
                         Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');
                       }}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontFamily: 'EuclidCircularA-Medium',
-                          fontSize: 15,
-                        }}>
-                        {(json.truth ? json.from : json.to).slice(0, 16)}...
+                   <Text
+                        style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
+                        {json.display}
                       </Text>
                     </TouchableHighlight>
 
