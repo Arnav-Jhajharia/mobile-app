@@ -40,6 +40,7 @@ export const generateTopic = async () => {
     .catch(error => console.error('Error subscribing to topic:', error));
 };
 
+
 export const registerFcmToken = async address => {
   const url = 'https://notifs.api.xade.finance/registerDevice';
   const token = await AsyncStorage.getItem('token');

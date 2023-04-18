@@ -17,6 +17,7 @@ import BottomNavbar from '../../navbar';
 import getSpotPrice from './backend/viewFunctions';
 import transactions from './backend/txFunctions';
 
+
 import BTC from './data';
 
 const screenWidth = Dimensions.get('window').width;
@@ -29,6 +30,7 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import TopBar from '../topbar';
 
 // const points = monotoneCubicInterpolation({data, range: 40});
 
@@ -141,10 +143,12 @@ class Investments extends React.Component {
     // events.test();
     return (
       <View style={styles.black}>
+            <TopBar navigation={navigation} headers={'Investments'} />
+
         <ScrollView>
           <SafeAreaView>
             <View style={styles.investmentsNav}>
-              <Text style={styles.logo}>Investments</Text>
+              {/* <Text style={styles.logo}>Investments</Text> */}
               <View
                 style={{
                   justifyContent: 'space-evenly',
