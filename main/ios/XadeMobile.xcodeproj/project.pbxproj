@@ -12,10 +12,13 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* XadeMobile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* XadeMobile.m */; };
+		26182341435A4229AEF9E1DE /* EuclidCircular-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF451938110B42498B2BFA5A /* EuclidCircular-Bold.otf */; };
 		4B7E47A3788A41CFAAF4D60F /* VelaSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 577B344C2AE84ED993161D2B /* VelaSans-Bold.otf */; };
 		5D1B123AD6A44B84940A0EA9 /* Benzin-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B38457686C4646B9A31674E1 /* Benzin-Medium.otf */; };
+		79097C46890E45A2ADE9A3B4 /* EuclidCircular-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F80EB78589A14BC68AF79E64 /* EuclidCircular-Medium.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8F560D7B9B63421C8808873F /* LemonMilk-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1A3457CF55654EA39B47196F /* LemonMilk-Regular.otf */; };
+		8FF5F91D7EBC4CF5B9FFBE39 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6307B2083C04402848DF9AB /* Inter-Regular.otf */; };
 		98354A299FD14BF3B4F28098 /* VelaSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = E98B70F4D28442798A5989B4 /* VelaSans-Light.otf */; };
 		9AE5F82E93B14DC7962651CA /* LemonMilk-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4CA994A5F6D54A34B82F2A33 /* LemonMilk-Bold.otf */; };
 		9C0B9FB92996B78C00832244 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9C0B9FA92996B78C00832244 /* Fontisto.ttf */; };
@@ -43,13 +46,10 @@
 		BD2CCEC0BF484F88BC943D7E /* NeueMontreal-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5527FF91DF54433594363E93 /* NeueMontreal-Bold.otf */; };
 		BF850EDD35DF48A594AB5399 /* NeueMachina-UltraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A6106704CA49472FBF050379 /* NeueMachina-UltraBold.otf */; };
 		CC7D72D2134D4E7DAF11FE48 /* VelaSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0F29E1AB951D4AC4BFACFF79 /* VelaSans-SemiBold.otf */; };
-		D8055FD304DB4D589D6DCD31 /* VelaSans-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 92DCC70407BF46CEAE294FBD /* VelaSans-ExtraLight.otf */; };
-		E21DC469E7AD4C1E823060DB /* VelaSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7DDD8CA4C4F04E72A9337D7F /* VelaSans-Medium.otf */; };
-		26182341435A4229AEF9E1DE /* EuclidCircular-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AF451938110B42498B2BFA5A /* EuclidCircular-Bold.otf */; };
-		79097C46890E45A2ADE9A3B4 /* EuclidCircular-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F80EB78589A14BC68AF79E64 /* EuclidCircular-Medium.otf */; };
 		D383EA61307B4D23BF004754 /* EuclidCircular-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0E75A2A95590451F81E65E8D /* EuclidCircular-SemiBold.otf */; };
+		D8055FD304DB4D589D6DCD31 /* VelaSans-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 92DCC70407BF46CEAE294FBD /* VelaSans-ExtraLight.otf */; };
 		D84D31561D8B46DBB5192E8D /* EulidCircular-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E9B8035062045B1A5000C5E /* EulidCircular-Regular.otf */; };
-		8FF5F91D7EBC4CF5B9FFBE39 /* Inter-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C6307B2083C04402848DF9AB /* Inter-Regular.otf */; };
+		E21DC469E7AD4C1E823060DB /* VelaSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7DDD8CA4C4F04E72A9337D7F /* VelaSans-Medium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +66,7 @@
 		00E356EE1AD99517003FC87E /* XadeMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XadeMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* XadeMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XadeMobileTests.m; sourceTree = "<group>"; };
+		0E75A2A95590451F81E65E8D /* EuclidCircular-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-SemiBold.otf"; path = "../assets/fonts/EuclidCircular-SemiBold.otf"; sourceTree = "<group>"; };
 		0F29E1AB951D4AC4BFACFF79 /* VelaSans-SemiBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-SemiBold.otf"; path = "../assets/fonts/VelaSans-SemiBold.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* XadeMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XadeMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = XadeMobile/AppDelegate.h; sourceTree = "<group>"; };
@@ -109,16 +110,15 @@
 		9C47854B29A5040700426CBC /* XadeMobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = XadeMobile.entitlements; path = XadeMobile/XadeMobile.entitlements; sourceTree = "<group>"; };
 		9CB1782929DB1BD500AE8EBB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9CEA97F62995F1F500F91878 /* ParticleNetwork-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ParticleNetwork-Info.plist"; sourceTree = "<group>"; };
+		9E9B8035062045B1A5000C5E /* EulidCircular-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EulidCircular-Regular.otf"; path = "../assets/fonts/EulidCircular-Regular.otf"; sourceTree = "<group>"; };
 		A6106704CA49472FBF050379 /* NeueMachina-UltraBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NeueMachina-UltraBold.otf"; path = "../assets/fonts/NeueMachina-UltraBold.otf"; sourceTree = "<group>"; };
 		AF350E0611424AC4B1E1FAE4 /* VelaSans-ExtraBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-ExtraBold.otf"; path = "../assets/fonts/VelaSans-ExtraBold.otf"; sourceTree = "<group>"; };
+		AF451938110B42498B2BFA5A /* EuclidCircular-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-Bold.otf"; path = "../assets/fonts/EuclidCircular-Bold.otf"; sourceTree = "<group>"; };
 		B38457686C4646B9A31674E1 /* Benzin-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Benzin-Medium.otf"; path = "../assets/fonts/Benzin-Medium.otf"; sourceTree = "<group>"; };
+		C6307B2083C04402848DF9AB /* Inter-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.otf"; path = "../assets/fonts/Inter-Regular.otf"; sourceTree = "<group>"; };
 		E98B70F4D28442798A5989B4 /* VelaSans-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "VelaSans-Light.otf"; path = "../assets/fonts/VelaSans-Light.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		AF451938110B42498B2BFA5A /* EuclidCircular-Bold.otf */ = {isa = PBXFileReference; name = "EuclidCircular-Bold.otf"; path = "../assets/fonts/EuclidCircular-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F80EB78589A14BC68AF79E64 /* EuclidCircular-Medium.otf */ = {isa = PBXFileReference; name = "EuclidCircular-Medium.otf"; path = "../assets/fonts/EuclidCircular-Medium.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0E75A2A95590451F81E65E8D /* EuclidCircular-SemiBold.otf */ = {isa = PBXFileReference; name = "EuclidCircular-SemiBold.otf"; path = "../assets/fonts/EuclidCircular-SemiBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9E9B8035062045B1A5000C5E /* EulidCircular-Regular.otf */ = {isa = PBXFileReference; name = "EulidCircular-Regular.otf"; path = "../assets/fonts/EulidCircular-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C6307B2083C04402848DF9AB /* Inter-Regular.otf */ = {isa = PBXFileReference; name = "Inter-Regular.otf"; path = "../assets/fonts/Inter-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F80EB78589A14BC68AF79E64 /* EuclidCircular-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "EuclidCircular-Medium.otf"; path = "../assets/fonts/EuclidCircular-Medium.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

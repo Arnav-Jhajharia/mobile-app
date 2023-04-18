@@ -81,17 +81,17 @@ class EventsCarousel extends React.Component {
             // </View
             <TouchableOpacity
               style={styles.depWith}
+              key={image.name}
               onPress={() => {
                 image.name == 'Referrals'
-                  ?  
-              Clipboard.setString(
-                `
+                  ? Clipboard.setString(
+                      `
                 Join the Xade revolution with the DeFi powered non custodial decentralised bank and help us both win Xade points by joining the link
 
                 Download App: https://notifs.api.xade.finance/refer/${this.props.address} 
-                `
-              )
-                : ""
+                `,
+                    )
+                  : '';
               }}>
               <LinearGradient
                 colors={['#1D2426', '#272727', '#383838']}
@@ -112,30 +112,14 @@ class EventsCarousel extends React.Component {
 
                 <Text style={styles.amountText}>{image.name}</Text>
                 <Text style={styles.amountText3}>{image.details}</Text>
-                {/* <Text style={styles.amountText2}>Try now</Text> */}
               </LinearGradient>
             </TouchableOpacity>
           ))}
         </ScrollView>
-        {/* <View style={styles.circleDiv}>
-          {images.map((image, i) => (
-            <View
-              style={[
-                styles.whiteCircle,
-                { opacity: i === selectedIndex ? 0.5 : 1 }
-              ]}
-              key={image}
-              active={i === selectedIndex}
-            />
-          ))}
-        </View> */}
       </View>
     );
   }
 }
-
-
-
 
 const styles = StyleSheet.create({
   backgroundImage: {

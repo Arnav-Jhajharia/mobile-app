@@ -20,6 +20,7 @@ import {useEffect} from 'react';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 import createProvider from '../../../particle-auth';
+import getOnlyProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import {EventsCarousel} from './eventsCarousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,15 +28,30 @@ import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
 // import {POLYGON_API_KEY} from '@env';
+import transferXUSD from './remmitex';
+const Web3 = require('web3');
+
+import {signAndSendTransaction} from '../../particle-auth';
+
+import {IPaymaster, ChainId} from '@biconomy/core-types';
+import SmartAccount from '@biconomy/smart-account';
+
+// Import the crypto getRandomValues shim (**BEFORE** the shims)
+import 'react-native-get-random-values';
+
+// Import the the ethers shims (**BEFORE** ethers)
+import '@ethersproject/shims';
+
+// Import the ethers library
+import {ethers} from 'ethers';
 
 // const windowHeight = Dimensions.get('window').height;
 
 let web3;
 const REMMITEX_CONTRACT = '0xf1Ff5c85df29f573003328c783b8c6f8cC326EB7';
 const windowHeight = Dimensions.get('window').height;
-// import {signAndSendTransactionConnecumbait} from '../../particle-connect';
 import {POLYGON_API_KEY} from '@env';
-import { registerFcmToken } from '../../../utils/push';
+import {registerFcmToken} from '../../../utils/push';
 const contractAddress = '0xA3C957f5119eF3304c69dBB61d878798B3F239D9';
 const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 const images = [
@@ -90,105 +106,6 @@ async function getUser(address) {
 }
 
 const PaymentsComponent = ({navigation}) => {
-  // async function test() {
-  //   if (global.withAuth) {
-  //     authAddress = global.loginAccount.publicAddress;
-  //     console.log('Global Account:', global.loginAccount);
-  //     const result = await particleAuth.setChainInfoAsync(
-  //       particleAuth.ChainInfo.PolygonMainnet,
-  //     );
-  //     console.log(result);
-  //     web3 = this.createProvider();
-  //   } else {
-  //     authAddress = global.connectAccount.publicAddress;
-  //     console.log('Global Account:', global.connectAccount);
-  //     console.log('Global Wallet Type:', global.walletType);
-  //     web3 = this.createConnectProvider();
-  //   }
-  //   const contract = new web3.eth.Contract(ABI, contractAddress);
-  //   const result = await contract.methods.balanceOf(authAddress).call();
-  //   const decimals = await contract.methods.decimals().call();
-  //   const formattedResult = parseInt(result) / 10 ** decimals;
-  //   setBalance(formattedResult);
-  // }
-  // fetch(
-  //   `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${global.loginAccount.publicAddress}&apikey=${POLYGON_API_KEY}`,
-  // )
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     if (data.message != 'NOTOK') {
-  //       //console.log(data.message);
-  //       //         console.log(data);
-  //       const result = data.result;
-  //       let len = result.length;
-  //       let arr = [];
-  //       let date = [];
-  //       for (let i = 0; i < len; i++) {
-  //         let res = result[i];
-  //         let val = res.value;
-  //         const etherValue = web3.utils.fromWei(val, 'ether');
-  //         var pubDate = new Date(res.timeStamp * 1000);
-  //         var weekday = new Array(
-  //           'Sun',
-  //           'Mon',
-  //           'Tue',
-  //           'Wed',
-  //           'Thu',
-  //           'Fri',
-  //           'Sat',
-  //         );
-  //         var monthname = new Array(
-  //           'Jan',
-  //           'Feb',
-  //           'Mar',
-  //           'Apr',
-  //           'May',
-  //           'Jun',
-  //           'Jul',
-  //           'Aug',
-  //           'Sep',
-  //           'Oct',
-  //           'Nov',
-  //           'Dec',
-  //         );
-  //         var formattedDate =
-  //           monthname[pubDate.getMonth()] +
-  //           ' ' +
-  //           pubDate.getDate() +
-  //           ', ' +
-  //           pubDate.getFullYear();
-  //         const truth =
-  //           REMMITEX_CONTRACT.toLowerCase() == res.to
-  //             ? 2
-  //             : authAddress.toString().toLowerCase() == res.to
-  //             ? 1
-  //             : 0;
-  //         const json = {
-  //           truth: truth, // true while accepting
-  //           to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
-  //           from:
-  //             res.from == SABEX_LP.toLowerCase()
-  //               ? 'SabeX Withdrawal'
-  //               : res.from,
-  //           value: etherValue,
-  //           date: formattedDate,
-  //           hash: res.hash,
-  //         };
-  //         date.push(formattedDate);
-  //         arr.push(json);
-  //       }
-  //       setDates([...new Set(date)].reverse());
-  //       setState(arr.reverse());
-  //       // console.log(dates);
-  //       console.log(state);
-  //     } else {
-  //       setState([]);
-  //       setDates([]);
-  //       return;
-  //     }
-  //   });
-  // test();
-
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0, hash: ''},
   ]);
@@ -199,14 +116,85 @@ const PaymentsComponent = ({navigation}) => {
   const [mainnet, setMainnet] = useState(false);
   useEffect(() => {
     console.log('Is Auth:', global.withAuth);
-    
-    const getBalance = async (web3, address) => {
-      const mainnetJSON = await AsyncStorage.getItem('mainnet')
-      const _mainnet = JSON.parse(mainnetJSON)
-      const _address = await AsyncStorage.getItem('address')
-      setMainnet(_mainnet);
-      setAddress(_address);
-      console.log("Mainnet: " + _mainnet)
+
+    const getBalance = async (web3, authAddress) => {
+      let options = {
+        activeNetworkId: ChainId.POLYGON_MAINNET,
+        supportedNetworksIds: [ChainId.POLYGON_MAINNET],
+
+        networkConfig: [
+          {
+            chainId: ChainId.POLYGON_MAINNET,
+            dappAPIKey: '1rQXLL5II.b15564c7-9018-49ed-acdf-cbc105485d27',
+          },
+        ],
+      };
+
+      console.log('Not Working');
+
+      try {
+        const particleProvider = this.getOnlyProvider();
+        const provider = new ethers.providers.Web3Provider(
+          particleProvider,
+          'any',
+        );
+        let smartAccount = new SmartAccount(provider, options);
+        smartAccount = await smartAccount.init();
+        await transferXUSD(smartAccount);
+      } catch (error) {
+        console.log('Error:', error);
+      }
+
+      // try {
+      // const particleProvider = this.getOnlyProvider();
+      // const provider = new ethers.providers.Web3Provider(
+      //   particleProvider,
+      //   'any',
+      // );
+
+      //   let smartAccount = new SmartAccount(provider, options);
+      //   smartAccount = await smartAccount.init();
+
+      //   const erc20Interface = new ethers.utils.Interface([
+      //     'function transfer(address _to, uint256 _value)',
+      //   ]);
+
+      //   const data = erc20Interface.encodeFunctionData('transfer', [
+      //     '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+      //     Number('0.01') * 10 ** 6,
+      //   ]);
+
+      //   const tx = {
+      //     to: usdcAddress,
+      //     data: data,
+      //     value: Number('0.01') * 10 ** 6,
+      //   };
+
+      //   const feeQuotes = await smartAccount.getFeeQuotes({transaction: tx});
+
+      //   const transaction = await smartAccount.createUserPaidTransaction({
+      //     transaction: tx,
+      //     feeQuote: feeQuotes[1], // say user chooses USDC from above
+      //   });
+
+      //   console.log(Number('0.01') * 10 ** 6);
+
+      //   console.log(JSON.stringify(transaction));
+
+      //   const txId = await smartAccount.sendUserPaidTransaction({
+      //     tx: transaction,
+      //   });
+
+      //   console.log(txId);
+      // } catch (err) {
+      //   console.log('Error:', err);
+      // }
+
+      console.log('Working');
+
+      const mainnetJSON = await AsyncStorage.getItem('mainnet');
+      const _mainnet = await JSON.parse(mainnetJSON);
+      const _address = await AsyncStorage.getItem('address');
       if (_mainnet) {
         if (global.withAuth) {
           await particleAuth.setChainInfoAsync(
@@ -218,14 +206,201 @@ const PaymentsComponent = ({navigation}) => {
           );
         }
         const contract = new web3.eth.Contract(USDC_ABI, usdcAddress);
+
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(address).call();
+          let result = await contract.methods.balanceOf(authAddress).call();
           const decimals = await contract.methods.decimals().call();
           const formattedResult = parseInt(result) / 10 ** decimals;
           console.log('Balance:', formattedResult);
-          setBalance(formattedResult.toString());
+          setBalance(formattedResult.toFixed(3).toString());
         }
-        getTokenBalance();
+        await getTokenBalance();
+
+        if (_mainnet) {
+          fetch(
+            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+          )
+            .then(response => response.json())
+            .then(data => {
+              if (data.message != 'NOTOK') {
+                //console.log(data.message);
+                //         console.log(data);
+                const result = data.result;
+                //        console.log('Arnav:', result);
+                let len = result.length;
+
+                let arr = [];
+                let date = [];
+                for (let i = 0; i < len; i++) {
+                  let res = result[i];
+                  let val = res.value;
+                  const decimals = 6;
+                  const etherValue = parseInt(val) / 10 ** decimals;
+                  var pubDate = new Date(res.timeStamp * 1000);
+                  var weekday = new Array(
+                    'Sun',
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat',
+                  );
+
+                  var monthname = new Array(
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  );
+
+                  var formattedDate =
+                    monthname[pubDate.getMonth()] +
+                    ' ' +
+                    pubDate.getDate() +
+                    ', ' +
+                    pubDate.getFullYear();
+                  const truth =
+                    REMMITEX_CONTRACT.toLowerCase() == res.to
+                      ? 2
+                      : authAddress.toString().toLowerCase() == res.to
+                      ? 1
+                      : 0;
+                  const json = {
+                    truth: truth, // true while accepting
+                    to:
+                      res.to == SABEX_LP.toLowerCase()
+                        ? 'SabeX Deposit'
+                        : res.to,
+                    from:
+                      res.from == SABEX_LP.toLowerCase()
+                        ? 'SabeX Withdrawal'
+                        : res.from,
+                    value: etherValue,
+                    date: formattedDate,
+                    hash: res.hash,
+                  };
+                  date.push(formattedDate);
+                  // console.log(date);
+                  // console.log(json);
+                  arr.push(json);
+                  // console.log(authAddress, res.to, json.truth);
+                }
+                //    console.log(json);
+                setDates([...new Set(date)].reverse());
+                setState(arr.reverse());
+                // console.log(dates);
+                // console.log(state);
+              } else {
+                setState([]);
+                setDates([]);
+                return;
+              }
+            });
+        } else {
+          fetch(
+            `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+          )
+            .then(response => response.json())
+            .then(data => {
+              if (data.message != 'NOTOK') {
+                //console.log(data.message);
+                //         console.log(data);
+                const result = data.result;
+                //        console.log('Arnav:', result);
+                let len = result.length;
+
+                let arr = [];
+                let date = [];
+                for (let i = 0; i < len; i++) {
+                  let res = result[i];
+                  let val = res.value;
+                  const etherValue = web3.utils.fromWei(val, 'ether');
+                  var pubDate = new Date(res.timeStamp * 1000);
+                  var weekday = new Array(
+                    'Sun',
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat',
+                  );
+
+                  var monthname = new Array(
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  );
+
+                  var formattedDate =
+                    monthname[pubDate.getMonth()] +
+                    ' ' +
+                    pubDate.getDate() +
+                    ', ' +
+                    pubDate.getFullYear();
+                  const truth =
+                    REMMITEX_CONTRACT.toLowerCase() == res.to
+                      ? 2
+                      : authAddress.toString().toLowerCase() == res.to
+                      ? 1
+                      : 0;
+                  const json = {
+                    truth: truth, // true while accepting
+                    to:
+                      res.to == SABEX_LP.toLowerCase()
+                        ? 'SabeX Deposit'
+                        : res.to,
+                    from:
+                      res.from == SABEX_LP.toLowerCase()
+                        ? 'SabeX Withdrawal'
+                        : res.from,
+                    value: etherValue,
+                    date: formattedDate,
+                    hash: res.hash,
+                  };
+                  date.push(formattedDate);
+                  // console.log(date);
+                  // console.log(json);
+                  arr.push(json);
+                  // console.log(authAddress, res.to, json.truth);
+                }
+                //    console.log(json);
+                setDates([...new Set(date)].reverse());
+                setState(arr.reverse());
+                // console.log(dates);
+                // console.log(state);
+              } else {
+                setState([]);
+                setDates([]);
+                return;
+              }
+            });
+        }
+
+        // console.log(
+        //   await this.signAndSendTransaction(
+        //     '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+        //     web3.utils.toWei('0.01'),
+        //   ),
+        // );
       } else {
         if (global.withAuth) {
           await particleAuth.setChainInfoAsync(
@@ -238,12 +413,194 @@ const PaymentsComponent = ({navigation}) => {
         }
         const contract = new web3.eth.Contract(XUSD_ABI, contractAddress);
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(address).call();
+          let result = await contract.methods.balanceOf(authAddress).call();
           const formattedResult = web3.utils.fromWei(result, 'ether');
           console.log('Balance:', formattedResult);
           setBalance(formattedResult.toString());
         }
         getTokenBalance();
+
+        console.log(_mainnet);
+        if (_mainnet) {
+          await fetch(
+            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+          )
+            .then(response => response.json())
+            .then(data => {
+              if (data.message != 'NOTOK') {
+                //console.log(data.message);
+                //         console.log(data);
+                const result = data.result;
+                //        console.log('Arnav:', result);
+                let len = result.length;
+
+                let arr = [];
+                let date = [];
+                for (let i = 0; i < len; i++) {
+                  let res = result[i];
+                  let val = res.value;
+                  const decimals = 6;
+                  const etherValue = (parseInt(val) / 10 ** decimals).toFixed(
+                    3,
+                  );
+                  var pubDate = new Date(res.timeStamp * 1000);
+                  var weekday = new Array(
+                    'Sun',
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat',
+                  );
+
+                  var monthname = new Array(
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  );
+
+                  var formattedDate =
+                    monthname[pubDate.getMonth()] +
+                    ' ' +
+                    pubDate.getDate() +
+                    ', ' +
+                    pubDate.getFullYear();
+                  const truth =
+                    REMMITEX_CONTRACT.toLowerCase() == res.to
+                      ? 2
+                      : authAddress.toString().toLowerCase() == res.to
+                      ? 1
+                      : 0;
+                  const json = {
+                    truth: truth, // true while accepting
+                    to:
+                      res.to == SABEX_LP.toLowerCase()
+                        ? 'SabeX Deposit'
+                        : res.to,
+                    from:
+                      res.from == SABEX_LP.toLowerCase()
+                        ? 'SabeX Withdrawal'
+                        : res.from,
+                    value: etherValue,
+                    date: formattedDate,
+                    hash: res.hash,
+                  };
+                  date.push(formattedDate);
+                  // console.log(date);
+                  // console.log(json);
+                  arr.push(json);
+                  // console.log(authAddress, res.to, json.truth);
+                }
+                //    console.log(json);
+                setDates([...new Set(date)].reverse());
+                setState(arr.reverse());
+                // console.log(dates);
+                // console.log(state);
+              } else {
+                setState([]);
+                setDates([]);
+                return;
+              }
+            });
+        } else {
+          await fetch(
+            `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+          )
+            .then(response => response.json())
+            .then(data => {
+              if (data.message != 'NOTOK') {
+                //console.log(data.message);
+                //         console.log(data);
+                const result = data.result;
+                //        console.log('Arnav:', result);
+                let len = result.length;
+
+                let arr = [];
+                let date = [];
+                for (let i = 0; i < len; i++) {
+                  let res = result[i];
+                  let val = res.value;
+                  const etherValue = web3.utils.fromWei(val, 'ether');
+                  var pubDate = new Date(res.timeStamp * 1000);
+                  var weekday = new Array(
+                    'Sun',
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat',
+                  );
+
+                  var monthname = new Array(
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec',
+                  );
+
+                  var formattedDate =
+                    monthname[pubDate.getMonth()] +
+                    ' ' +
+                    pubDate.getDate() +
+                    ', ' +
+                    pubDate.getFullYear();
+                  const truth =
+                    REMMITEX_CONTRACT.toLowerCase() == res.to
+                      ? 2
+                      : authAddress.toString().toLowerCase() == res.to
+                      ? 1
+                      : 0;
+                  const json = {
+                    truth: truth, // true while accepting
+                    to:
+                      res.to == SABEX_LP.toLowerCase()
+                        ? 'SabeX Deposit'
+                        : res.to,
+                    from:
+                      res.from == SABEX_LP.toLowerCase()
+                        ? 'SabeX Withdrawal'
+                        : res.from,
+                    value: etherValue,
+                    date: formattedDate,
+                    hash: res.hash,
+                  };
+                  date.push(formattedDate);
+                  // console.log(date);
+                  // console.log(json);
+                  arr.push(json);
+                  // console.log(authAddress, res.to, json.truth);
+                }
+                //    console.log(json);
+                setDates([...new Set(date)].reverse());
+                setState(arr.reverse());
+                // console.log(dates);
+                // console.log(state);
+              } else {
+                setState([]);
+                setDates([]);
+                return;
+              }
+            });
+        }
       }
     };
 
@@ -265,18 +622,13 @@ const PaymentsComponent = ({navigation}) => {
       // );
     }
 
-    async function registration()
-    {
-      console.log('req being sent')
+    async function registration() {
       await registerFcmToken(authAddress);
     }
 
     registration();
-    
 
-    async function registration()
-    {
-      console.log('req being sent')
+    async function registration() {
       await registerFcmToken(authAddress);
     }
 
@@ -470,12 +822,25 @@ const PaymentsComponent = ({navigation}) => {
           }
         });
     }
+
   }, []);
   const t = true;
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
-       
+      <View style={styles.topbar}>
+          <Text style={styles.logo}>Payments</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Icon
+              // style={styles.tup}
+              name={'settings'}
+              size={30}
+              color={'#fff'}
+              type="material"
+              // style = {{marginRight: '1%'}}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
             <Text
@@ -527,7 +892,10 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('SendEmail');
+              navigation.navigate('EnterAmount', {
+                type: 'wallet',
+                walletAddress: '0x5a8f38beb51396923b3297e3e79951e2eb2eb0b4',
+              });
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
@@ -606,7 +974,12 @@ const PaymentsComponent = ({navigation}) => {
           {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         {/* <View style = {{width: '90%', height: '10%'}}> */}
-        <EventsCarousel images={images} navigation={navigation} address={address} />
+        <EventsCarousel
+          images={images}
+          navigation={navigation}
+          address={address}
+          key={images}
+        />
         {/* </View> */}
       </View>
       <View style={styles.transactionContainer}>
@@ -718,15 +1091,14 @@ const PaymentsComponent = ({navigation}) => {
                         transactions.push(state[key]);
                       }
                     });
-                    // console.log(transactions);
                     return (
-                      <View>
+                      <View key={date}>
                         <Text style={styles.dates}>
                           {date == formattedDate ? 'Today' : date}
                         </Text>
                         {transactions.map(json => {
                           return (
-                            <View style={styles.transactions}>
+                            <View style={styles.transactions} key={json.hash}>
                               <View style={styles.transactionLeft}>
                                 <Image
                                   source={
@@ -742,9 +1114,10 @@ const PaymentsComponent = ({navigation}) => {
                                 />
                                 <View style={{margin: 10}}>
                                   <TouchableHighlight
+                                    key={json.hash}
                                     onPress={() => {
                                       Linking.openURL(
-                                        `https://mumbai.polygonscan.com/tx/${json.hash}`,
+                                        `https://polygonscan.com/tx/${json.hash}`,
                                       );
                                     }}>
                             
@@ -798,7 +1171,7 @@ const PaymentsComponent = ({navigation}) => {
           state.slice(0, 10).map(json => {
             // console.log(groupedState);
             return (
-              <View style={styles.transactions}>
+              <View style={styles.transactions} key={json.hash}>
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
@@ -816,6 +1189,7 @@ const PaymentsComponent = ({navigation}) => {
                   />
                   <View style={styles.ttext}>
                     <TouchableHighlight
+                      key={json.truth}
                       onPress={() => {
                         Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');

@@ -18,7 +18,7 @@ import {PNAccount} from '../../Models/PNAccount';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 
-// import { registerFcmToken } from './../../utils/push' 
+// import { registerFcmToken } from './../../utils/push'
 
 import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 
@@ -28,9 +28,10 @@ var DeviceInfo = require('react-native-device-info');
 
 const LoginCheck = async ({navigation}) => {
   // global.mainnet = true;
-  const mainnet = await AsyncStorage.getItem('mainnet')
-  if(!mainnet) // null 
-    await AsyncStorage.setItem('mainnet', JSON.stringify(true))
+  const mainnet = await AsyncStorage.getItem('mainnet');
+  if (!mainnet)
+    // null
+    await AsyncStorage.setItem('mainnet', JSON.stringify(true));
   // await particleAuth.logout()
   particleAuth.init(
     particleAuth.ChainInfo.PolygonMainnet,
@@ -43,9 +44,8 @@ const LoginCheck = async ({navigation}) => {
   const result = await particleAuth.isLogin();
   console.log(result);
   if (result) {
-
     var account = await particleAuth.getUserInfo();
-    console.log("User account", account);
+    console.log('User account', account);
     // await AsyncStorage.setItem("address", account.wallets[])
     var name;
     account = JSON.parse(account);
@@ -71,7 +71,7 @@ const LoginCheck = async ({navigation}) => {
         console.log(response);
         if (response.status == 200) {
           return response.text();
-        } else return 0;
+        } else return '';
       })
       .then(data => {
         name = data;
@@ -99,7 +99,7 @@ const LoginCheck = async ({navigation}) => {
           console.log('Not Logged In');
           navigation.navigate('LoggedOutHome');
           console.log('Navigating To Home');
-          return 0;
+          return '';
         }
       })
       .then(async data => {
@@ -114,7 +114,7 @@ const LoginCheck = async ({navigation}) => {
           .then(response => {
             if (response.status == 200) {
               return response.text();
-            } else return 0;
+            } else return '';
           })
           .then(conname => {
             async function checkConnect() {
@@ -147,10 +147,6 @@ const LoginCheck = async ({navigation}) => {
               ];
 
               for (let i = 0; i < types.length; i++) {
-                console.log(types[i]);
-                console.log(
-                  await particleConnect.isConnected(types[i], address),
-                );
                 if (await particleConnect.isConnected(types[i], address)) {
                   global.connectAccount = new PNAccount(
                     types[i],
@@ -158,12 +154,12 @@ const LoginCheck = async ({navigation}) => {
                     address,
                     uuid,
                   );
+                  await particleConnect.reconnectIfNeeded(types[i], address);
                   global.withAuth = false;
                   global.walletType = types[i];
                   console.log('Logged In:', global.connectAccount);
                   navigation.navigate('Payments');
                   console.log('Navigating To Payments');
-                  await particleConnect.reconnectIfNeeded(types[i], address);
                 }
               }
             }

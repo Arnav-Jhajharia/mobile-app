@@ -3,8 +3,8 @@ import clearingHouseViewerABI from '../ABIs/clearingHouseViewer';
 import createProvider from '../../../../particle-auth';
 import createConnectProvider from '../../../../particle-connect';
 
-const clearingHouseViewerAddress = 'clearingHouseViewerAddress';
-const clearingHouseAddress = '0x042A512166f3f2FC5fe1a074e1406D7Dbf3E0514';
+const clearingHouseViewerAddress = '0x131C3227239794B23cd07fb36c2f31b9Ba574CdE';
+const clearingHouseAddress = '0x602969FFAddA7d74f5da69B817688E984Ba4EBbD';
 
 export async function displayPositions(amms) {
   // let list: {

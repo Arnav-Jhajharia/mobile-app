@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
-  black: { 
+  black: {
     backgroundColor: '#0C0C0C',
     width: '100%',
     height: '100%',
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   marketCapData: {
     fontFamily: 'EuclidCircularA-Medium',
     color: '#FFFFFF',
-    fontSize: 25,
+    fontSize: 23,
   },
 
   highText: {

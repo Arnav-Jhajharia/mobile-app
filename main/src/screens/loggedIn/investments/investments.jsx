@@ -51,7 +51,7 @@ class Investments extends React.Component {
       totalVolume: 'Updating',
       allTimeHigh: 'Updating',
       allTimeLow: 'Updating',
-      btnSelected: 'chart',
+      btnSelected: 'long',
       nBtc: '',
       status: true,
       leverageValue: 1,
@@ -417,7 +417,7 @@ class Investments extends React.Component {
                     <View style={styles.column2}>
                       <View style={{marginTop: 15}}>
                         <Text style={styles.marketCapInfo}>All Time Low</Text>
-                        <Text style={styles.lowText}>~$1</Text>
+                        <Text style={styles.lowText}>{'<'}$1</Text>
                       </View>
                       <View style={{marginTop: 15}}>
                         <Text style={styles.marketCapInfo}>Total Volume</Text>
