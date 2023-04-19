@@ -160,9 +160,9 @@ const Savings = ({navigation}) => {
   }, []);
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
-      {/* <View style={styles.topbar}>
+      <View style={styles.topbar}>
         <Text style={styles.logo}>Savings</Text>
-      </View> */}
+      </View>
       <View style={styles.container}>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>

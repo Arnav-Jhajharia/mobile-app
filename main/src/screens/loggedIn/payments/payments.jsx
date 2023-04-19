@@ -28,7 +28,7 @@ import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
 // import {POLYGON_API_KEY} from '@env';
-import transferXUSD from './remmitexv1';
+import transferXUSD from './remmitex';
 const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
@@ -121,7 +121,7 @@ const PaymentsComponent = ({navigation}) => {
         );
         let smartAccount = new SmartAccount(provider, options);
         smartAccount = await smartAccount.init();
-        await transferXUSD(smartAccount, provider);
+        await transferXUSD(smartAccount);
       } catch (error) {
         console.log('Error:', error);
       }
@@ -619,6 +619,19 @@ const PaymentsComponent = ({navigation}) => {
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
+        <View style={styles.topbar}>
+          <Text style={styles.logo}>Payments</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+            <Icon
+              // style={styles.tup}
+              name={'settings'}
+              size={30}
+              color={'#fff'}
+              type="material"
+              // style = {{marginRight: '1%'}}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.fontContainer}>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
             <Text
@@ -761,7 +774,7 @@ const PaymentsComponent = ({navigation}) => {
         {/* </View> */}
       </View>
       <View style={styles.transactionContainer}>
-        {/*  <View style={styles.heading}>
+        <View style={styles.heading}>
           <Text
             style={{
               color: 'white',
@@ -784,6 +797,7 @@ const PaymentsComponent = ({navigation}) => {
               View All
             </Text>
           </TouchableOpacity>
+          {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         <Modal
           animationType="slide"
@@ -945,15 +959,15 @@ const PaymentsComponent = ({navigation}) => {
                     </Text>
                   </View>
                 )}
-              </View> 
+              </View>
             </ScrollView>
           </View>
-        </Modal> */}
+        </Modal>
         {state.length > 0 ? (
           state.slice(0, 10).map(json => {
             // console.log(groupedState);
             return (
-              <View style={styles.transactions} key={state.indexOf(json)}>
+              <View style={styles.transactions} key={json.hash}>
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
@@ -971,7 +985,7 @@ const PaymentsComponent = ({navigation}) => {
                   />
                   <View style={styles.ttext}>
                     <TouchableHighlight
-                      key={json.hash}
+                      key={json.truth}
                       onPress={() => {
                         Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');

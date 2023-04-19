@@ -1,7 +1,11 @@
+// import createProvider from '../../../particle-auth';
 // import xusdAbi from './USDC';
+// const Web3 = require('web3');
 // import {EvmService} from '../../../NetService/EvmService';
 // import * as particleAuth from 'react-native-particle-auth';
+// let web3;
 // export default async function transferXUSD(authAddress) {
+//   web3 = this.createProvider();
 
 //   // Replace with your own values
 // const tokenAddress = '0x2791bca1f2de4661ed88a30c99a7a9449aa84174';
@@ -111,8 +115,7 @@
 // }
 
 import getOnlyProvider from '../../../particle-auth';
-import createProvider from '../../../particle-auth';
-import usdAbi from './USDC';
+import usdcAbi from './USDC';
 
 // Import the crypto getRandomValues shim (**BEFORE** the shims)
 import 'react-native-get-random-values';
@@ -123,20 +126,19 @@ import '@ethersproject/shims';
 // Import the ethers library
 import {ethers} from 'ethers';
 
-const Web3 = require('web3');
-let web3;
-
-export default async function transferXUSD(smartAccount, provider) {
+export default async function transferXUSD(smartAccount) {
   const contractAddress = '0x650974DF6A3F6500DD531099c806Da2737f81d07';
   const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
 
   const decimals = 6;
 
-  const amount = ethers.utils.parseUnits('0.1', decimals);
+  const approvedAmount = ethers.utils.parseUnits('0.1', 18);
 
-  const recipient = '0xb0ff54808427d753F51B359c0ffc177242Fb4804';
+  const amount = ethers.utils.parseUnits('0.01', decimals);
 
-  const contractAbi = [
+  const fee = ethers.utils.parseUnits('0.0001', decimals);
+
+  const contractInterface = new ethers.utils.Interface([
     {inputs: [], stateMutability: 'nonpayable', type: 'constructor'},
     {
       inputs: [],
@@ -163,125 +165,45 @@ export default async function transferXUSD(smartAccount, provider) {
       stateMutability: 'nonpayable',
       type: 'function',
     },
-  ];
-
-  web3 = this.createProvider();
-
-  const contract = new web3.eth.Contract(contractAbi, contractAddress);
-  const tokenContract = new web3.eth.Contract(usdAbi, usdcAddress);
-
-  const approvalCall = web3.eth.abi.encodeFunctionCall(usdAbi[1], [
-    contractAddress,
-    amount,
   ]);
 
-  const transferCall = web3.eth.abi.encodeFunctionCall(contractAbi[2], [
-    recipient,
-    amount,
-    '0',
+  const usdcAbi = new ethers.utils.Interface([
+    'function approve(address _spender, uint256 _value)',
   ]);
 
-  const tx1 = {
-    from: smartAccount.address,
-    to: usdcAddress,
-    data: approvalCall,
-  };
-  const tx2 = {
-    from: '0xB02CcaF699F4708B348d2915E40A1fa31A2B4279',
-    to: contractAddress,
-    data: transferCall,
-  };
-
-  const approvalGas = Number(await web3.eth.estimateGas(tx1));
-  const transferGas = Number(await web3.eth.estimateGas(tx2));
-  const gasPrice = Number(await web3.eth.getGasPrice());
-  const gas = (approvalGas + transferGas) * gasPrice;
-  const fees = web3.utils.toWei(String(gas), 'wei') * 5;
-  const totalGas = String(
-    Number(web3.utils.toWei(String(gas), 'wei')) +
-      Number(web3.utils.toWei(String((fees * 0.01).toFixed(0)), 'wei')),
-  );
-  const totalGasUSDC = String(
-    web3.utils.toWei(
-      String((Number(web3.utils.fromWei(totalGas, 'ether')) * 5).toFixed(6)),
-      'mwei',
-    ),
-  );
-
-  // const approvalAmount = String(Number(amount) + Number(totalGasUSDC));
-  const amountToApprove = ethers.utils.parseUnits(
-    String(
-      web3.utils.fromWei(
-        Number(Number(amount.toString()) + Number(totalGasUSDC * 0.01)).toFixed(
-          0,
-        ),
-        'mwei',
-      ),
-    ),
-    decimals,
-  );
-
-  console.log('Amount:', web3.utils.fromWei(amount.toString(), 'mwei'));
-  console.log('Total Gas:', web3.utils.fromWei(totalGas, 'ether'));
-  console.log('Gas:', web3.utils.fromWei(String(gas), 'ether'));
-  console.log(
-    'Fees:',
-    web3.utils.fromWei(String((fees * 0.01).toFixed(0)), 'ether'),
-  );
-  console.log(
-    'Total Transaction:',
-    web3.utils.fromWei(
-      String(
-        Number(
-          web3.utils.toWei(
-            String(web3.utils.fromWei(String(amount), 'mwei')),
-            'ether',
-          ),
-        ) + Number(web3.utils.toWei(String(totalGas), 'wei')),
-      ),
-      'ether',
-    ),
-  );
-
-  console.log('Amount To Approve:', amountToApprove);
-
-  const contractInterface = new ethers.utils.Interface(contractAbi);
-
-  const usdcAbi = new ethers.utils.Interface(usdAbi);
-
-  const v1Batch = [];
+  const recipient = '0xb0ff54808427d753F51B359c0ffc177242Fb4804';
 
   const approveData = usdcAbi.encodeFunctionData('approve', [
     contractAddress,
-    amountToApprove,
+    approvedAmount,
   ]);
 
-  const approve = {
+  const tx = {
     to: usdcAddress,
     data: approveData,
   };
+  // send approve transaction
 
-  v1Batch.push(approve);
-
-  const transferData = contractInterface.encodeFunctionData('transfer', [
+  const data = contractInterface.encodeFunctionData('transfer', [
     recipient,
     amount,
-    totalGasUSDC,
+    fee,
   ]);
 
-  const transfer = {
+  const tx1 = {
     to: contractAddress,
-    data: transferData,
+    data: data,
   };
 
-  v1Batch.push(transfer);
-
   try {
-    // const txResponse = await smartAccount.sendTransactionBatch({
-    //   transactions: v1Batch,
-    // });
-    // console.log('Response:', txResponse);
+    // const approval = await smartAccount.sendTransaction({transaction: tx});
+    // console.log('Tx Response', approval);
+    // const txResponse = await smartAccount.sendTransaction({transaction: tx1});
+    // console.log('userOp hash', txResponse);
   } catch (err) {
     console.log(err);
   }
+  // // If you do not subscribe to listener, one can also get the receipt like shown below
+  // const txReciept = await txResponse.wait();
+  // console.log('Tx hash', txReciept.transactionHash);
 }

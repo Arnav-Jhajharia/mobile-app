@@ -55,7 +55,7 @@ const windowHeight = Dimensions.get('window').height;
 import messaging from '@react-native-firebase/messaging';
 import {requestUserPermission, generateTopic} from './utils/push';
 import { getDeviceToken } from 'react-native-device-info';
-import TopBar from './screens/loggedIn/topbar'
+
 function PreLaunchLoad({navigation}) {
   return (
     <View>
@@ -203,17 +203,14 @@ function ComingSoon({navigation}) {
 
 function Savings({navigation, route}) {
   return (
-    <SafeAreaView style={styles.container}>
-      {/* <View style={{ height: '100%',position: 'relative' }}> */}
-
-    <TopBar navigation={navigation} headers={'Savings'} />
-
-    <ScrollView style={[styles.content, {zIndex: -1}]}>
-    <SavingsComponent navigation={navigation} route={route} />    
-    </ScrollView>
-    <BottomNavbar navigation={navigation} selected="Savings" />
-    {/* </View> */}
-  </SafeAreaView>
+    <SafeAreaView style={styles.black}>
+      <ScrollView style={{height: windowHeight * 0.7}}>
+        <View>
+          <SavingsComponent navigation={navigation} route={route} />
+        </View>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} selected="Savings" />
+    </SafeAreaView>
   );
 }
 
@@ -227,17 +224,14 @@ function Investment({navigation}) {
 
 function Payments({navigation}) {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={{ height: '100%',position: 'relative' }}>
-
-    <TopBar navigation={navigation} headers={'Payments'} />
-
-    <ScrollView style={[styles.content, {zIndex: -1}]}>
-      <PaymentsComponent navigation={navigation} />
-    </ScrollView>
-    <BottomNavbar navigation={navigation} selected="Payments" />
-    </View>
-  </SafeAreaView>
+    <SafeAreaView style={styles.black}>
+      <ScrollView style={{height: windowHeight * 0.8}}>
+        <View>
+          <PaymentsComponent navigation={navigation} />
+        </View>
+      </ScrollView>
+      <BottomNavbar navigation={navigation} selected="Payments" />
+    </SafeAreaView>
   );
 }
 
@@ -584,13 +578,5 @@ const styles = StyleSheet.create({
   black: {
     height: windowHeight,
     backgroundColor: '#0C0C0C',
-  },
-
-  container: {
-    flex: 1,
-    backgroundColor: '#0C0C0C',
-  },
-  content: {
-    // flex: 1,
   },
 });
