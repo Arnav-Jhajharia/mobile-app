@@ -42,7 +42,7 @@ export const generateTopic = async () => {
 
 
 export const registerFcmToken = async address => {
-  const url = 'https://notifs.api.xade.finance/registerDevice';
+  const url = 'https://refer.xade.finance/registerDevice';
   const token = await AsyncStorage.getItem('token');
 
   const notifsdata = {
