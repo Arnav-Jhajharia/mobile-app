@@ -14,7 +14,7 @@ import {
 import {useState, useMemo, useEffect} from 'react';
 import {Text} from '@rneui/themed';
 import {Dropdown} from 'react-native-element-dropdown';
-const REMMITEX_CONTRACT = '0x5c34A74caB1Edfc1d73B8Ae725AdDE50bA067d5B';
+const REMMITEX_CONTRACT = '0x0b3De88bCB9F29cC57D6122Ee933AF93e6d716ed';
 
 import {Icon} from 'react-native-elements';
 

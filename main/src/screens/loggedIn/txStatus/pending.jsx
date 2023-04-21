@@ -5,71 +5,83 @@ import Video from 'react-native-video';
 import {signAndSendTransactionConnect} from '../../../particle-connect';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
-import createProvider from '../../../particle-auth';
+import getOnlyProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
+import transferUSDC from '../../loggedIn/payments/remmitexv1';
 const Web3 = require('web3');
 
 let web3;
+let provider;
 const successVideo = require('./pending.mov');
-const amount = '0.1';
+
 export default function Component({route, navigation}) {
-  const {walletAddress, emailAddress, mobileNumber, type} = route.params;
-  const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
+  const {walletAddress, emailAddress, mobileNumber, type, amount} =
+    route.params;
+  console.log('Params:', route.params);
+
   useEffect(() => {
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
       console.log('Global Account:', global.loginAccount);
       web3 = this.createProvider();
-      // test(web3, authAddress);
-      //  console.log(web3.eth.getAccounts());
+      const provider = this.getOnlyProvider();
     } else {
       authAddress = global.connectAccount.publicAddress;
       console.log('Global Account:', global.connectAccount);
       console.log('Global Wallet Type:', global.walletType);
       web3 = this.createConnectProvider();
-      // test(web3, authAddress);
-      // this.signAndSendTransactionConnect(
-      //   '0xb02ccaf699f4708b348d2915e40a1fa31a2b4279',
-      //   '1000000000000000',
-      // );
     }
 
     const transaction = async () => {
       let status;
       console.log('Is Auth:', global.withAuth);
-      if (global.withAuth) {
-        authAddress = global.loginAccount.publicAddress;
-        console.log('Global Account:', global.loginAccount);
-        status = await this.signAndSendTransaction(walletAddress, weiVal);
-        console.log('TX1:', status);
-
-        if (status)
-          navigation.navigate('Successful', {
-            status,
-            type,
-            emailAddress,
+      if (type !== 'v2') {
+        if (global.withAuth) {
+          // authAddress = global.loginAccount.publicAddress;
+          // console.log('Global Account:', global.loginAccount);
+          // status = await this.signAndSendTransaction(walletAddress, weiVal);
+          // console.log('TX1:', status);
+          try {
+            status = await transferUSDC(
+              global.smartAccount,
+              provider,
+              amount,
+              walletAddress,
+            );
+            console.log(status);
+            if (status)
+              navigation.navigate('Successful', {
+                status,
+                type,
+                emailAddress,
+                walletAddress,
+                amount,
+              });
+            else navigation.navigate('Unsuccessful');
+            ``;
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          authAddress = global.connectAccount.publicAddress;
+          console.log('Global Account:', global.connectAccount);
+          status = await this.signAndSendTransactionConnect(
             walletAddress,
-            amount,
-          });
-        else navigation.navigate('Unsuccessful');
-        ``;
+            weiVal,
+          );
+          console.log('TX1:', status);
+          if (status !== false)
+            navigation.navigate('Successful', {
+              status,
+              type,
+              emailAddress,
+              walletAddress,
+              amount,
+            });
+          else navigation.navigate('Unsuccessful');
+        }
       } else {
-        authAddress = global.connectAccount.publicAddress;
-        console.log('Global Account:', global.connectAccount);
-        status = await this.signAndSendTransactionConnect(
-          walletAddress,
-          weiVal,
-        );
-        console.log('TX1:', status);
-        if (status !== false)
-          navigation.navigate('Successful', {
-            status,
-            type,
-            emailAddress,
-            walletAddress,
-            amount,
-          });
-        else navigation.navigate('Unsuccessful');
+        //V2 code goes here
       }
     };
 

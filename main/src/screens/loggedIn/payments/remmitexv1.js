@@ -10,7 +10,7 @@ import * as particleAuth from 'react-native-particle-auth';
 const Web3 = require('web3');
 let web3;
 
-export default async function transferXUSD(
+export default async function transferUSDC(
   smartAccount,
   provider,
   _amount,
@@ -207,12 +207,13 @@ export default async function transferXUSD(
   v1Batch.push(transfer);
 
   try {
-    // const txResponse = await smartAccount.sendTransactionBatch({
-    //   transactions: v1Batch,
-    // });
-    // console.log('Response:', txResponse);
+    const txResponse = await smartAccount.sendTransactionBatch({
+      transactions: v1Batch,
+    });
+    console.log('Response:', txResponse);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 }
-

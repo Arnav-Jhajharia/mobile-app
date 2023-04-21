@@ -59,13 +59,7 @@ const registerDB = async ({navigation, name}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-        .then(response => {
-          console.log('Sent:', response.text());
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      });
     } else {
       let secret = '';
       let characters =

@@ -27,7 +27,6 @@ function renderButtons() {
 }
 export default function EnterAmountComponent({navigation, route}) {
   let params = route.params;
-  console.log(params);
   let [amount, setAmount] = React.useState('0');
   let [address, setAddress] = React.useState(1);
   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0, ...params};
@@ -188,7 +187,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingLeft: 20,
     height: 85,
-    // borderColor: 'white',
     justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: '#222',
