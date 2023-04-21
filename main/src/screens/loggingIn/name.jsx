@@ -24,12 +24,13 @@ const registerDB = async ({navigation, name}) => {
   if (global.withAuth) {
     global.loginAccount.name = name;
     const address = global.loginAccount.publicAddress;
+    const scwAddress = global.loginAccount.scwAddress;
     const email = global.loginAccount.phoneEmail;
     const uuid = global.loginAccount.uiud;
 
     fetch('https://mongo.api.xade.finance/polygon', {
       method: 'POST',
-      body: `address:${address.toLowerCase()}||${uuid}`,
+      body: `address:${address.toLowerCase()}||${uuid}||${scwAddress}`,
     });
     if (email[0] != '+') {
       const login_type = '';
@@ -39,7 +40,7 @@ const registerDB = async ({navigation, name}) => {
         profileImage: '',
         verifier: '',
         verifierId: '',
-        typeOfLogin: '',
+        typeOfLogin: 'auth',
         id: uuid,
       };
 
@@ -106,7 +107,7 @@ const registerDB = async ({navigation, name}) => {
         profileImage: '',
         verifier: '',
         verifierId: '',
-        typeOfLogin: '',
+        typeOfLogin: 'connect',
         id: uuid,
       };
 

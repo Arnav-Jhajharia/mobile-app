@@ -109,7 +109,7 @@ const SendMobileComponent = ({navigation}) => {
           justifyContent: 'center',
           flexDirection: 'row',
         }}>
-          {/* <View style = {{alignSelf: 'flex-start'}}> */}
+        {/* <View style = {{alignSelf: 'flex-start'}}> */}
         <Icon
           name="arrow-left"
           style={{position: 'absolute', left: 0, display: 'none'}}
@@ -120,14 +120,21 @@ const SendMobileComponent = ({navigation}) => {
         />
         {/* </View> */}
         <Text
-          style={{width: width * 0.8,fontSize: 25, textAlign: 'center', fontFamily: 'VelaSans-Bold', color: 'white'}}>
-            Enter mobile no.
+          style={{
+            width: width * 0.8,
+            fontSize: 25,
+            textAlign: 'center',
+            fontFamily: 'VelaSans-Bold',
+            color: 'white',
+          }}>
+          Enter mobile no.
         </Text>
       </View>
       <View style={styles.container}>
         <View style={styles.enterAmount}>
           <View style={{width: '30%'}}>
             <Dropdown
+              search
               style={styles.dropdown}
               // selectedTextStyle={{'width': 0}}
               placeholderStyle={styles.placeholderStyle}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import * as particleAuth from 'react-native-particle-auth';
-import { enableScreens } from 'react-native-screens';
+import {enableScreens} from 'react-native-screens';
 
 const buttons = [
   ['1', '2', '3'],
@@ -27,6 +27,7 @@ function renderButtons() {
 }
 export default function EnterAmountComponent({navigation, route}) {
   let params = route.params;
+  console.log(params);
   let [amount, setAmount] = React.useState('0');
   let [address, setAddress] = React.useState(1);
   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0, ...params};
@@ -38,15 +39,11 @@ export default function EnterAmountComponent({navigation, route}) {
   function handleButtonPress(button) {
     if (button !== '' && button !== '⌫' && button !== '.') {
       let num = parseInt(button);
-      if(amount != '0')
-      setAmount(amount + num);
-      else
-      setAmount(num)
+      if (amount != '0') setAmount(amount + num);
+      else setAmount(num);
     } else if (button === '⌫') setAmount(amount.slice(0, -2));
-    else if(button === '.')
-    {
-      if(!amount.includes('.'))
-      setAmount(amount + '.')
+    else if (button === '.') {
+      if (!amount.includes('.')) setAmount(amount + '.');
     }
   }
   return (
@@ -131,7 +128,11 @@ export default function EnterAmountComponent({navigation, route}) {
           );
         })}
         <TouchableOpacity
-          onPress={() => (amount != '' && amount != '0')?navigation.navigate('Pending', {...json, amount}):""}
+          onPress={() =>
+            amount != '' && amount != '0'
+              ? navigation.navigate('Pending', {...json, amount})
+              : ''
+          }
           style={styles.confirmButton}>
           <Text
             style={{

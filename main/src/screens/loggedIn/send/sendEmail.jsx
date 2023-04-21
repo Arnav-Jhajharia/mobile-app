@@ -9,31 +9,15 @@ import {
   View,
   Linking,
   ScrollView,
+  Image,
 } from 'react-native';
 import {useState, useMemo, useEffect} from 'react';
 import {Text} from '@rneui/themed';
-import {SelectCountry} from 'react-native-element-dropdown';
-const REMMITEX_CONTRACT = '0x5c34A74caB1Edfc1d73B8Ae725AdDE50bA067d5B'
+import {Dropdown} from 'react-native-element-dropdown';
+const REMMITEX_CONTRACT = '0x5c34A74caB1Edfc1d73B8Ae725AdDE50bA067d5B';
 
-// import styles from './paymentsStyles'
-// import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 import {Icon} from 'react-native-elements';
-// const countries = [
-//     {
-//         "name": "Email Address",
-//         "code": "AC",
-//         "emoji": "🇦🇨",
-//         "unicode": "U+1F1E6 U+1F1E8",
-//         "image": "https://www.vigcenter.com/public/all/images/default-image.jpg"
-//       },
-//       {
-//         "name": "Wallet address",
-//         "code": "AD",
-//         "emoji": "🇦🇩",
-//         "unicode": "U+1F1E6 U+1F1E9",
-//         "image": "https://www.vigcenter.com/public/all/images/default-image.jpg"
-//       },
-//   ];
+
 const width = Dimensions.get('window').width;
 
 const local_data = [
@@ -49,26 +33,18 @@ const local_data = [
   },
 ];
 const SendEmailComponent = ({navigation}) => {
-  // text != '' && (!(country == 1) || text.includes('@'))
-  //   ? navigation.navigate('EnterAmount', {
-  //       type:
-  //         country == 1
-  //           ? 'email'
-  //           : country == 2
-  //           ? 'wallet'
-  //           : 'how did we get here?',
-  //       address: text,
-  //     })
-  //   : ''
-
   const [country, setCountry] = useState('1');
   const [text, setText] = useState('');
   const handleSubmit = () => {
-    if (country == 1) { // Email
+    if (country == 1) {
+      // Email
       // if(!country.includes('@')) return;
-      fetch(`https://emailfind.api.xade.finance/polygon?email=${text}`, {
-        method: 'GET',
-      })
+      fetch(
+        `https://emailfind.api.xade.finance/polygon?email=${text.toLowerCase()}`,
+        {
+          method: 'GET',
+        },
+      )
         .then(response => {
           console.log(response);
           if (response.status == 200) {
@@ -98,6 +74,14 @@ const SendEmailComponent = ({navigation}) => {
       });
     } else console.log('How did we get here?');
   };
+
+  const renderItem = item => {
+    return (
+      <View style={styles.item}>
+        <Image source={item.image} style={styles.imageStyle} />
+      </View>
+    );
+  };
   return (
     <SafeAreaView
       style={{
@@ -105,7 +89,7 @@ const SendEmailComponent = ({navigation}) => {
         height: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}>   
+      }}>
       <View
         style={{
           position: 'absolute',
@@ -115,7 +99,7 @@ const SendEmailComponent = ({navigation}) => {
           justifyContent: 'center',
           flexDirection: 'row',
         }}>
-          {/* <View style = {{alignSelf: 'flex-start'}}> */}
+        {/* <View style = {{alignSelf: 'flex-start'}}> */}
         <Icon
           name="arrow-left"
           style={{position: 'absolute', left: 0, display: 'none'}}
@@ -126,7 +110,13 @@ const SendEmailComponent = ({navigation}) => {
         />
         {/* </View> */}
         <Text
-          style={{width: width * 0.8,fontSize: 25, textAlign: 'center', fontFamily: 'VelaSans-Bold', color: 'white'}}>
+          style={{
+            width: width * 0.8,
+            fontSize: 25,
+            textAlign: 'center',
+            fontFamily: 'VelaSans-Bold',
+            color: 'white',
+          }}>
           Enter{' '}
           {country == 1
             ? 'email'
@@ -139,15 +129,27 @@ const SendEmailComponent = ({navigation}) => {
       <View style={styles.container}>
         <View style={styles.enterAmount}>
           <View style={styles.choose}>
-            <SelectCountry
+            <Dropdown
               style={styles.dropdown}
-              imageStyle={styles.imageStyle}
-              maxHeight={250}
-              data={local_data}
-              imageField="image"
-              onChange={e => {
-                setCountry(e.value);
+              containerStyle={{
+                backgroundColor: '#232E34',
+                borderColor: '#232E34',
+                width: '130%',
+                paddingHorizontal: 12,
+                paddingVertical: 5,
               }}
+              itemContainerStyle={{
+                borderBottomColor: '#232E34',
+                paddingBottom: 2,
+              }}
+              data={local_data}
+              labelField="label"
+              valueField="value"
+              value={'Email'}
+              onChange={item => {
+                setCountry(item.value);
+              }}
+              renderItem={renderItem}
             />
           </View>
 
@@ -198,6 +200,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: 30,
     height: 30,
+    paddingTop: 5,
     backgroundColor: '#232E34',
   },
 

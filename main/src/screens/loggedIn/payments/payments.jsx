@@ -27,8 +27,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
+import {BICONOMY_API_KEY} from '@env';
 // import {POLYGON_API_KEY} from '@env';
-import transferXUSD from './remmitex';
+import transferXUSD from './remmitexv1';
 const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
@@ -106,7 +107,7 @@ const PaymentsComponent = ({navigation}) => {
         networkConfig: [
           {
             chainId: ChainId.POLYGON_MAINNET,
-            dappAPIKey: '1rQXLL5II.b15564c7-9018-49ed-acdf-cbc105485d27',
+            dappAPIKey: BICONOMY_API_KEY,
           },
         ],
       };
@@ -114,14 +115,13 @@ const PaymentsComponent = ({navigation}) => {
       console.log('Not Working');
 
       try {
-        const particleProvider = this.getOnlyProvider();
-        const provider = new ethers.providers.Web3Provider(
-          particleProvider,
-          'any',
-        );
-        let smartAccount = new SmartAccount(provider, options);
-        smartAccount = await smartAccount.init();
-        await transferXUSD(smartAccount);
+        // const provider = this.getOnlyProvider();
+        // await transferXUSD(
+        //   global.smartAccount,
+        //   provider,
+        //   '0.0001',
+        //   '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+        // );
       } catch (error) {
         console.log('Error:', error);
       }
@@ -189,7 +189,10 @@ const PaymentsComponent = ({navigation}) => {
         const contract = new web3.eth.Contract(USDC_ABI, usdcAddress);
 
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(authAddress).call();
+          console.log(global.loginAccount.scw);
+          let result = await contract.methods
+            .balanceOf(global.withAuth ? global.loginAccount.scw : authAddress)
+            .call();
           const decimals = await contract.methods.decimals().call();
           const formattedResult = parseInt(result) / 10 ** decimals;
           console.log('Balance:', formattedResult);
@@ -199,7 +202,9 @@ const PaymentsComponent = ({navigation}) => {
 
         if (_mainnet) {
           fetch(
-            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${
+              global.withAuth ? global.smartAccount.address : authAddress
+            }&apikey=${POLYGON_API_KEY}`,
           )
             .then(response => response.json())
             .then(data => {
@@ -683,10 +688,7 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('EnterAmount', {
-                type: 'wallet',
-                walletAddress: '0x5a8f38beb51396923b3297e3e79951e2eb2eb0b4',
-              });
+              navigation.navigate('SendEmail');
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
@@ -797,7 +799,6 @@ const PaymentsComponent = ({navigation}) => {
               View All
             </Text>
           </TouchableOpacity>
-          {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         <Modal
           animationType="slide"
@@ -967,7 +968,7 @@ const PaymentsComponent = ({navigation}) => {
           state.slice(0, 10).map(json => {
             // console.log(groupedState);
             return (
-              <View style={styles.transactions} key={json.hash}>
+              <View style={styles.transactions} key={state.indexOf(json)}>
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
@@ -985,7 +986,7 @@ const PaymentsComponent = ({navigation}) => {
                   />
                   <View style={styles.ttext}>
                     <TouchableHighlight
-                      key={json.truth}
+                      key={json.hash}
                       onPress={() => {
                         Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');

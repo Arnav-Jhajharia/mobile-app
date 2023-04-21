@@ -18,11 +18,20 @@ import {PNAccount} from '../../Models/PNAccount';
 import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 
-// import { registerFcmToken } from './../../utils/push'
+import {BICONOMY_API_KEY} from '@env';
 
 import {WalletType, ChainInfo, Env} from 'react-native-particle-connect';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {IPaymaster, ChainId} from '@biconomy/core-types';
+import SmartAccount from '@biconomy/smart-account';
+
+import getOnlyProvider from '../../particle-auth';
+
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import {ethers} from 'ethers';
 
 var DeviceInfo = require('react-native-device-info');
 
@@ -58,6 +67,23 @@ const LoginCheck = async ({navigation}) => {
     // console.log('Account:', account);
     // const name = account.name ? account.name : 'Not Set';
     const address = await particleAuth.getAddress();
+    let options = {
+      activeNetworkId: ChainId.POLYGON_MAINNET,
+      supportedNetworksIds: [ChainId.POLYGON_MAINNET],
+
+      networkConfig: [
+        {
+          chainId: ChainId.POLYGON_MAINNET,
+          dappAPIKey: BICONOMY_API_KEY,
+        },
+      ],
+    };
+    const particleProvider = this.getOnlyProvider();
+    const provider = new ethers.providers.Web3Provider(particleProvider, 'any');
+    let smartAccount = new SmartAccount(provider, options);
+    smartAccount = await smartAccount.init();
+    global.smartAccount = smartAccount;
+    const scwAddress = smartAccount.address;
     await AsyncStorage.setItem('address', address);
 
     // await registerFcmToken(address);
@@ -77,7 +103,7 @@ const LoginCheck = async ({navigation}) => {
         name = data;
       });
 
-    global.loginAccount = new PNAccount(email, name, address, uuid);
+    global.loginAccount = new PNAccount(email, name, address, scwAddress, uuid);
     global.withAuth = true;
     console.log('Logged In:', global.loginAccount);
     navigation.navigate('Payments');
