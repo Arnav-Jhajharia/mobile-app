@@ -11,6 +11,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Web3 from 'web3';
 import {ParticleProvider} from 'react-native-particle-auth';
 import {PROJECT_ID, CLIENT_KEY} from '@env';
+import {BICONOMY_API_KEY} from '@env';
+
+import {IPaymaster, ChainId} from '@biconomy/core-types';
+import SmartAccount from '@biconomy/smart-account';
+
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+import {ethers} from 'ethers';
 
 const projectId = PROJECT_ID;
 const clientKey = CLIENT_KEY;
@@ -25,6 +33,26 @@ getOnlyProvider = () => {
   const provider = new ParticleProvider({projectId, clientKey});
   return provider;
 };
+
+async function createSCW() {
+  let options = {
+    activeNetworkId: ChainId.POLYGON_MAINNET,
+    supportedNetworksIds: [ChainId.POLYGON_MAINNET],
+
+    networkConfig: [
+      {
+        chainId: ChainId.POLYGON_MAINNET,
+        dappAPIKey: BICONOMY_API_KEY,
+      },
+    ],
+  };
+  const particleProvider = this.getOnlyProvider();
+  const provider = new ethers.providers.Web3Provider(particleProvider, 'any');
+  let smartAccount = new SmartAccount(provider, options);
+  smartAccount = await smartAccount.init();
+  global.smartAccount = smartAccount;
+  return global.smartAccount.address;
+}
 
 web3_getAccounts = async () => {
   const accounts = await web3.eth.getAccounts();
@@ -44,6 +72,7 @@ setChainInfo = async () => {
 };
 
 login = async () => {
+  let scwAddress;
   const type = LoginType.Email;
   const supportAuthType = [SupportAuthType.Phone];
   const result = await particleAuth.login(type, '', supportAuthType, undefined);
@@ -62,10 +91,17 @@ login = async () => {
       ? userInfo.wallets[0].uuid
       : userInfo.uuid;
     console.log('User Info:', userInfo);
+    try {
+      scwAddress = await createSCW();
+      console.log(scwAddress);
+    } catch (err) {
+      console.log(err);
+    }
     global.loginAccount = new PNAccount(
       email.toLowerCase(),
       name,
       address,
+      scwAddress,
       uuid,
     );
     global.withAuth = true;
@@ -133,6 +169,8 @@ onClickLogin = async navigation => {
     const email = global.loginAccount.phoneEmail;
     const uuid = global.loginAccount.uiud;
 
+    console.log('Works');
+
     await fetch(
       `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`,
       {
@@ -176,6 +214,7 @@ export default {
   signAndSendTransaction,
   getUserInfo,
   logout,
+  createSCW,
 };
 /*
 const sender = await particleAuth.getAddress();

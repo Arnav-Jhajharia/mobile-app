@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@0xsequence/create3@git+https://github.com/0xsequence/create3.git":
+"@0xsequence/create3@https://github.com/0xsequence/create3":
   version "3.0.0"
-  resolved "git+https://github.com/0xsequence/create3.git#acc4703a21ec1d71dc2a99db088c4b1f467530fd"
+  resolved "https://github.com/0xsequence/create3#acc4703a21ec1d71dc2a99db088c4b1f467530fd"
   dependencies:
     csv-writer "^1.6.0"
 
@@ -13071,7 +13071,7 @@ react-native-eject@^0.2.0:
   resolved "https://registry.yarnpkg.com/react-native-eject/-/react-native-eject-0.2.0.tgz#84b5bd123e883562e72801d23028bff062f9fbb3"
   integrity sha512-muPhImNfKWa9hsdkrYeIkXM8/6lhZj3NnFCxI7kRrD3F50l6a6lc7crRWjg0i0aBt6XdkoE4efATjxCRkmTOFA==
 
-react-native-element-dropdown@^2.7.1:
+react-native-element-dropdown@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-element-dropdown/-/react-native-element-dropdown-2.9.0.tgz#c218ab512bd8be69fa0ac70462293863f8cfd527"
   integrity sha512-2Y/bmoFPTdKOUXbYloEKpMTWYE2VHrvva/5tgEuHqAlfAtGGr3r/ob0L0YYH1am5N0n1PKo3+eLf0c79QUSzYw==

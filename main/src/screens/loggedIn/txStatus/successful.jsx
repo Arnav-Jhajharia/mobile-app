@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   TouchableOpacity,
   Dimensions,
@@ -15,8 +15,8 @@ import {
 import {Text} from '@rneui/themed';
 import Video from 'react-native-video';
 const successVideo = require('./success.mov');
-import PointsModal from './pointsModal'
-import { useState } from 'react'
+import PointsModal from './pointsModal';
+import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SECRET_KEY_REMMITEX } from '@env';
 import CryptoJS from 'react-native-crypto-js';
@@ -31,8 +31,7 @@ export default function Component({navigation, route}) {
     setShowModal(false);
   };
 
-
-
+ 
 useEffect(() => {
   async function getAddress()
   {
@@ -40,12 +39,12 @@ useEffect(() => {
     console.log(_address);
     setAddress(_address);
     if(route.params.type == 'v2') {
-      fetch(
-        `https://amtowe.api.xade.finance?from=${route.params.walletAddress}&to=${route.params.emailAddress}&amt=${route.params.amount}`)
-                    .then((res) => res.text())
-                    .then((json) => {
+      // fetch(
+      //   `https://amtowe.api.xade.finance?from=${route.params.walletAddress}&to=${route.params.emailAddress}&amt=${route.params.amount}`)
+      //               .then((res) => res.text())
+      //               .then((json) => {
         
-      })
+      // })
       const inputValue = JSON.stringify({
         "senderAddress":route.params.walletAddress,
         "email":route.params.emailAddress,
@@ -59,25 +58,24 @@ useEffect(() => {
                     .then((json) => {
         
       })
-    }
 
-    const mainnetJSON = await AsyncStorage.getItem('mainnet')
-    const _mainnet = JSON.parse(mainnetJSON)
-    setMainnet(_mainnet)
-    console.log("Mainnet", _mainnet)
-    if(_mainnet == false && showModal == 'what')
-    {
-      setShowModal(true);
+      const mainnetJSON = await AsyncStorage.getItem('mainnet');
+      const _mainnet = JSON.parse(mainnetJSON);
+      setMainnet(_mainnet);
+      console.log('Mainnet', _mainnet);
+      if (_mainnet == false && showModal == 'what') {
+        setShowModal(true);
+      }
+
     }
   }
-  getAddress();
-})
-  
+    getAddress();
+  });
+
   const hash = route.params;
-  console.log(route.params)
+  console.log(route.params);
   return (
     <View style={{width: '100%', height: '100%', backgroundColor: '#0C0C0C'}}>
-      {(showModal && (mainnet == false)) && <PointsModal userId={address.toLowerCase()} onClose={handleCloseModal} amount = {route.params.amount} />}
       <Text
         style={{
           color: '#fff',

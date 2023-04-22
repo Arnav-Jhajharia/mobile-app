@@ -27,8 +27,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import XUSD_ABI from './XUSD';
 import USDC_ABI from './USDC';
 import {SABEX_LP} from '@env';
+import {BICONOMY_API_KEY} from '@env';
 // import {POLYGON_API_KEY} from '@env';
-import transferXUSD from './remmitex';
+import transferXUSD from './remmitexv1';
 const Web3 = require('web3');
 
 import {signAndSendTransaction} from '../../particle-auth';
@@ -86,25 +87,6 @@ const images = [
   // {},
   // {}
 ];
-
-async function getUser(address) {
-  const url = `https://user.api.xade.finance/polygon?address=${address.toLowerCase()}`;
-
-  try {
-    const response = await fetch(url, { method: 'GET' });
-
-    if (response.status === 200) {
-      const data = await response.text();
-      return data;
-    } else {
-      return address;
-    }
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return 'no';
-  }
-}
-
 const PaymentsComponent = ({navigation}) => {
   const [state, setState] = React.useState([
     {truth: true, to: '0', from: '0', value: 0, hash: ''},
@@ -125,7 +107,7 @@ const PaymentsComponent = ({navigation}) => {
         networkConfig: [
           {
             chainId: ChainId.POLYGON_MAINNET,
-            dappAPIKey: '1rQXLL5II.b15564c7-9018-49ed-acdf-cbc105485d27',
+            dappAPIKey: BICONOMY_API_KEY,
           },
         ],
       };
@@ -133,14 +115,13 @@ const PaymentsComponent = ({navigation}) => {
       console.log('Not Working');
 
       try {
-        const particleProvider = this.getOnlyProvider();
-        const provider = new ethers.providers.Web3Provider(
-          particleProvider,
-          'any',
-        );
-        let smartAccount = new SmartAccount(provider, options);
-        smartAccount = await smartAccount.init();
-        await transferXUSD(smartAccount);
+        // const provider = this.getOnlyProvider();
+        // await transferXUSD(
+        //   global.smartAccount,
+        //   provider,
+        //   '0.0001',
+        //   '0xb0ff54808427d753F51B359c0ffc177242Fb4804',
+        // );
       } catch (error) {
         console.log('Error:', error);
       }
@@ -208,7 +189,10 @@ const PaymentsComponent = ({navigation}) => {
         const contract = new web3.eth.Contract(USDC_ABI, usdcAddress);
 
         async function getTokenBalance() {
-          let result = await contract.methods.balanceOf(authAddress).call();
+          console.log(global.loginAccount.scw);
+          let result = await contract.methods
+            .balanceOf(global.withAuth ? global.loginAccount.scw : authAddress)
+            .call();
           const decimals = await contract.methods.decimals().call();
           const formattedResult = parseInt(result) / 10 ** decimals;
           console.log('Balance:', formattedResult);
@@ -218,7 +202,9 @@ const PaymentsComponent = ({navigation}) => {
 
         if (_mainnet) {
           fetch(
-            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
+            `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${
+              global.withAuth ? global.smartAccount.address : authAddress
+            }&apikey=${POLYGON_API_KEY}`,
           )
             .then(response => response.json())
             .then(data => {
@@ -633,202 +619,12 @@ const PaymentsComponent = ({navigation}) => {
     }
 
     registration();
-    
-
-    if (mainnet) {
-      fetch(
-        `https://api.polygonscan.com/api?module=account&action=tokentx&contractaddress=${usdcAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
-      )
-        .then(response => response.json())
-        .then(data => {
-          if (data.message != 'NOTOK') {
-            //console.log(data.message);
-            //         console.log(data);
-            const result = data.result;
-            //        console.log('Arnav:', result);
-            let len = result.length;
-
-            let arr = [];
-            let date = [];
-            for (let i = 0; i < len; i++) {
-              let res = result[i];
-              let val = res.value;
-              const decimals = 6;
-              const etherValue = parseInt(val) / 10 ** decimals;
-              var pubDate = new Date(res.timeStamp * 1000);
-              var weekday = new Array(
-                'Sun',
-                'Mon',
-                'Tue',
-                'Wed',
-                'Thu',
-                'Fri',
-                'Sat',
-              );
-
-              var monthname = new Array(
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              );
-
-              var formattedDate =
-                monthname[pubDate.getMonth()] +
-                ' ' +
-                pubDate.getDate() +
-                ', ' +
-                pubDate.getFullYear();
-              const truth =
-                REMMITEX_CONTRACT.toLowerCase() == res.to
-                  ? 2
-                  : authAddress.toString().toLowerCase() == res.to
-                  ? 1
-                  : 0;
-              const json = {
-                truth: truth, // true while accepting
-                to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
-                from:
-                  res.from == SABEX_LP.toLowerCase()
-                    ? 'SabeX Withdrawal'
-                    : res.from,
-                value: etherValue,
-                date: formattedDate,
-                hash: res.hash,
-              };
-              date.push(formattedDate);
-              // console.log(date);
-              // console.log(json);
-              arr.push(json);
-              // console.log(authAddress, res.to, json.truth);
-            }
-            //    console.log(json);
-            setDates([...new Set(date)].reverse());
-            setState(arr.reverse());
-            // console.log(dates);
-            // console.log(state);
-          } else {
-            setState([]);
-            setDates([]);
-            return;
-          }
-        });
-    } else {
-      fetch(
-        `https://api-testnet.polygonscan.com/api?module=account&action=tokentx&contractaddress=${contractAddress}&address=${authAddress}&apikey=${POLYGON_API_KEY}`,
-      )
-        .then(response => response.json())
-        .then(async data => {
-          if (data.message != 'NOTOK') {
-            //console.log(data.message);
-            //         console.log(data);
-            const result = data.result;
-            //        console.log('Arnav:', result);
-            let len = result.length;
-
-            let arr = [];
-            let date = [];
-            for (let i = 0; i < len; i++) {
-              let res = result[i];
-              let val = res.value;
-              const etherValue = web3.utils.fromWei(val, 'ether');
-              var pubDate = new Date(res.timeStamp * 1000);
-              var weekday = new Array(
-                'Sun',
-                'Mon',
-                'Tue',
-                'Wed',
-                'Thu',
-                'Fri',
-                'Sat',
-              );
-
-              var monthname = new Array(
-                'Jan',
-                'Feb',
-                'Mar',
-                'Apr',
-                'May',
-                'Jun',
-                'Jul',
-                'Aug',
-                'Sep',
-                'Oct',
-                'Nov',
-                'Dec',
-              );
-
-              var formattedDate =
-                monthname[pubDate.getMonth()] +
-                ' ' +
-                pubDate.getDate() +
-                ', ' +
-                pubDate.getFullYear();
-              const truth =
-                REMMITEX_CONTRACT.toLowerCase() == res.to
-                  ? 2
-                  : authAddress.toString().toLowerCase() == res.to
-                  ? 1
-                  : 0;
-                const _disp = await getUser(res.to)
-                console.log("User", _disp)
-                let display = 'mygod';
-                if(truth == 2) 
-                {
-                  display = 'Pending'
-                }
-                else if(truth == 1)
-                {
-                  display = await getUser(res.from)
-                }
-                else {
-                  display = await getUser(res.to)
-                }
-              const json = {
-                display: display,
-                truth: truth, // true while accepting
-                to: res.to == SABEX_LP.toLowerCase() ? 'SabeX Deposit' : res.to,
-                from:
-                  res.from == SABEX_LP.toLowerCase()
-                    ? 'SabeX Withdrawal'
-                    : res.from,
-                value: etherValue,
-                date: formattedDate,
-                hash: res.hash,
-              };
-              date.push(formattedDate);
-              // console.log(date);
-              // console.log(json);
-              arr.push(json);
-              // console.log(authAddress, res.to, json.truth);
-            }
-            //    console.log(json);
-            setDates([...new Set(date)].reverse());
-            setState(arr.reverse());
-            // console.log(dates);
-            // console.log(state);
-          } else {
-            setState([]);
-            setDates([]);
-            return;
-          }
-        });
-    }
-
   }, []);
   const t = true;
   return (
     <SafeAreaView style={{width: '100%', height: '100%'}}>
       <View colors={['#222222', '#000']} style={styles.container}>
-      <View style={styles.topbar}>
+        <View style={styles.topbar}>
           <Text style={styles.logo}>Payments</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
             <Icon
@@ -892,10 +688,7 @@ const PaymentsComponent = ({navigation}) => {
           <TouchableOpacity
             style={styles.depWith}
             onPress={() => {
-              navigation.navigate('EnterAmount', {
-                type: 'wallet',
-                walletAddress: '0x5a8f38beb51396923b3297e3e79951e2eb2eb0b4',
-              });
+              navigation.navigate('SendEmail');
             }}>
             <LinearGradient
               colors={['#1D2426', '#383838']}
@@ -1006,7 +799,6 @@ const PaymentsComponent = ({navigation}) => {
               View All
             </Text>
           </TouchableOpacity>
-          {/* <Text style = {{color: 'grey', fontSize: 20}}>See all</Text> */}
         </View>
         <Modal
           animationType="slide"
@@ -1120,13 +912,18 @@ const PaymentsComponent = ({navigation}) => {
                                         `https://polygonscan.com/tx/${json.hash}`,
                                       );
                                     }}>
-                            
-                                          <Text
-                        style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {json.display.slice(0, 20)}
-                      </Text>
-                                      
-                                   
+                                    <Text
+                                      style={{
+                                        color: 'white',
+                                        fontFamily: 'VelaSans-Bold',
+                                        fontSize: 15,
+                                      }}>
+                                      {(json.truth ? json.from : json.to).slice(
+                                        0,
+                                        16,
+                                      )}
+                                      ...
+                                    </Text>
                                   </TouchableHighlight>
 
                                   <Text
@@ -1171,7 +968,7 @@ const PaymentsComponent = ({navigation}) => {
           state.slice(0, 10).map(json => {
             // console.log(groupedState);
             return (
-              <View style={styles.transactions} key={json.hash}>
+              <View style={styles.transactions} key={state.indexOf(json)}>
                 <View style={styles.transactionLeft}>
                   <Image
                     source={
@@ -1189,14 +986,18 @@ const PaymentsComponent = ({navigation}) => {
                   />
                   <View style={styles.ttext}>
                     <TouchableHighlight
-                      key={json.truth}
+                      key={json.hash}
                       onPress={() => {
                         Clipboard.setString(json.truth ? json.from : json.to);
                         Alert.alert('Copied Address To Clipboard');
                       }}>
-                   <Text
-                        style={{color: 'white', fontFamily: 'VelaSans-Bold'}}>
-                        {json.display}
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontFamily: 'EuclidCircularA-Medium',
+                          fontSize: 15,
+                        }}>
+                        {(json.truth ? json.from : json.to).slice(0, 16)}...
                       </Text>
                     </TouchableHighlight>
 
