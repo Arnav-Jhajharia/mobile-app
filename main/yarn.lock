@@ -1242,7 +1242,7 @@
     ethers "^5.7.0"
     isomorphic-ws "^5.0.0"
 
-"@biconomy/smart-account@2.0.0":
+"@biconomy/smart-account@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@biconomy/smart-account/-/smart-account-2.0.0.tgz#2613270cfd4668af7528f9cdd0ba6badec754099"
   integrity sha512-yNt1w65t4rNb9d9AvtNMTSnmrWaHEUwB63UeOd1aKwJhbjN5rRbZlNPREJ43iFxmpXfWapzI4S28JTLGMSBPkg==

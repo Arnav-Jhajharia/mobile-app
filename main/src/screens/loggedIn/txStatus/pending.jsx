@@ -9,16 +9,17 @@ import getOnlyProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
 import transferUSDC from '../../loggedIn/payments/remmitexv1';
 const Web3 = require('web3');
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 let web3;
 let provider;
 const successVideo = require('./pending.mov');
 
 export default function Component({route, navigation}) {
+
   const {walletAddress, emailAddress, mobileNumber, type, amount} =
     route.params;
   console.log('Params:', route.params);
-
+  const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
   useEffect(() => {
     if (global.withAuth) {
       authAddress = global.loginAccount.publicAddress;
@@ -33,6 +34,8 @@ export default function Component({route, navigation}) {
     }
 
     const transaction = async () => {
+      const mainnetJSON = await AsyncStorage.getItem('mainnet');
+      const mainnet = JSON.parse(mainnetJSON);
       let status;
       console.log('Is Auth:', global.withAuth);
       if (type !== 'v2') {
@@ -82,6 +85,60 @@ export default function Component({route, navigation}) {
         }
       } else {
         //V2 code goes here
+        if(mainnet == false)
+        {
+          if(global.withAuth) {
+          authAddress = global.loginAccount.publicAddress;
+          console.log('Global Account:', global.loginAccount);
+          status = await this.signAndSendTransaction(REMMITEX_TESTNET_CONTRACT, weiVal);
+          console.log('TX1:', status);
+          }
+          else {
+            authAddress = global.connectAccount.publicAddress;
+            console.log('Global Account:', global.connectAccount);
+            status = await this.signAndSendTransactionConnect(
+              REMMITEX_TESTNET_CONTRACT,
+              weiVal,
+            );
+          }
+          if (status !== false)
+          {
+            navigation.navigate('Successful', {
+              status,
+              type,
+              emailAddress,
+              walletAddress,
+              amount,
+            });
+          }
+          
+        }
+        else
+        {
+          try {
+          status = await transferUSDCV2(
+            global.smartAccount,
+            provider,
+            amount,
+            walletAddress,
+          );
+          console.log(status);
+          if (status)
+            navigation.navigate('Successful', {
+              status,
+              type,
+              emailAddress,
+              walletAddress,
+              amount,
+            });
+          else navigation.navigate('Unsuccessful');  
+        } 
+        catch(e)
+        {
+          console.log(e);
+        }
+        }
+        
       }
     };
 
