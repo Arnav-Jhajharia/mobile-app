@@ -33,16 +33,23 @@ export default function EnterAmountComponent({navigation, route}) {
   console.log(json);
 
   console.log('Address: ', address);
+  console.log('Params: ', params);
   // console.log('User Info: ', info);
 
   function handleButtonPress(button) {
     if (button !== '' && button !== '⌫' && button !== '.') {
-      let num = parseInt(button);
-      if (amount != '0') setAmount(amount + num);
+      // let num = parseInt(button);
+      if (amount != '0') setAmount(amount + button);
       else setAmount(num);
-    } else if (button === '⌫') setAmount(amount.slice(0, -2));
+    } else if (button === '⌫') 
+    {
+      // if(amount != "0")
+      setAmount(amount.slice(0, -1));
+    }
     else if (button === '.') {
+      
       if (!amount.includes('.')) setAmount(amount + '.');
+      
     }
   }
   return (
@@ -96,7 +103,7 @@ export default function EnterAmountComponent({navigation, route}) {
               fontFamily: 'VelaSans-Medium',
               fontSize: 13,
             }}>
-            Wallet Address: {json.walletAddress.substring(0, 10)}...
+           {(route.params.type != 'v2')?`Wallet Address: ${json.walletAddress.substring(0, 10)}`:(`Email Address: ${route.params.emailAddress.substring(0, 10)}`)}...
           </Text>
           <Text
             style={{

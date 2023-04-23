@@ -7,16 +7,17 @@ import * as particleAuth from 'react-native-particle-auth';
 import * as particleConnect from 'react-native-particle-connect';
 import getOnlyProvider from '../../../particle-auth';
 import createConnectProvider from '../../../particle-connect';
-import transferUSDC from '../../loggedIn/payments/remmitexv1';
+import {transferUSDC, transferUSDCV2 } from '../../loggedIn/payments/remmitexv1';
 const Web3 = require('web3');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 let web3;
 let provider;
 const successVideo = require('./pending.mov');
-
+import { REMMITEX_TESTNET_CONTRACT } from '@env'
+const amount = "0"
 export default function Component({route, navigation}) {
 
-  const {walletAddress, emailAddress, mobileNumber, type, amount} =
+  const {walletAddress, emailAddress, mobileNumber, type} =
     route.params;
   console.log('Params:', route.params);
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
@@ -40,6 +41,7 @@ export default function Component({route, navigation}) {
       console.log('Is Auth:', global.withAuth);
       if (type !== 'v2') {
         if (global.withAuth) {
+        
           // authAddress = global.loginAccount.publicAddress;
           // console.log('Global Account:', global.loginAccount);
           // status = await this.signAndSendTransaction(walletAddress, weiVal);
@@ -84,9 +86,12 @@ export default function Component({route, navigation}) {
           else navigation.navigate('Unsuccessful');
         }
       } else {
+        console.log('V2 being nicely executed')
         //V2 code goes here
+        
         if(mainnet == false)
         {
+          console.log('this part fine also')
           if(global.withAuth) {
           authAddress = global.loginAccount.publicAddress;
           console.log('Global Account:', global.loginAccount);
@@ -116,10 +121,11 @@ export default function Component({route, navigation}) {
         else
         {
           try {
+          console.log('Reaching to state of calling function', global.smartAccount)
           status = await transferUSDCV2(
             global.smartAccount,
             provider,
-            amount,
+            '0.0001',
             walletAddress,
           );
           console.log(status);

@@ -4,13 +4,13 @@ import usdAbi from './USDC';
 import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import {ethers} from 'ethers';
-
+import { REMMITEX_MAINNET_CONTRACT } from '@env'
 import * as particleAuth from 'react-native-particle-auth';
 
 const Web3 = require('web3');
 let web3;
 
-export default async function transferUSDC(
+export async function transferUSDC(
   smartAccount,
   provider,
   _amount,
@@ -209,6 +209,107 @@ export default async function transferUSDC(
   try {
     const txResponse = await smartAccount.sendTransactionBatch({
       transactions: v1Batch,
+    });
+    console.log('Response:', txResponse);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
+
+export async function transferUSDCV2(smartAccount, provider, _amount, _recipient) {
+  console.log('wait')
+  const contractAddress = REMMITEX_MAINNET_CONTRACT;
+  const usdcAddress = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
+
+  const decimals = 6;
+
+  const amount = ethers.utils.parseUnits(_amount, decimals);
+
+  const recipient = _recipient;
+
+  web3 = this.createProvider();
+  console.log('approval call')
+  const approvalCall = web3.eth.abi.encodeFunctionCall(usdAbi[21], [
+    contractAddress,
+    amount,
+  ]);
+  console.log('approved')
+  const tx = {
+    from: smartAccount.address,
+    to: usdcAddress,  
+    data: approvalCall,
+  };
+  console.log(tx)
+
+  const gasNeeded = Number(await web3.eth.estimateGas(tx));
+  console.log('mm1')
+  const gasPrice = Number(await web3.eth.getGasPrice());
+  console.log('mm2')
+  const gas = 2 * gasNeeded * gasPrice;
+  const fees = web3.utils.toWei(String(gas), 'wei') * 10;
+  console.log('mm3')
+  const totalGas = String(
+    Number(web3.utils.toWei(String(gas), 'wei')) +
+      Number(web3.utils.toWei(String((fees * 0.01).toFixed(0)), 'wei')),
+  );
+  console.log('mm4')
+  const totalGasUSDC = web3.utils.toWei(
+    String(Number(web3.utils.fromWei(totalGas, 'ether')).toFixed(5)),
+    'mwei',
+  );
+  console.log('mm5')
+  console.log('working till here')
+  const amountToApproveUSD = web3.utils.fromWei(
+    String(
+      Number(
+        web3.utils.toWei(
+          String(web3.utils.fromWei(String(amount), 'mwei')),
+          'ether',
+        ),
+      ) +
+        Number(
+          web3.utils.toWei(
+            String(web3.utils.fromWei(String(totalGasUSDC), 'mwei')),
+            'ether',
+          ),
+        ),
+      'ether',
+    ),
+  );
+
+  const amountToApprove = web3.utils.toWei(
+    Number(amountToApproveUSD).toFixed(6),
+    'mwei',
+  );
+
+  console.log(
+    'Total Transaction:',
+    web3.utils.fromWei(amountToApprove, 'mwei'),
+  );
+  console.log('Total Gas USDC:', totalGasUSDC.toString());
+  console.log('Amount To Approve:', amountToApprove);
+
+  const usdcAbi = new ethers.utils.Interface(usdAbi);
+
+  const approveData = usdcAbi.encodeFunctionData('transfer', [
+    contractAddress,
+    amountToApprove,
+  ]);
+
+  console.log(approveData);
+
+  const txToSend = {
+    // from: smartAccount.address,
+    to: usdcAddress,
+    data: approveData,
+  };
+
+  try {
+    const txResponse = await smartAccount.sendTransaction({
+      transaction: txToSend,
     });
     console.log('Response:', txResponse);
     return true;
