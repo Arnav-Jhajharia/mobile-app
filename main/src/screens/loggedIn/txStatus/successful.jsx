@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SECRET_KEY_REMMITEX } from '@env';
 import CryptoJS from 'react-native-crypto-js';
 import transactions from '../investments/backend/txFunctions';
-
+import { Icon } from 'react-native-elements';
 
 const addPoints = async (userId, transactionAmount) => {
   try {
@@ -165,14 +165,21 @@ useEffect(() => {
     // </View>
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} >
-        <Text style={styles.backButtonText}>Back</Text>
+      <Icon
+  name='arrow-back'
+  type='material'
+  color='#fff'
+  onPress={() => {
+    // handle back button press
+  }}
+/>
       </TouchableOpacity>
       <View style={styles.content}>
         {/* <Image source={require('./coin.png')} style={styles.coinImage} /> */}
         {/* <View style={{width: '80%', marginTop: '25%', justifyContent: 'center'}}> */}
         <Video
           source={successVideo}
-          style={{width: 300, height: 200, marginLeft: '15%'}}
+          style={{width: 300, height: 200, marginLeft: '20%', scale: '1.5', transform: [{ scale: 1.6}],}}
           controls={false}
           repeat={true}
           ref={ref => {
@@ -180,8 +187,14 @@ useEffect(() => {
           }}
         />
       {/* </View> */}
-        <Text style={styles.successText}>Success!</Text>
+        <Text style={styles.successText}>Thank you!</Text>
+        {(mainnet == true)?
         <Text style={styles.earnedCoinsText}>You've just earned {points} Xade coins</Text>
+      :
+      ""}
+        <Text style={styles.amountText}>${route.params.amount}</Text>
+
+        <Text style={styles.earnedCoinsText2}>To Name({route.params.walletAddress.slice(0, 5)}...)</Text>
       </View>
     </View>
 
@@ -208,8 +221,9 @@ const styles = StyleSheet.create({
   },
   successText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'green',
+    fontFamily: 'VelaSans-Bold',
     marginVertical: 20,
   },
   earnedCoinsText: {
@@ -217,6 +231,14 @@ const styles = StyleSheet.create({
     color: 'white`',
     textAlign: 'center',
     marginHorizontal: 20,
+  },
+  earnedCoinsText2: {
+    fontSize: 20,
+    color: 'white`',
+    textAlign: 'center',
+    marginHorizontal: 20,
+    fontFamily: 'VelaSans-Bold',
+    marginTop: 30,
   },
   backButton: {
     position: 'absolute',
@@ -227,6 +249,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'blue',
+  },
+  amountText: {
+    fontSize: 50,
+    color: '#03ac13',
+    textAlign: 'center',
+    marginHorizontal: 20,
+    fontFamily: 'VelaSans-Bold'
+
   },
 });
 

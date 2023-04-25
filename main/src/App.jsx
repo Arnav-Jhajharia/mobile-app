@@ -31,7 +31,7 @@ import EnterSavingsAmountComponent from './screens/loggedIn/savings/savingStatus
 import SendEmailComponent from './screens/loggedIn/send/sendEmail';
 import SendMobileComponent from './screens/loggedIn/send/sendMobile';
 import {Text} from 'react-native-elements';
-
+import TopBar from './screens/loggedIn/topbar'
 import Pending from './screens/loggedIn/txStatus/pending';
 import Successful from './screens/loggedIn/txStatus/successful';
 import Unsuccessful from './screens/loggedIn/txStatus/unsuccessful';
@@ -201,16 +201,20 @@ function ComingSoon({navigation}) {
   );
 }
 
+
 function Savings({navigation, route}) {
   return (
-    <SafeAreaView style={styles.black}>
-      <ScrollView style={{height: windowHeight * 0.7}}>
-        <View>
-          <SavingsComponent navigation={navigation} route={route} />
-        </View>
-      </ScrollView>
-      <BottomNavbar navigation={navigation} selected="Savings" />
-    </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      {/* <View style={{ height: '100%',position: 'relative' }}> */}
+
+    <TopBar navigation={navigation} headers={'Savings'} />
+
+    <ScrollView style={[styles.content, {zIndex: -1}]}>
+    <SavingsComponent navigation={navigation} route={route} />    
+    </ScrollView>
+    <BottomNavbar navigation={navigation} selected="Savings" />
+    {/* </View> */}
+  </SafeAreaView>
   );
 }
 
@@ -578,5 +582,13 @@ const styles = StyleSheet.create({
   black: {
     height: windowHeight,
     backgroundColor: '#0C0C0C',
+  },
+  
+  container: {
+    flex: 1,
+    backgroundColor: '#0C0C0C',
+  },
+  content: {
+    // flex: 1,
   },
 });

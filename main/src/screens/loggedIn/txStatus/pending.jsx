@@ -14,10 +14,10 @@ let web3;
 let provider;
 const successVideo = require('./pending.mov');
 import { REMMITEX_TESTNET_CONTRACT } from '@env'
-const amount = "0"
+// const amount = "0"
 export default function Component({route, navigation}) {
 
-  const {walletAddress, emailAddress, mobileNumber, type} =
+  const {walletAddress, emailAddress, mobileNumber, type, amount} =
     route.params;
   console.log('Params:', route.params);
   const weiVal = Web3.utils.toWei(amount.toString(), 'ether');
@@ -40,12 +40,15 @@ export default function Component({route, navigation}) {
       let status;
       console.log('Is Auth:', global.withAuth);
       if (type !== 'v2') {
+        
         if (global.withAuth) {
         
           // authAddress = global.loginAccount.publicAddress;
           // console.log('Global Account:', global.loginAccount);
           // status = await this.signAndSendTransaction(walletAddress, weiVal);
           // console.log('TX1:', status);
+          if(mainnet)
+          {
           try {
             status = await transferUSDC(
               global.smartAccount,
@@ -67,6 +70,22 @@ export default function Component({route, navigation}) {
           } catch (err) {
             console.log(err);
           }
+        }
+        else {
+
+          status = await this.signAndSendTransaction(walletAddress, weiVal);
+          console.log('TX1:', status);
+          
+          if (status !== false)
+            navigation.navigate('Successful', {
+              status,
+              type,
+              emailAddress,
+              walletAddress,
+              amount,
+            });
+          else navigation.navigate('Unsuccessful');
+        }
         } else {
           authAddress = global.connectAccount.publicAddress;
           console.log('Global Account:', global.connectAccount);
@@ -125,7 +144,7 @@ export default function Component({route, navigation}) {
           status = await transferUSDCV2(
             global.smartAccount,
             provider,
-            '0.0001',
+            amount,
             walletAddress,
           );
           console.log(status);
@@ -175,17 +194,8 @@ export default function Component({route, navigation}) {
         />
       </View>
       {type == 'v2' ? (
-        <TouchableOpacity onPress={() => navigation.push('Payments')}>
-          <Text
-            style={{
-              color: '#fff',
-              fontSize: 20,
-              marginTop: '20%',
-              textAlign: 'center',
-              fontFamily: 'VelaSans-Bold',
-            }}>
-            Return Home
-          </Text>
+        <TouchableOpacity>
+     
 
           <Text
             style={{

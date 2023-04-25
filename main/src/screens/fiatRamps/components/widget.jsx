@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TransakWebView from '@transak/react-native-sdk';
+import { enableScreens } from 'react-native-screens';
 
 const { width, height } = Dimensions.get('window');
 
-const BuyCryptoPage = ({ uri, onClose, widget, name, adddres }) => {
+const BuyCryptoPage = ({ uri, onClose, widget, name, address }) => {
   const [showBuyCryptoModal, setShowBuyCryptoModal] = useState(false);
-
+  const [add, setAdd] = useState('0x');
 
   const [modalVisible, setModalVisible] = useState(true);
 
@@ -30,6 +31,15 @@ const BuyCryptoPage = ({ uri, onClose, widget, name, adddres }) => {
         console.log(data);
     }
   }
+
+  useEffect(() => {
+    if(global.withAuth)
+    {
+    setAdd(global.loginAccount.scw)
+    }
+    else
+    setAdd(global.connectAccount.address)
+  }, [])
   return (
     <Modal animationType="slide" transparent={false} visible={modalVisible}>
       <View style={styles.container}>
@@ -60,7 +70,7 @@ const BuyCryptoPage = ({ uri, onClose, widget, name, adddres }) => {
                   // For the full list of react-native-webview props refer Props section below
                 />
                 :
-                <WebView source={{ uri:"https://onramp.money/main/buy/?appId=251363" }} style={styles.webView} />
+                <WebView source={{ uri:`https://onramp.money/main/buy/?appId=251363&walletAddress=${add}` }} style={styles.webView} />
           }
 
         </View>

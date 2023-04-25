@@ -27,7 +27,7 @@ function renderButtons() {
 }
 export default function EnterAmountComponent({navigation, route}) {
   let params = route.params;
-  let [amount, setAmount] = React.useState('0');
+  let [amount, setAmount] = React.useState('');
   let [address, setAddress] = React.useState(1);
   const json = {mobileNumber: 0, emailAddress: 0, walletAddress: 0, ...params};
   console.log(json);
@@ -40,7 +40,7 @@ export default function EnterAmountComponent({navigation, route}) {
     if (button !== '' && button !== '⌫' && button !== '.') {
       // let num = parseInt(button);
       if (amount != '0') setAmount(amount + button);
-      else setAmount(num);
+      else setAmount(button);
     } else if (button === '⌫') 
     {
       // if(amount != "0")
