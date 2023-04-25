@@ -228,14 +228,17 @@ function Investment({navigation}) {
 
 function Payments({navigation}) {
   return (
-    <SafeAreaView style={styles.black}>
-      <ScrollView style={{height: windowHeight * 0.8}}>
-        <View>
-          <PaymentsComponent navigation={navigation} />
-        </View>
-      </ScrollView>
-      <BottomNavbar navigation={navigation} selected="Payments" />
-    </SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      {/* <View style={{ height: '100%',position: 'relative' }}> */}
+
+    <TopBar navigation={navigation} headers={'Payments'} />
+
+    <ScrollView style={[styles.content, {zIndex: -1}]}>
+    <PaymentsComponent navigation={navigation} route={route} />    
+    </ScrollView>
+    <BottomNavbar navigation={navigation} selected="Savings" />
+    {/* </View> */}
+  </SafeAreaView>
   );
 }
 
